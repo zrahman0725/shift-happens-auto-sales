@@ -278,7 +278,7 @@
                         message: formData.get('message')
                     };
 
-                    emailjs.send('service_8w0yjy3', 'template_yf6gm1g', formValues)
+                    emailjs.send('', '', formValues)
                         .then((response) => {
                             console.log('Email sent successfully:', response.status, response.text);
                             alert('Your message has been sent successfully!');
