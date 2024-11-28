@@ -1,3 +1,4 @@
+// home page picture carousel 
 let slideIndex = 0;
 showSlides();
 
@@ -12,3 +13,36 @@ function showSlides() {
   slides[slideIndex-1].style.display = "block";
   setTimeout(showSlides, 3000); // Change image every 2 seconds
 }
+
+
+// navbar dropdowns
+document.addEventListener('DOMContentLoaded', () => {
+  const dropdowns = document.querySelectorAll('.dropdown');
+
+  dropdowns.forEach(dropdown => {
+      const parentLink = dropdown.querySelector('a');
+      const dropdownContent = dropdown.querySelector('.dropdown-content');
+
+      // Toggle dropdown on click
+      parentLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          const isVisible = dropdownContent.style.display === 'block';
+          closeAllDropdowns(); // Close other dropdowns
+          dropdownContent.style.display = isVisible ? 'none' : 'block';
+      });
+  });
+
+  // Close all dropdowns when clicking outside
+  document.addEventListener('click', (e) => {
+      if (!e.target.closest('.dropdown')) {
+          closeAllDropdowns();
+      }
+  });
+
+  function closeAllDropdowns() {
+      document.querySelectorAll('.dropdown-content').forEach(content => {
+          content.style.display = 'none';
+      });
+  }
+});
+
