@@ -15,6 +15,9 @@ function showSlides() {
 }
 
 
+
+
+
 // navbar dropdowns
 document.addEventListener('DOMContentLoaded', () => {
   const dropdowns = document.querySelectorAll('.dropdown');
@@ -46,3 +49,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+
+
+
+//navbar menu button for smaller screens
+document.getElementById('menu-icon').addEventListener('click', () => {
+  const navbar = document.querySelector('.navbar');
+  navbar.classList.toggle('active');
+});
+
+
+
+
+
+
+//emailsjs 
