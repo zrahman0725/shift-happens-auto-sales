@@ -91,17 +91,67 @@
         </div>
     </section>
 
+    <section class="car-search">
+        <!-- Video Background -->
+        <video autoplay muted loop class="background-video">
+            <source src="images/car_selection.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    
+        <!-- Content Overlay -->
+        <div class="overlay">
+            <h2 class="heading">Find Your Perfect Car</h2>
+            <form action="search-results.html" method="get" class="search-form">
+                <select name="make" required>
+                    <option value="">Select Make</option>
+                    <option value="toyota">Toyota</option>
+                    <option value="honda">Honda</option>
+                    <option value="ford">Ford</option>
+                    <option value="chevrolet">Chevrolet</option>
+                </select>
+                <select name="model">
+                    <option value="">Select Model</option>
+                    <option value="camry">Camry</option>
+                    <option value="accord">Accord</option>
+                    <option value="mustang">Mustang</option>
+                    <option value="malibu">Malibu</option>
+                </select>
+                <select name="year">
+                    <option value="">Select Year</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                    <option value="2020">2020</option>
+                </select>
+                <select name="price">
+                    <option value="">Select Price Range</option>
+                    <option value="10k">Under $10,000</option>
+                    <option value="20k">$10,000 - $20,000</option>
+                    <option value="30k">$20,000 - $30,000</option>
+                    <option value="40k">$30,000 - $40,000</option>
+                </select>
+                <button type="submit" class="btn">Search</button>
+            </form>
+        </div>
+    </section>
+    
+
     <section class="about" id="about" style="background-image: url('images/about_background.png');">
         <div class="about-img">
-            <img src="images/7b94da0c-540f-472a-bb0d-3758b78675e0.JPG" alt="">
+            <img src="images/new-car-on-lot.jpg" alt="Dealership">
         </div>
         <div class="about-content">
             <h2 class="heading">About <span>Us</span></h2>
-            <h3>A Brand New Experience!</h3>
-            <p>link to finance.</p>
+            <h3>Your Second Chance Awaits</h3>
+            <p>
+                At <strong>Shift Happens Auto Sales</strong>, we believe that everyone deserves a fresh start. Our dealership was built on the foundation of helping people, regardless of their credit history. Whether you have <strong>low credit</strong>, <strong>bad credit</strong>, or even <strong>no credit</strong>, we specialize in finding solutions tailored to your needs. We started with a simple mission: to provide an honest, supportive, and stress-free car-buying experience. Over the years, we've helped countless individuals and families get back on the road to financial stability and personal freedom. Our <a href="finance.html" class="finance-link">excellent financing programs</a> are designed to work with your unique situation. We partner with trusted lenders who share our commitment to giving you a second chance. With flexible terms and personalized support, we’ll guide you every step of the way. At Shift Happens Auto Sales, it's not just about the car you drive off with—it's about the journey we take together. Let us help you get back on the road and take control of your future.
+            </p>
             <a href="about.html" class="btn">Read More</a>
         </div>
     </section>
+    
+    
+    
 
     <section class="services" id="services">
         <h2 class="heading">Our <span>Services</span></h2>
@@ -232,7 +282,7 @@
                     <input type="email" name="email" placeholder="Email Address" required>
                 </div>
                 <div class="input-box">
-                    <input type="tel" name="phone" placeholder="Mobile Number" required>
+                    <input type="tel" name="mobile" placeholder="Mobile Number" required>
                     <input type="text" name="subject" placeholder="Email Subject" required>
                 </div>
                 <textarea name="message" cols="30" rows="10" placeholder="Your Message" required></textarea>
@@ -255,42 +305,34 @@
     src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
 </script>
 <script type="text/javascript">
-(function(){
-  emailjs.init({
-    publicKey: "oRNMjgHFuqLgeU8V_",
-  });
-})();
+    // Initialize EmailJS with your Public Key
+    emailjs.init('dFqCwHX3sOZHyAPK4');
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const contactForm = document.getElementById('contact-form');
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                // Collect form data
+                const formData = new FormData(contactForm);
+
+                // Send email using EmailJS
+                emailjs.sendForm('service_1gclp48', 'template_vy5h7c6', contactForm)
+                    .then((response) => {
+                        console.log('Email sent successfully:', response.status, response.text);
+                        alert('Your message has been sent successfully!');
+                        contactForm.reset(); // Reset the form after submission
+                    })
+                    .catch((error) => {
+                        console.error('Failed to send email:', error);
+                        alert('Oops! There was a problem submitting your form. Please try again later.');
+                    });
+            });
+        }
+    });
 </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const contactForm = document.getElementById('contact-form');
-            if (contactForm) {
-                contactForm.addEventListener('submit', function(event) {
-                    event.preventDefault();
-
-                    const formData = new FormData(contactForm);
-
-                    const formValues = {
-                        name: formData.get('name'),
-                        email: formData.get('email'),
-                        phone: formData.get('phone'),
-                        subject: formData.get('subject'),
-                        message: formData.get('message')
-                    };
-
-                    emailjs.send('', '', formValues)
-                        .then((response) => {
-                            console.log('Email sent successfully:', response.status, response.text);
-                            alert('Your message has been sent successfully!');
-                            contactForm.reset();
-                        }, (error) => {
-                            console.error('Failed to send email:', error);
-                            alert('Oops! There was a problem submitting your form.');
-                        });
-                });
-            }
-        });
-    </script>
 <script src="script.js"></script>
 
 
