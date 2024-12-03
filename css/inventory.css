@@ -1,0 +1,449 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --bg-color: #000000; /* Black */
+    --second-bg-color: #1a1a1a; /* Dark Gray */
+    --text-color: #ffffff; /* White */
+    --main-color: #ff0000; /* Red */
+}
+
+html {
+    font-size: 62.5%;
+    overflow-x: hidden;
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+section {
+    min-height: 100vh;
+    padding: 10rem 9% 2rem;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem 9%;
+    background: linear-gradient(90deg, var(--bg-color), var(--main-color));
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.header.sticky {
+    border-bottom: .1rem solid rgba(0, 0, 0, .2);
+}
+
+.logo {
+    font-size: 2.5rem;
+    color: var(--main-color);
+    font-weight: 600;
+    cursor: default;
+}
+
+.navbar a {
+    font-size: 1.7rem;
+    color: var(--text-color);
+    margin-left: 4rem;
+    font-family: cursive;
+}
+
+.navbar a:hover,
+.navbar a.active {
+    color: var(--main-color);
+}
+
+#menu-icon {
+    font-size: 3.6rem;
+    color: var(--text-color);
+    display: none;
+}
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 2rem 9%;
+    background: linear-gradient(90deg, var(--bg-color), var(--main-color));
+}
+
+.footer-text p {
+    font-size: 1.6rem;
+}
+
+.footer-iconTop a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: .8rem;
+    background: var(--main-color);
+    border-radius: .8rem;
+    transition: .5s ease;
+}
+
+.footer-iconTop a:hover {
+    box-shadow: 0 0 1rem var(--main-color);
+}
+
+.footer-iconTop a i {
+    font-size: 2.4rem;
+    color: var (--second-bg-color);
+}
+
+.gradient-background {
+    background: linear-gradient(120deg, #80deea, #4dd0e1, #26c6da, #00acc1); /* Gradient from aqua to teal */
+}
+
+.text-on-gradient {
+    color: #ffffff; /* Ensures readability on gradient */
+}
+
+
+
+.btn:hover {
+    background: var (--text-color);
+    color: var (--main-color);
+}
+
+.navbar a {
+    color: #ffffff; /* Teal */
+}
+
+.navbar a.active,
+.navbar a:hover {
+    color: #ff0000; /* Dark Green for active/hover states */
+}
+
+.social-media a,
+.footer-iconTop a {
+    border-color: var (--text-color); /* White borders */
+    color: var (--text-color); /* White icons */
+}
+
+.social-media a:hover,
+.footer-iconTop a:hover {
+    background: var (--text-color); /* White background on hover */
+    color: var (--main-color); /* Teal text/icon on hover */
+}
+
+.gallery-container .gallery-box {
+    border-color: var (--main-color); /* Teal borders */
+}
+
+.home,
+.about,
+.services,
+.gallery,
+.contact,
+.footer {
+    background: var (--bg-color); /* Aqua background for sections */
+}
+
+.about,
+.gallery,
+.footer {
+    background: var (--second-bg-color); /* Mint background for alternate sections */
+}
+/* Inventory Section */
+.inventory-section {
+    padding: 4rem 2rem;
+    background: var(--bg-color);
+    color: var(--text-color);
+    margin-top: 8rem; /* Adjust this value if needed */
+}
+
+.inventory-section .heading {
+    text-align: center;
+    font-size: 2.8rem;
+    margin-bottom: 2rem;
+    color: var(--main-color);
+}
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+}
+
+/* Vehicle Card */
+.vehicle-card {
+    background: var(--second-bg-color);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.vehicle-card:hover {
+    transform: scale(1.03);
+}
+
+.vehicle-image img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-bottom: 1px solid var(--main-color);
+}
+
+.vehicle-details {
+    padding: 1.5rem;
+    color: var(--text-color);
+}
+
+.vehicle-details h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    color: var(--main-color);
+}
+
+.vehicle-details p {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.4rem;
+    margin: 0.5rem 0;
+}
+
+.price .dealer-price {
+    color: #b0b0b0;
+    font-size: 1.2rem;
+}
+
+.crossed-out {
+    text-decoration: line-through;
+    color: #b0b0b0; /* Optional: lighter color for the crossed-out text */
+    font-size: 1.2rem;
+}
+
+.price .discounted-price {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.fine-print {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-top: 0.5rem;
+    text-align: right;
+}
+
+/* Button Styles */
+.btn {
+    padding: 0.8rem 1.5rem;
+    background: var(--main-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.4rem;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: var(--text-color);
+    color: var(--main-color);
+}
+
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Background overlay */
+    z-index: 999;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.3s, opacity 0.3s;
+}
+
+.modal:not(.hidden) {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-content {
+    background: #ffffff; /* White background for the modal */
+    color: #000000; /* Black text color for contrast */
+    padding: 2rem;
+    border-radius: 0; /* Removed border radius for full-screen look */
+    width: 100%;
+    height: 100%;
+    box-shadow: none; /* Removed shadow for a clean full-screen look */
+    overflow-y: auto; /* Enables scrolling for longer content */
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2.5rem;
+    cursor: pointer;
+    color: #ff0000; /* Red color for the close button */
+    z-index: 1000;
+}
+
+/* Adjustments for modal content sections */
+.details-container {
+    display: flex;
+    flex-direction: row; /* Side-by-side layout for larger screens */
+    flex-wrap: wrap; /* Allows wrapping for smaller screens */
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.details-left, .details-right {
+    flex: 1 1 50%;
+}
+
+.details-left .main-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.thumbnail-strip {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    justify-content: center;
+    flex-wrap: wrap; /* Ensures thumbnails wrap on smaller screens */
+}
+
+.thumbnail-strip img {
+    width: 60px; /* Larger thumbnails */
+    height: 60px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 5px;
+}
+
+.thumbnail-strip img.active {
+    border-color: #ff0000; /* Matches the red theme */
+}
+
+.details-right h2 {
+    font-size: 2rem; /* Larger title */
+    font-weight: bold;
+    color: #ff0000; /* Matches the theme */
+}
+
+.details-right h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    color: #000000; /* Black for better readability */
+}
+
+.key-details {
+    list-style: none;
+    padding: 0;
+}
+
+.key-details li {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    color: #000000; /* Black text */
+}
+
+.key-details li span {
+    font-weight: bold;
+}
+
+.description h4,
+.features h4 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #000000; /* Black text */
+}
+
+.features .accordion-item {
+    margin-bottom: 1rem;
+    border: 1px solid #000000; /* Black border for contrast */
+    border-radius: 5px;
+}
+
+.features .accordion-header {
+    padding: 1rem;
+    cursor: pointer;
+    background: #f0f0f0; /* Light gray for the accordion headers */
+    font-weight: bold;
+    color: #000000; /* Black text */
+}
+
+.features .accordion-body {
+    display: none;
+    padding: 1rem;
+    background: #ffffff; /* White background for accordion body */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .details-container {
+        flex-direction: column; /* Stacks content on smaller screens */
+    }
+
+    .thumbnail-strip img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .details-right h2,
+    .details-right h3 {
+        text-align: center;
+    }
+}
+
+
+
+
+.promo-card {
+    background: var(--second-bg-color);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 2rem;
+}
+
+.promo-card .vehicle-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.promo-card .promo-details h3 {
+    font-size: 1.8rem;
+    margin: 1rem 0;
+    color: var(--main-color);
+}
+
+.promo-card .promo-details p {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
