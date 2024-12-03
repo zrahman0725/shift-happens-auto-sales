@@ -60,7 +60,13 @@ section {
     cursor: default;
 
     }
-    
+    .logo img {
+        width: 40px; /* Adjust the size of the image as needed */
+        height: auto; /* Maintain aspect ratio */
+        vertical-align: middle; /* Align the image with the text */
+        margin-right: 10px; /* Add spacing between the image and the title */
+    }
+      
 
 .navbar a {
     font-size: 1.7rem;
@@ -75,88 +81,73 @@ section {
     color: var(--main-color);
 }
 
-/* Dropdown container */
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-/* Dropdown content */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%; /* Align just below the parent link */
-    left: 0;
-    background: var(--second-bg-color);
-    min-width: 200px;
-    padding: 0.8rem 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    z-index: 1000;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    opacity: 0;
-    transform: translateY(10px);
-}
-
-/* Dropdown content for showing */
-.dropdown.show .dropdown-content {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Links inside dropdown */
-.dropdown-content a {
-    display: block;
-    padding: 1rem 1.5rem;
-    font-size: 1.5rem;
-    font-family: 'Poppins', sans-serif;
-    color: var(--text-color);
-    text-decoration: none;
-    transition: background 0.3s ease, color 0.3s ease;
-}
-
-.dropdown-content a:hover {
-    background: var(--main-color);
-    color: var(--second-bg-color);
-}
-
-/* Hover effect for desktop */
-.dropdown:hover .dropdown-content {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Adjust for mobile */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .dropdown-content {
-        position: static; /* Prevent overlap on mobile */
-        transform: none; /* No animation needed for mobile */
-        opacity: 1; /* Ensure visible by default when toggled */
-        box-shadow: none;
-    }
-
-    .dropdown-content a {
-        font-size: 1.6rem;
-        padding: 1.2rem;
-    }
-
-    .dropdown:hover .dropdown-content {
-        display: none; /* Disable hover effect on mobile */
-    }
-}
 
 #menu-icon {
     font-size: 3.6rem;
     color: var(--text-color);
     display: none;
 }
+
+/* Dropdown container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown menu - hidden by default */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%; /* Align dropdown right below the parent link */
+    left: 0; /* Align dropdown with the parent link */
+    background-color: var(--second-bg-color); /* Match the theme color */
+    min-width: 200px; /* Uniform width for all dropdowns */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    z-index: 100; /* Ensure it appears above other content */
+    border-radius: 8px; /* Rounded corners for a modern look */
+    padding: 0; /* Remove extra padding around the menu */
+}
+
+/* Dropdown menu links */
+.dropdown-menu a {
+    color: var(--text-color); /* White text */
+    padding: 1rem; /* Add padding for a better appearance */
+    text-decoration: none; /* Remove underline */
+    display: block; /* Make the full box clickable */
+    font-size: 1.6rem;
+    font-family: 'Poppins', sans-serif;
+    width: 100%; /* Ensure the full width of the dropdown menu */
+    box-sizing: border-box; /* Include padding in width */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover effect for dropdown menu links */
+.dropdown-menu a:hover {
+    color: var(--main-color); /* Make the text red for better readability */
+    border-radius: 0.3rem; /* Optional: rounded corners */
+}
+
+/* Adjust the dropdown container to prevent issues */
+.dropdown-menu {
+    padding: 0.5rem 0; /* Add slight vertical spacing for the dropdown */
+    background-color: var(--bg-color); /* Match dropdown background with site theme */
+    border-radius: 0.5rem; /* Optional: rounded edges for the dropdown */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+
+
+/* Show dropdown menu on hover */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    transform: translateY(0); /* Final position */
+}
+
 
 
 
@@ -523,7 +514,7 @@ span {
 }
 
 
-.gallery {
+.services {
     background: var(--second-bg-color);
 }
 
@@ -656,7 +647,7 @@ span {
 }
 
 .about,
-.gallery,
+.services,
 .footer {
     background: var (--second-bg-color); /* Mint background for alternate sections */
 }
@@ -713,19 +704,91 @@ span {
 }
 
 
+/* Carousel Styling */
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 2rem;
+    scroll-snap-type: x mandatory;
+    padding: 2rem;
+    scroll-behavior: smooth; /* Enable smooth scrolling */
+}
+
+
+.carousel::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for better aesthetics */
+}
+
+.vehicle-card {
+    flex: 0 0 300px; /* Adjust card width */
+    background: var(--second-bg-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    scroll-snap-align: start;
+}
+
+.vehicle-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.vehicle-details {
+    padding: 1.5rem;
+    text-align: left;
+    color: var(--text-color);
+}
+
+.vehicle-details h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: var(--main-color);
+}
+
+.vehicle-details p {
+    font-size: 1.4rem;
+    margin: 0.5rem 0;
+}
+
+.vehicle-details .price {
+    margin-top: 1rem;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.vehicle-details .price .crossed-out {
+    text-decoration: line-through;
+    color: var(--text-color);
+    font-size: 1.2rem;
+}
+
+.view-details-btn {
+    display: block;
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    text-align: center;
+    background: var(--main-color);
+    color: var(--second-bg-color);
+    border-radius: 4px;
+    font-size: 1.6rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.view-details-btn:hover {
+    background: var(--text-color);
+    color: var(--main-color);
+}
 
 
 
 
 
 
-
-
-
-
-
-
-  
 
 
 
@@ -769,14 +832,6 @@ span {
 }
 
 
-
-
-
-
-
-
-
-
 /* screen size controls */
 @media (max-width: 1200px) {
     html {
@@ -811,6 +866,35 @@ span {
 }
 
 @media (max-width: 768px) {
+    .dropdown {
+        width: 100%; /* Ensure dropdown spans full width */
+        text-align: center;
+    }
+
+    .dropdown a {
+        display: block; /* Ensure links stack properly */
+        padding: 1rem; /* Add spacing for better touch interaction */
+    }
+
+    .dropdown-menu {
+        position: static; /* Remove absolute positioning */
+        display: none; /* Hidden by default */
+        background: transparent; /* Match the background for smooth appearance */
+        box-shadow: none; /* Remove shadow */
+    }
+
+    .dropdown-menu a {
+        padding: 1rem; /* Consistent padding */
+        font-size: 1.8rem; /* Adjust size for readability */
+    }
+
+    .dropdown.active .dropdown-menu {
+        display: block; /* Show dropdown menu when active */
+    }
+}
+
+
+@media (max-width: 768px) {
     #menu-icon {
         display: block;
     }
@@ -820,21 +904,22 @@ span {
         top: 100%;
         left: 0;
         width: 100%;
-        padding: 1rem 3%;
-        background: rgba(255, 255, 255, 0.9); /* Adjust the background color and opacity */
-        border-top: .1rem solid rgba(0, 0, 0, .2);
-        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .2);
-        display: none;
+        background: var(--second-bg-color); /* Match the theme */
+        border-top: .1rem solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.2);
+        display: none; /* Hidden by default */
+        flex-direction: column; /* Stack links vertically */
+        padding: 1rem 0;
     }
 
     .navbar.active {
-        display: block;
+        display: flex; /* Show the navbar when active */
     }
 
     .navbar a {
-        display: block;
         font-size: 2rem;
-        margin: 3rem 0;
+        margin: 1rem 0; /* Space between links */
+        text-align: center;
     }
 
     .home {
@@ -910,3 +995,5 @@ span {
         margin-top: 2rem;
     }
 }
+
+
