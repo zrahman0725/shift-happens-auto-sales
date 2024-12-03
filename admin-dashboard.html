@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/admin-dashboard.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="#" class="logo">Shift Happens Auto Sales</a>
+        <i class='bx bx-menu' id="menu-icon"></i>
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="inventory.html">Inventory</a>
+            <a href="finance.html">Finance</a>
+            <a href="services.html">Services</a>
+            <a href="index.html#contact">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Secondary Navbar -->
+    <nav class="secondary-navbar">
+        <a href="admin-dashboard.html" class="active">Dashboard</a>
+        <a href="admin-inventory.html">Inventory</a>
+        <a href="admin-forms.html">Forms</a>
+        <a href="admin-users.html">Users</a>
+
+    </nav>
+
+    <!-- Dashboard Section -->
+    <section class="dashboard" id="dashboard">
+        <h2 class="heading">Admin <span>Dashboard</span></h2>
+        <div class="dashboard-cards">
+            <div class="card">
+                <h3>Total Sales</h3>
+                <p>$0</p>
+            </div>
+            <div class="card">
+                <h3>Active Listings</h3>
+                <p>0</p>
+            </div>
+            <div class="card">
+                <h3>New Messages</h3>
+                <p>0</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-text">
+            <p>Copyright &copy; 2024 by Shift Happens Auto Sales | All Rights Reserved. | <a href="admin-login.html">Admin</a></p>
+        </div>
+        <div class="footer-iconTop">
+            <a href="#home"><i class='bx bx-up-arrow-alt'></i></a>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDv6Jkk-7XqeCMTy14Fjs_upMAjVM7uNVg",
+            authDomain: "shift-happens-auto-sales.firebaseapp.com",
+            projectId: "shift-happens-auto-sales",
+            storageBucket: "shift-happens-auto-sales.firebasestorage.app",
+            messagingSenderId: "224158026936",
+            appId: "1:224158026936:web:690dd13405f6b1bfc4b84d",
+            measurementId: "G-09D7MLNSNS"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "admin-login.html";
+            }
+        });
+    </script>
+</body>
+
+</html>

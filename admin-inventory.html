@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <link rel="stylesheet" href="css/admin-inventory.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="#" class="logo">Shift Happens Auto Sales</a>
+        <i class='bx bx-menu' id="menu-icon"></i>
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="inventory.html">Inventory</a>
+            <a href="finance.html">Finance</a>
+            <a href="services.html">Services</a>
+            <a href="index.html#contact">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Secondary Navbar -->
+    <nav class="secondary-navbar">
+        <a href="admin-dashboard.html">Dashboard</a>
+        <a href="admin-inventory.html" class="active">Inventory</a>
+        <a href="admin-forms.html">Forms</a>
+        <a href="admin-users.html">Users</a>
+
+    </nav>
+
+    <!-- Inventory Section -->
+    <section class="inventory" id="inventory">
+        <h2 class="heading">Inventory <span>Management</span></h2>
+        <button id="add-vehicle-btn" class="btn">Add Vehicle</button>
+        <div id="inventory-list" class="inventory-container">
+            <h3>Inventory List</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Picture</th>
+                        <th>Make</th>
+                        <th>Model</th>
+                        <th>Year</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Inventory items will be added dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Modal Popup for Adding Vehicle -->
+    <div id="vehicle-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">&times;</span>
+            <form id="vehicle-form">
+                <!-- Step 1: Vehicle Basic Information -->
+<div class="step step-1">
+    <h3>Step 1: Vehicle Basic Information</h3>
+    <input type="text" id="make" placeholder="Make" required>
+    <input type="text" id="model" placeholder="Model" required>
+    <input type="number" id="year" placeholder="Year" required>
+    <input type="number" id="price" placeholder="Price ($)" required>
+    <div>
+        <button type="button" id="next-step-1" class="btn">Next</button>
+    </div>
+</div>
+
+<!-- Step 2: Additional Vehicle Information -->
+<div class="step step-2 hidden">
+    <h3>Step 2: Additional Vehicle Information</h3>
+    <label for="body-style">Body Style:</label>
+    <select id="body-style" required>
+        <option value="">Select Body Style</option>
+        <option value="sedan">Sedan</option>
+        <option value="suv">SUV / Crossover</option>
+        <option value="pickup">Pickup Truck</option>
+        <option value="minivan">Minivan / Van</option>
+        <option value="coupe">Coupe</option>
+        <option value="other">Other</option>
+    </select>
+
+    <label for="engine">Engine:</label>
+    <select id="engine" required>
+        <option value="">Select Engine Type</option>
+        <option value="4-cylinder">4-Cylinder</option>
+        <option value="6-cylinder">6-Cylinder</option>
+        <option value="8-cylinder">8-Cylinder</option>
+        <option value="other">Other</option>
+    </select>
+
+    <label for="transmission">Transmission:</label>
+    <select id="transmission" required>
+        <option value="">Select Transmission</option>
+        <option value="automatic">Automatic</option>
+        <option value="manual">Manual / Standard</option>
+        <option value="cvt">Variable / CVT</option>
+        <option value="other">Other</option>
+    </select>
+
+    <label for="color">Color:</label>
+    <select id="color" required>
+        <option value="">Select Color</option>
+        <option value="white">White</option>
+        <option value="black">Black</option>
+        <option value="grey">Grey</option>
+        <option value="silver">Silver</option>
+        <option value="bronze">Bronze</option>
+        <option value="blue">Blue</option>
+        <option value="red">Red</option>
+        <option value="other">Other</option>
+    </select>
+    <input type="text" id="other-color" placeholder="Specify Other Color" class="hidden">
+    <div>
+        <button type="button" id="prev-step-2" class="btn">Back</button>
+        <button type="button" id="next-step-2" class="btn">Next</button>
+    </div>
+</div>
+
+
+<!-- Step 3: Vehicle Identification -->
+<div class="step step-3 hidden">
+    <h3>Step 3: Vehicle Identification</h3>
+    <label for="mileage">Mileage (in kms):</label>
+    <input type="number" id="mileage" placeholder="Enter mileage" required>
+
+    <label for="vin">VIN Number:</label>
+    <input type="text" id="vin" placeholder="Enter VIN" required>
+
+    <label for="stock">Stock #:</label>
+    <input type="text" id="stock" placeholder="Enter Stock #" required>
+    <div>
+        <button type="button" id="prev-step-3" class="btn">Back</button>
+        <button type="button" id="next-step-3" class="btn">Next</button>
+    </div>
+</div>
+
+
+<!-- Step 4: Media Upload -->
+<div class="step step-4 hidden">
+    <h3>Step 4: Media Upload</h3>
+    <label for="main-picture">Main Picture (Required):</label>
+    <input type="file" id="main-picture" accept="image/*" required>
+
+    <label for="secondary-pictures">Secondary Pictures (Optional):</label>
+    <input type="file" id="secondary-pictures" accept="image/*" multiple>
+    <div>
+        <button type="button" id="prev-step-4" class="btn">Back</button>
+        <button type="submit" class="btn">Save Vehicle</button>
+    </div>
+</div>
+</form>
+</div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="delete-confirmation-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3>Are you sure you want to delete this vehicle?</h3>
+        <p>This action is irreversible.</p>
+        <div class="button-container">
+            <button id="cancel-delete" class="btn cancel-btn">Cancel</button>
+            <button id="confirm-delete" class="btn confirm-btn">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<div id="vehicle-details-modal" class="modal hidden">
+    <div class="modal-content vehicle-details">
+        <span class="close-btn" id="close-details-modal">&times;</span>
+        <div class="details-container">
+            <!-- Left Section: Image Carousel -->
+            <div class="details-left">
+                <div class="admin-carousel">
+                    <div class="main-image">
+                        <img id="main-carousel-image" src="" alt="Vehicle Image">
+                    </div>
+                    <div class="thumbnail-strip">
+                        <!-- Thumbnails will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+            <!-- Right Section: Vehicle Information -->
+            <div class="details-right">
+                <h2 id="vehicle-title"></h2>
+                <h3 id="vehicle-price"></h3>
+                <ul class="key-details" id="vehicle-details-list">
+                    <!-- Key details will be populated dynamically -->
+                </ul>
+                <div class="description">
+                    <h4>Vehicle Description</h4>
+                    <p id="vehicle-description"></p>
+                </div>
+                <div class="features">
+                    <h4>Features & Specs</h4>
+                    <div id="features-accordion">
+                        <!-- Expandable categories will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-text">
+            <p>Copyright &copy; 2024 by Shift Happens Auto Sales | All Rights Reserved. | <a href="admin-login.html">Admin</a></p>
+        </div>
+        <div class="footer-iconTop">
+            <a href="#home"><i class='bx bx-up-arrow-alt'></i></a>
+        </div>
+    </footer>
+
+    <script type="module">
+        // Firebase Initialization and Authentication
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            onSnapshot,
+            doc,
+            deleteDoc,
+            updateDoc
+        } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyDv6Jkk-7XqeCMTy14Fjs_upMAjVM7uNVg",
+            authDomain: "shift-happens-auto-sales.firebaseapp.com",
+            projectId: "shift-happens-auto-sales",
+            storageBucket: "shift-happens-auto-sales.firebasestorage.app",
+            messagingSenderId: "224158026936",
+            appId: "1:224158026936:web:690dd13405f6b1bfc4b84d",
+            measurementId: "G-09D7MLNSNS"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const inventoryRef = collection(db, "inventory");
+    
+        let mode = "add"; // Tracks whether the form is in 'add' or 'edit' mode
+        let currentEditId = null; // Stores the ID of the vehicle being edited
+    
+        // Redirect unauthorized users
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "admin-login.html";
+            }
+        });
+    
+        // Modal and Form Steps Logic
+        const modal = document.getElementById('vehicle-modal');
+        const form = document.getElementById('vehicle-form');
+        const deleteConfirmationModal = document.getElementById('delete-confirmation-modal');
+        const cancelDeleteBtn = document.getElementById('cancel-delete');
+        const confirmDeleteBtn = document.getElementById('confirm-delete');
+        let vehicleToDeleteId = null;
+    
+        // Open Confirmation Modal for Delete
+        function openDeleteConfirmationModal(vehicleId) {
+            vehicleToDeleteId = vehicleId;
+            deleteConfirmationModal.classList.remove('hidden');
+        }
+    
+        // Close Confirmation Modal
+        function closeDeleteConfirmationModal() {
+            vehicleToDeleteId = null;
+            deleteConfirmationModal.classList.add('hidden');
+        }
+    
+        // Confirm Deletion
+        confirmDeleteBtn.addEventListener('click', async () => {
+            if (vehicleToDeleteId) {
+                try {
+                    const vehicleDoc = doc(db, "inventory", vehicleToDeleteId);
+                    await deleteDoc(vehicleDoc);
+                    alert("Vehicle deleted successfully!");
+                } catch (error) {
+                    console.error("Error deleting vehicle:", error);
+                    alert("Failed to delete vehicle. Please try again.");
+                } finally {
+                    closeDeleteConfirmationModal();
+                }
+            }
+        });
+    
+        // Cancel Deletion
+        cancelDeleteBtn.addEventListener('click', closeDeleteConfirmationModal);
+    
+        // Open Modal and Reset Steps
+        const addVehicleBtn = document.getElementById('add-vehicle-btn');
+        const closeModalBtn = document.getElementById('close-modal');
+        const steps = document.querySelectorAll('.step');
+        let currentStep = 0;
+    
+        addVehicleBtn.addEventListener('click', () => {
+            mode = "add"; // Set mode to 'add'
+            currentEditId = null; // Clear current edit ID
+            currentStep = 0;
+            updateSteps();
+            form.reset();
+            modal.classList.remove('hidden');
+        });
+    
+        // Close Modal
+        closeModalBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+    
+        // Navigate Steps
+        const nextButtons = document.querySelectorAll('[id^=next-step]');
+        const prevButtons = document.querySelectorAll('[id^=prev-step]');
+    
+        nextButtons.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                if (currentStep < steps.length - 1) {
+                    currentStep++;
+                    updateSteps();
+                }
+            });
+        });
+    
+        prevButtons.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                if (currentStep > 0) {
+                    currentStep--;
+                    updateSteps();
+                }
+            });
+        });
+    
+        // Update Step Visibility
+        function updateSteps() {
+            steps.forEach((step, index) => {
+                step.classList.toggle('hidden', index !== currentStep);
+            });
+        }
+    
+        // Form Submission Handler
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+    
+            const mainPicture = document.getElementById('main-picture').files[0];
+            const secondaryPictures = Array.from(document.getElementById('secondary-pictures').files);
+    
+            let mainPictureUrl = null;
+            const secondaryPicturesUrls = [];
+    
+            if (mainPicture) {
+                mainPictureUrl = await uploadImageToImgBB(mainPicture);
+            }
+    
+            for (const file of secondaryPictures) {
+                const url = await uploadImageToImgBB(file);
+                if (url) secondaryPicturesUrls.push(url);
+            }
+    
+            if (!mainPictureUrl) {
+                alert('Main picture is required.');
+                return;
+            }
+    
+            const vehicleData = {
+                make: document.getElementById('make').value.trim(),
+                model: document.getElementById('model').value.trim(),
+                year: document.getElementById('year').value.trim(),
+                price: document.getElementById('price').value.trim(),
+                bodyStyle: document.getElementById('body-style').value,
+                engine: document.getElementById('engine').value,
+                transmission: document.getElementById('transmission').value,
+                color: document.getElementById('color').value === 'other'
+                    ? document.getElementById('other-color').value.trim()
+                    : document.getElementById('color').value,
+                mileage: document.getElementById('mileage').value.trim(),
+                vin: document.getElementById('vin').value.trim(),
+                stock: document.getElementById('stock').value.trim(),
+                mainPictureUrl,
+                secondaryPicturesUrls,
+                timestamp: new Date()
+            };
+    
+            try {
+                if (mode === "add") {
+                    await addDoc(inventoryRef, vehicleData);
+                    alert('Vehicle added successfully!');
+                } else if (mode === "edit" && currentEditId) {
+                    const vehicleDoc = doc(db, "inventory", currentEditId);
+                    await updateDoc(vehicleDoc, vehicleData);
+                    alert('Vehicle updated successfully!');
+                }
+                form.reset();
+                modal.classList.add('hidden');
+            } catch (error) {
+                console.error("Error saving vehicle:", error);
+                alert("Failed to save vehicle. Please try again.");
+            }
+        });
+    
+        // Populate Inventory Table
+        function populateInventoryTable() {
+            const inventoryTableBody = document.querySelector('#inventory-list tbody');
+            inventoryTableBody.innerHTML = "";
+    
+            onSnapshot(inventoryRef, (snapshot) => {
+                inventoryTableBody.innerHTML = "";
+    
+                snapshot.docs.forEach((doc) => {
+                    const data = doc.data();
+    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><img src="${data.mainPictureUrl}" alt="${data.make} ${data.model}" class="table-picture"></td>
+                        <td>${data.make}</td>
+                        <td>${data.model}</td>
+                        <td>${data.year}</td>
+                        <td>$${data.price}</td>
+                        <td>
+                            <button class="btn details-btn">Details</button>
+                            <button class="btn edit-btn">Edit</button>
+                            <button class="btn delete-btn">Delete</button>
+                        </td>
+                    `;
+    
+                    inventoryTableBody.appendChild(row);
+    
+                    const detailsBtn = row.querySelector('.details-btn');
+                    const editBtn = row.querySelector('.edit-btn');
+                    const deleteBtn = row.querySelector('.delete-btn');
+    
+                    detailsBtn.addEventListener('click', () => showVehicleDetails(data));
+                    editBtn.addEventListener('click', () => editVehicle(data, doc.id));
+                    deleteBtn.addEventListener('click', () => openDeleteConfirmationModal(doc.id));
+                });
+            });
+        }
+    
+        // Details Modal Functionality
+        function showVehicleDetails(data) {
+            const modal = document.getElementById("vehicle-details-modal");
+            const mainImage = document.getElementById("main-carousel-image");
+            const thumbnailStrip = document.querySelector(".thumbnail-strip");
+            const title = document.getElementById("vehicle-title");
+            const price = document.getElementById("vehicle-price");
+            const detailsList = document.getElementById("vehicle-details-list");
+            const description = document.getElementById("vehicle-description");
+            const featuresAccordion = document.getElementById("features-accordion");
+    
+            // Populate Modal Content
+            mainImage.src = data.mainPictureUrl;
+            thumbnailStrip.innerHTML = "";
+            data.secondaryPicturesUrls.forEach((url, index) => {
+                const img = document.createElement("img");
+                img.src = url;
+                img.classList.toggle("active", index === 0);
+                img.addEventListener("click", () => {
+                    mainImage.src = url;
+                    document.querySelectorAll(".thumbnail-strip img").forEach(img => img.classList.remove("active"));
+                    img.classList.add("active");
+                });
+                thumbnailStrip.appendChild(img);
+            });
+    
+            title.textContent = `${data.year} ${data.make} ${data.model}`;
+            price.textContent = `$${data.price}`;
+    
+            detailsList.innerHTML = `
+                <li><span>VIN:</span> ${data.vin || "N/A"}</li>
+                <li><span>Stock #:</span> ${data.stock || "N/A"}</li>
+                <li><span>Mileage:</span> ${data.mileage || "N/A"} kms</li>
+                <li><span>Transmission:</span> ${data.transmission || "N/A"}</li>
+                <li><span>Color:</span> ${data.color || "N/A"}</li>
+            `;
+    
+            description.textContent = data.description || "No description available.";
+    
+            featuresAccordion.innerHTML = "";
+            Object.entries(data.features || {}).forEach(([category, items]) => {
+                const accordionItem = document.createElement("div");
+                accordionItem.className = "accordion-item";
+                accordionItem.innerHTML = `
+                    <div class="accordion-header">${category}</div>
+                    <div class="accordion-body hidden">
+                        <ul>${items.map(item => `<li>${item}</li>`).join("")}</ul>
+                    </div>
+                `;
+                accordionItem.querySelector(".accordion-header").addEventListener("click", () => {
+                    accordionItem.querySelector(".accordion-body").classList.toggle("hidden");
+                });
+                featuresAccordion.appendChild(accordionItem);
+            });
+    
+            modal.classList.remove("hidden");
+        }
+    
+        // Close Details Modal
+        document.getElementById("close-details-modal").addEventListener("click", () => {
+            document.getElementById("vehicle-details-modal").classList.add("hidden");
+        });
+    
+        // Upload Image to ImgBB
+        async function uploadImageToImgBB(file) {
+            const apiKey = '114bba60769f2d7d7bc403a7f0343c37';
+            const formData = new FormData();
+            formData.append('image', file);
+    
+            try {
+                const response = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+    
+                if (result.success) {
+                    return result.data.url;
+                } else {
+                    throw new Error('Image upload failed.');
+                }
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                alert('Image upload failed. Please try again.');
+                return null;
+            }
+        }
+    
+        // Call to Populate Inventory Table on Page Load
+        populateInventoryTable();
+    </script>
+    
+    
+        
+        
+        
+        
+</body>
+
+</html>

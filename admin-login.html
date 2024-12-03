@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="css/admin-login.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="#" class="logo">Shift Happens Auto Sales</a>
+        <i class='bx bx-menu' id="menu-icon"></i>
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="inventory.html">Inventory</a>
+            <a href="finance.html">Finance</a>
+            <a href="services.html">Services</a>
+            <a href="index.html#contact">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Login Section -->
+    <section class="login-page">
+        <div class="login-container">
+            <h2>Admin Login</h2>
+            <form id="login-form">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <p id="error-message" style="color: red; display: none; font-size: 0.9rem;"></p>
+                <button type="submit" class="btn">Login</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-text">
+            <p>Copyright &copy; 2024 by Shift Happens Auto Sales | All Rights Reserved. | <a href="admin-login.html">Admin</a></p>
+        </div>
+        <div class="footer-iconTop">
+            <a href="#home"><i class='bx bx-up-arrow-alt'></i></a>
+        </div>
+    </footer>
+
+    <!-- Firebase Authentication -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDv6Jkk-7XqeCMTy14Fjs_upMAjVM7uNVg",
+            authDomain: "shift-happens-auto-sales.firebaseapp.com",
+            projectId: "shift-happens-auto-sales",
+            storageBucket: "shift-happens-auto-sales.firebasestorage.app",
+            messagingSenderId: "224158026936",
+            appId: "1:224158026936:web:690dd13405f6b1bfc4b84d",
+            measurementId: "G-09D7MLNSNS"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Login form submission handler
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Prevent default form submission
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                window.location.href = "admin-dashboard.html"; // Redirect directly to dashboard on success
+            } catch (error) {
+                // Display error message under the password field
+                console.error("Login error:", error.code, error.message);
+                errorMessage.textContent = "Invalid email or password.";
+                errorMessage.style.display = "block";
+
+                // Clear the form fields
+                document.getElementById('email').value = '';
+                document.getElementById('password').value = '';
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory - Shift Happens Auto Sales</title>
+    <link rel="stylesheet" href="css/inventory.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <a href="#" class="logo">Shift Happens Auto Sales</a>
+        <i class='bx bx-menu' id="menu-icon"></i>
+        <nav class="navbar">
+            <a href="index.html#home">Home</a>
+            <a href="inventory.html" class="active">Inventory</a>
+            <a href="finance.html">Finance</a>
+            <a href="services.html">Services</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <section class="inventory-section" id="inventory">
+        <h2 class="heading">Browse Our <span>Inventory</span></h2>
+        <div class="inventory-grid">
+            <!-- Dynamic vehicle cards and promotional card will populate here -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-text">
+            <p>Copyright &copy; 2024 by Shift Happens Auto Sales | All Rights Reserved. | <a href="admin-login.html">Admin</a></p>
+        </div>
+        <div class="footer-iconTop">
+            <a href="#inventory"><i class='bx bx-up-arrow-alt'></i></a>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDv6Jkk-7XqeCMTy14Fjs_upMAjVM7uNVg",
+            authDomain: "shift-happens-auto-sales.firebaseapp.com",
+            projectId: "shift-happens-auto-sales",
+            storageBucket: "shift-happens-auto-sales.appspot.com",
+            messagingSenderId: "224158026936",
+            appId: "1:224158026936:web:690dd13405f6b1bfc4b84d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const inventoryGrid = document.querySelector('.inventory-grid');
+
+            async function fetchInventory() {
+                const inventoryRef = collection(db, 'inventory');
+                const inventorySnapshot = await getDocs(inventoryRef);
+
+                inventorySnapshot.forEach(doc => {
+                    const data = doc.data();
+                    const card = document.createElement('div');
+                    card.classList.add('vehicle-card');
+                    card.innerHTML = `
+                        <a href="vehicle-details.html?id=${doc.id}" class="vehicle-link">
+                            <div class="vehicle-image">
+                                <img src="${data.mainPictureUrl}" alt="${data.make} ${data.model}">
+                            </div>
+                            <div class="vehicle-details">
+                                <h3>${data.year} ${data.make} ${data.model}</h3>
+                                <p>
+                                    <span class="label">Mileage:</span>
+                                    <span class="value">${parseInt(data.mileage).toLocaleString('en-US')} km</span>
+                                </p>
+                                <p>
+                                    <span class="label">Transmission:</span>
+                                    <span class="value">${data.transmission}</span>
+                                </p>
+                                <p class="price">
+                                    <span class="dealer-price">Dealership Price: <span class="crossed-out">$${parseFloat(data.price).toLocaleString('en-US')}</span></span>
+                                    <span class="discounted-price">$${parseFloat(data.discountedPrice || data.price * 0.95).toLocaleString('en-US')}</span>
+                                </p>
+                                <p class="fine-print">+ Tax & Licensing</p>
+                                <button class="btn view-details-btn">View Details</button>
+                            </div>
+                        </a>
+                    `;
+
+                    inventoryGrid.appendChild(card);
+                });
+
+                // Add Promotional Card
+                const promoCard = document.createElement('div');
+                promoCard.classList.add('promo-card');
+                promoCard.innerHTML = `
+                    <div class="vehicle-image">
+                        <img src="images/inventory_finance.jpeg" alt="Financing Promotion">
+                    </div>
+                    <div class="promo-details">
+                        <h3>Special Financing Rates</h3>
+                        <p>Low payments available. Get pre-approved today!</p>
+                        <button class="btn">Financing Details</button>
+                    </div>
+                `;
+                inventoryGrid.appendChild(promoCard);
+            }
+
+            fetchInventory();
+        });
+    </script>
+
+</body>
+
+</html>
