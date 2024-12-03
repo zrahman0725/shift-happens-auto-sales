@@ -17,7 +17,7 @@
 <body>
 
     <header class="header">
-        <a href="#" class="logo">Shift Happens Auto Sales</a>
+        <a href="#" class="logo"><img src="images/IMG-20241122-WA0003_1468205583269761 (1).png" alt="">Shift Happens Auto Sales</a>
 
         <i class='bx bx-menu' id="menu-icon"></i>
 
@@ -25,30 +25,28 @@
             <a href="index.html#home" data-alt-link="home.html" class="active">Home</a>
             <div class="dropdown">
                 <a href="inventory.html" data-alt-link="inventory.html">Inventory</a>
-                <div class="dropdown-content">
-                    <a href="#">Placeholder 1</a>
-                    <a href="#">Placeholder 2</a>
-                    <a href="#">Placeholder 3</a>
+                <div class="dropdown-menu">
+                    <a href="new-cars.html">New Cars</a>
+                    <a href="used-cars.html">Used Cars</a>
                 </div>
             </div>
             <div class="dropdown">
                 <a href="finance.html" data-alt-link="finance.html">Finance</a>
-                <div class="dropdown-content">
-                    <a href="#">Placeholder 1</a>
-                    <a href="#">Placeholder 2</a>
-                    <a href="#">Placeholder 3</a>
+                <div class="dropdown-menu">
+                    <a href="loan-calculator.html">Loan Calculator</a>
+                    <a href="credit-check.html">Credit Check</a>
                 </div>
             </div>
             <div class="dropdown">
                 <a href="services.html" data-alt-link="services.html">Services</a>
-                <div class="dropdown-content">
-                    <a href="#">Placeholder 1</a>
-                    <a href="#">Placeholder 2</a>
-                    <a href="#">Placeholder 3</a>
+                <div class="dropdown-menu">
+                    <a href="maintenance.html">Maintenance</a>
+                    <a href="repair.html">Repair</a>
                 </div>
             </div>
             <a href="#contact" data-alt-link="contact.html">Contact</a>
         </nav>
+        
         
     </header>
 
@@ -150,6 +148,10 @@
         </div>
     </section>
     
+    <section class="gallery" id="gallery">
+        <h2 class="heading">Inventory <span>Showcase</span></h2>
+        <div class="carousel"></div>
+    </section>
     
     
     <section class="services" id="services">
@@ -195,16 +197,6 @@
     </section>
     
     
-     
-    
-    
-
-        
-
-
-    <section class="gallery" id="gallery">
-        <h2 class="heading">Picture <span>Gallery</span></h2>
-    </section>
 
 
 
@@ -239,7 +231,7 @@
 
     <footer class="footer">
         <div class="footer-text">
-            <p>Copyright &copy; 2024 by Shift Happens Auto Sales | All Rights Reserved.
+            <p>Copyright &copy; 2024 by Shift Happens Auto Sales | All Rights Reserved. | <a href="admin-login.html">Admin</a> </p>
         </div>
 
         <div class="footer-iconTop">
@@ -247,44 +239,120 @@
         </div>
     </footer>
 
-    <script type="text/javascript"
-    src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
-</script>
-<script type="text/javascript">
-    // Initialize EmailJS with your Public Key
-    emailjs.init('dFqCwHX3sOZHyAPK4');
+<!-- Script for EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        emailjs.init('dFqCwHX3sOZHyAPK4');
 
-    document.addEventListener('DOMContentLoaded', function () {
         const contactForm = document.getElementById('contact-form');
-
         if (contactForm) {
             contactForm.addEventListener('submit', function (event) {
                 event.preventDefault();
-
-                // Collect form data
-                const formData = new FormData(contactForm);
-
-                // Send email using EmailJS
                 emailjs.sendForm('service_1gclp48', 'template_vy5h7c6', contactForm)
                     .then((response) => {
-                        console.log('Email sent successfully:', response.status, response.text);
                         alert('Your message has been sent successfully!');
-                        contactForm.reset(); // Reset the form after submission
+                        contactForm.reset();
                     })
                     .catch((error) => {
-                        console.error('Failed to send email:', error);
                         alert('Oops! There was a problem submitting your form. Please try again later.');
                     });
             });
         }
     });
 </script>
-<script src="script.js"></script>
 
+<!-- Firebase Initialization and Carousel Population -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
+    const firebaseConfig = {
+        apiKey: "AIzaSyDv6Jkk-7XqeCMTy14Fjs_upMAjVM7uNVg",
+        authDomain: "shift-happens-auto-sales.firebaseapp.com",
+        projectId: "shift-happens-auto-sales",
+        storageBucket: "shift-happens-auto-sales.appspot.com",
+        messagingSenderId: "224158026936",
+        appId: "1:224158026936:web:690dd13405f6b1bfc4b84d"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function fetchCarouselInventory() {
+        const inventoryRef = collection(db, "inventory");
+        const inventorySnapshot = await getDocs(inventoryRef);
+
+        const inventory = [];
+        inventorySnapshot.forEach((doc) => {
+            inventory.push({ id: doc.id, ...doc.data() });
+        });
+        return inventory;
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const carousel = document.querySelector(".carousel");
+        const inventoryItems = await fetchCarouselInventory();
+
+        inventoryItems.forEach((item) => {
+            const card = document.createElement("div");
+            card.classList.add("vehicle-card");
+            card.innerHTML = `
+                <div class="vehicle-image">
+                    <img src="${item.mainPictureUrl}" alt="${item.make} ${item.model}">
+                </div>
+                <div class="vehicle-details">
+                    <h3>${item.year} ${item.make} ${item.model}</h3>
+                    <p>Mileage: ${parseInt(item.mileage).toLocaleString()} km</p>
+                    <p>Transmission: ${item.transmission}</p>
+                    <p>Price: $${parseFloat(item.price).toLocaleString()}</p>
+                    <a href="inventory.html" class="btn view-details-btn">See All</a>
+                </div>`;
+            carousel.appendChild(card);
+        });
+
+        setupAutoCarousel();
+    });
+
+    function setupAutoCarousel() {
+        const carousel = document.querySelector(".carousel");
+        const scrollStep = 300;
+        const scrollInterval = 2000;
+        let scrollAmount = 0;
+
+        setInterval(() => {
+            scrollAmount += scrollStep;
+            if (scrollAmount >= carousel.scrollWidth / 2) {
+                scrollAmount = 0;
+                carousel.scrollTo({ left: 0, behavior: "instant" });
+            } else {
+                carousel.scrollTo({ left: scrollAmount, behavior: "smooth" });
+            }
+        }, scrollInterval);
+    }
+</script>
+
+<!-- Navbar Toggle for Mobile -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuIcon = document.getElementById('menu-icon');
+        const navbar = document.querySelector('.navbar');
+
+        if (menuIcon && navbar) {
+            menuIcon.addEventListener('click', () => {
+                navbar.classList.toggle('active');
+            });
+        }
+    });
+</script>
+
+<!-- Additional Libraries -->
 <script src="https://unpkg.com/scrollreveal"></script>
-    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
-    <script src="js/script.js"></script>
+<script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+
+<!-- Custom Scripts -->
+<script src="js/script.js"></script>
+
 </body>
 
 </html>
