@@ -10,6 +10,11 @@
 </head>
 
 <body>
+    <!-- Back to Inventory Link -->
+    <div class="back-link">
+        <a href="inventory.html">&lt; Back to Inventory</a>
+    </div>
+
     <!-- Header -->
     <header class="header">
         <a href="#" class="logo">Shift Happens Auto Sales</a>
@@ -30,31 +35,54 @@
             <div class="details-left">
                 <div class="carousel">
                     <div class="main-image">
+                        <button class="carousel-button prev">&lt;</button>
                         <img id="main-carousel-image" src="" alt="Vehicle Image">
+                        <button class="carousel-button next">&gt;</button>
                     </div>
                     <div class="thumbnail-strip">
                         <!-- Thumbnails will be populated dynamically -->
                     </div>
                 </div>
             </div>
-            
+
             <!-- Right Section: Vehicle Information -->
             <div class="details-right">
                 <h2 id="vehicle-title"></h2>
                 <h3 id="vehicle-price"></h3>
-                <ul class="key-details" id="vehicle-details-list">
+                <span class="vehicle-info">
+                    <span id="vehicle-vin">VIN: N/A</span> | 
+                    <span id="vehicle-stock">Stock #: N/A</span>
+                </span>
+                <hr class="separator">
+                <ul class="key-details-grid" id="vehicle-details-list">
                     <!-- Key details will be populated dynamically -->
                 </ul>
+                <hr class="separator">
                 <div class="description">
                     <h4>Vehicle Description</h4>
                     <p id="vehicle-description"></p>
                 </div>
+                <hr class="separator">
                 <div class="features">
                     <h4>Features & Specs</h4>
                     <div id="features-accordion">
                         <!-- Expandable categories will be populated dynamically -->
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Sticky Sidebar -->
+        <div class="vdp-sidebar">
+            <div class="price-section">
+                <h3 id="sidebar-price"></h3>
+                <p>+ taxes and fees</p>
+            </div>
+            <div class="cta-buttons">
+                <button class="cta-button">Apply Now</button>
+                <button class="cta-button">Request Info</button>
+                <button class="cta-button">Test Drive</button>
+                <button class="cta-button">Call Us</button>
             </div>
         </div>
     </section>
@@ -96,32 +124,89 @@
 
                 if (vehicleDoc.exists()) {
                     const data = vehicleDoc.data();
+
+                    // Update main vehicle details
                     document.getElementById("vehicle-title").textContent = `${data.year} ${data.make} ${data.model}`;
                     document.getElementById("main-carousel-image").src = data.mainPictureUrl;
                     document.getElementById("vehicle-price").textContent = `$${parseFloat(data.price).toLocaleString('en-US')}`;
+                    document.getElementById("vehicle-vin").textContent = `VIN: ${data.vin || "N/A"}`;
+                    document.getElementById("vehicle-stock").textContent = `Stock #: ${data.stock || "N/A"}`;
                     document.getElementById("vehicle-description").textContent = data.description || "No description available.";
+
+                    // Update key details in grid layout
                     document.getElementById("vehicle-details-list").innerHTML = `
-                        <li>Mileage: ${parseInt(data.mileage).toLocaleString('en-US')} km</li>
-                        <li>Transmission: ${data.transmission}</li>
-                        <li>Color: ${data.color}</li>
-                        <li>VIN: ${data.vin || "N/A"}</li>
-                        <li>Stock #: ${data.stock || "N/A"}</li>
+                        <li><span class="label">Mileage</span><span class="value">${parseInt(data.mileage).toLocaleString('en-US')} km</span></li>
+                        <li><span class="label">Transmission</span><span class="value">${data.transmission}</span></li>
+                        <li><span class="label">Color</span><span class="value">${data.color}</span></li>
+                        <li><span class="label">Body Style</span><span class="value">${data.bodyStyle || "N/A"}</span></li>
+                        <li><span class="label">Engine Type</span><span class="value">${data.engine || "N/A"}</span></li>
+                        
                     `;
+
+                    // Update the sidebar price
+                    document.getElementById("sidebar-price").textContent = `$${parseFloat(data.price).toLocaleString('en-US')}`;
 
                     // Populate thumbnail images
                     const thumbnailStrip = document.querySelector(".thumbnail-strip");
+
+                    const mainThumbnail = document.createElement("img");
+                    mainThumbnail.src = data.mainPictureUrl;
+                    mainThumbnail.alt = `${data.make} ${data.model}`;
+                    mainThumbnail.classList.add("active-thumbnail");
+                    thumbnailStrip.appendChild(mainThumbnail);
+
                     data.secondaryPicturesUrls.forEach(url => {
                         const img = document.createElement("img");
                         img.src = url;
                         img.alt = `${data.make} ${data.model}`;
                         thumbnailStrip.appendChild(img);
                     });
+
+                    setupCarousel();
                 } else {
                     alert("Vehicle not found!");
                 }
             } else {
                 alert("No vehicle selected!");
             }
+        }
+
+        function setupCarousel() {
+            let currentIndex = 0;
+            const mainImage = document.getElementById("main-carousel-image");
+            const thumbnails = document.querySelectorAll(".thumbnail-strip img");
+            const nextButton = document.querySelector(".carousel-button.next");
+            const prevButton = document.querySelector(".carousel-button.prev");
+
+            const images = Array.from(thumbnails).map(img => img.src);
+
+            function updateMainImage() {
+                if (images.length > 0) {
+                    mainImage.src = images[currentIndex];
+                    thumbnails.forEach((thumbnail, index) => {
+                        thumbnail.classList.toggle("active-thumbnail", index === currentIndex);
+                    });
+                }
+            }
+
+            nextButton.addEventListener("click", () => {
+                currentIndex = (currentIndex + 1) % images.length;
+                updateMainImage();
+            });
+
+            prevButton.addEventListener("click", () => {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                updateMainImage();
+            });
+
+            thumbnails.forEach((thumbnail, index) => {
+                thumbnail.addEventListener("click", () => {
+                    currentIndex = index;
+                    updateMainImage();
+                });
+            });
+
+            updateMainImage();
         }
 
         loadVehicleDetails();
