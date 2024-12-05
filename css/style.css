@@ -16,7 +16,6 @@
     --second-bg-color: #1a1a1a; /* Dark Gray */
     --text-color: #ffffff; /* White */
     --main-color: #ff0000; /* Red */
-    
 }
 
 
@@ -102,11 +101,12 @@ section {
     top: 100%; /* Align dropdown right below the parent link */
     left: 0; /* Align dropdown with the parent link */
     background-color: var(--second-bg-color); /* Match the theme color */
-    min-width: 200px; /* Uniform width for all dropdowns */
+    min-width: 250px; /* Uniform width for all dropdowns */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
     z-index: 100; /* Ensure it appears above other content */
     border-radius: 8px; /* Rounded corners for a modern look */
     padding: 0; /* Remove extra padding around the menu */
+    align-content: start;
 }
 
 /* Dropdown menu links */
@@ -115,6 +115,7 @@ section {
     padding: 1rem; /* Add padding for a better appearance */
     text-decoration: none; /* Remove underline */
     display: block; /* Make the full box clickable */
+    justify-content: center;
     font-size: 1.6rem;
     font-family: 'Poppins', sans-serif;
     width: 100%; /* Ensure the full width of the dropdown menu */
@@ -788,6 +789,79 @@ span {
 
 
 
+/* Sticky Sidebar */
+.vdp-sidebar {
+    position: sticky;
+    top: 10rem; /* Adjust based on your header height */
+    background: var(--second-bg-color);
+    color: var(--text-color);
+    padding: 1rem; /* Reduce overall padding */
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 100px; /* Compact width */
+    margin-left: auto; /* Align to the right */
+    text-align: center; /* Center-align content */
+}
+
+/* Price Section */
+.vdp-sidebar .price-section {
+    margin-bottom: 1rem; /* Smaller margin */
+}
+
+.vdp-sidebar .price-section h3 {
+    font-size: 1.4rem; /* Smaller font size for price */
+    font-weight: bold;
+    color: var(--main-color);
+    line-height: 1.2; /* Tighten spacing */
+}
+
+.vdp-sidebar .price-section p {
+    font-size: 1rem; /* Adjust description font */
+    margin-top: 0.3rem;
+    color: var(--text-color);
+    line-height: 1.1;
+}
+
+/* Call-to-Action Buttons */
+.vdp-sidebar .cta-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Tight spacing between buttons */
+}
+
+.vdp-sidebar .cta-button {
+    padding: 0.5rem; /* Smaller padding */
+    font-size: 1rem; /* Adjust font size */
+    font-weight: bold;
+    color: var(--main-color);
+    background: transparent;
+    border: 1px solid var(--main-color); /* Thinner border */
+    border-radius: 3px; /* Subtle rounding */
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Handle overflow gracefully */
+    text-overflow: ellipsis; /* Add ellipsis for overflow */
+}
+
+.vdp-sidebar .cta-button:hover {
+    background: var(--main-color);
+    color: var(--text-color);
+}
+
+/* Media Queries for Smaller Screens */
+@media (max-width: 768px) {
+    .vdp-sidebar {
+        max-width: 90px; /* Further compact width for smaller screens */
+        padding: 0.8rem; /* Reduce padding */
+    }
+
+    .vdp-sidebar .cta-button {
+        font-size: 0.9rem; /* Adjust button font size */
+        padding: 0.4rem;
+    }
+}
 
 
 
@@ -866,33 +940,7 @@ span {
     }
 }
 
-@media (max-width: 768px) {
-    .dropdown {
-        width: 100%; /* Ensure dropdown spans full width */
-        text-align: center;
-    }
 
-    .dropdown a {
-        display: block; /* Ensure links stack properly */
-        padding: 1rem; /* Add spacing for better touch interaction */
-    }
-
-    .dropdown-menu {
-        position: static; /* Remove absolute positioning */
-        display: none; /* Hidden by default */
-        background: transparent; /* Match the background for smooth appearance */
-        box-shadow: none; /* Remove shadow */
-    }
-
-    .dropdown-menu a {
-        padding: 1rem; /* Consistent padding */
-        font-size: 1.8rem; /* Adjust size for readability */
-    }
-
-    .dropdown.active .dropdown-menu {
-        display: block; /* Show dropdown menu when active */
-    }
-}
 
 
 @media (max-width: 768px) {
@@ -998,3 +1046,34 @@ span {
 }
 
 
+
+
+@media (max-width: 768px) {
+    .dropdown {
+        width: 100%; /* Ensure dropdown spans full width */
+        text-align: center;
+    }
+
+    .dropdown a {
+        display: block; /* Ensure links stack properly */
+        padding: 1rem; /* Add spacing for better touch interaction */
+    }
+
+    .dropdown-menu {
+        position: static; /* Remove absolute positioning */
+        display: none; /* Hidden by default */
+        background: transparent; /* Match the background for smooth appearance */
+        box-shadow: none; /* Remove shadow */
+    }
+
+    .dropdown-menu a {
+        padding: 1rem; /* Consistent padding */
+        font-size: 1.3rem; /* Adjust size for readability */
+        color: gray;
+
+    }
+
+    .dropdown.active .dropdown-menu {
+        display: block; /* Show dropdown menu when active */
+    }
+}
