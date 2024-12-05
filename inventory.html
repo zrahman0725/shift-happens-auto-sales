@@ -26,7 +26,7 @@
 
     <!-- Main Content -->
     <section class="inventory-section" id="inventory">
-        <h2 class="heading">Browse Our <span>Inventory</span></h2>
+        <h2 class="heading"><span>Browse Our</span> Inventory</h2>
         <div class="inventory-grid">
             <!-- Dynamic vehicle cards and promotional card will populate here -->
         </div>
@@ -86,8 +86,8 @@
                                     <span class="value">${data.transmission}</span>
                                 </p>
                                 <p class="price">
-                                    <span class="dealer-price">Dealership Price: <span class="crossed-out">$${parseFloat(data.price).toLocaleString('en-US')}</span></span>
-                                    <span class="discounted-price">$${parseFloat(data.discountedPrice || data.price * 0.95).toLocaleString('en-US')}</span>
+                                    <span class="dealer-price">Dealership Price: <span class="crossed-out">$${parseFloat(data.price * 1.1).toLocaleString('en-US')}</span></span>
+                                    <span class="discounted-price">$${parseFloat(data.price).toLocaleString('en-US')}</span>
                                 </p>
                                 <p class="fine-print">+ Tax & Licensing</p>
                                 <button class="btn view-details-btn">View Details</button>
