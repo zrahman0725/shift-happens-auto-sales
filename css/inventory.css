@@ -160,6 +160,10 @@ section {
 .footer {
     background: var (--second-bg-color); /* Mint background for alternate sections */
 }
+
+span {
+    color: var(--text-color);
+}
 /* Inventory Section */
 .inventory-section {
     padding: 4rem 2rem;
