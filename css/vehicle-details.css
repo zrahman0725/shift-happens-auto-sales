@@ -18,7 +18,6 @@
     --main-color: #ff0000; /* Red */
 }
 
-
 html {
     font-size: 62.5%;
     overflow-x: hidden;
@@ -34,6 +33,7 @@ section {
     padding: 10rem 9% 2rem;
 }
 
+/* Header */
 .header {
     position: fixed;
     top: 0;
@@ -45,12 +45,10 @@ section {
     justify-content: space-between;
     align-items: center;
     z-index: 100;
-
-    }
-    
+}
 
 .header.sticky {
-    border-bottom: .1rem solid rgba(0, 0, 0, .2);
+    border-bottom: 0.1rem solid rgba(0, 0, 0, 0.2);
 }
 
 .logo {
@@ -58,98 +56,18 @@ section {
     color: var(--main-color);
     font-weight: 600;
     cursor: default;
-
-    }
-    
+}
 
 .navbar a {
     font-size: 1.7rem;
     color: var(--text-color);
     margin-left: 4rem;
     font-family: cursive;
-
-    }
+}
 
 .navbar a:hover,
 .navbar a.active {
     color: var(--main-color);
-}
-
-/* Dropdown container */
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-/* Dropdown content */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    top: 100%; /* Align just below the parent link */
-    left: 0;
-    background: var(--second-bg-color);
-    min-width: 200px;
-    padding: 0.8rem 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    z-index: 1000;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    opacity: 0;
-    transform: translateY(10px);
-}
-
-/* Dropdown content for showing */
-.dropdown.show .dropdown-content {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Links inside dropdown */
-.dropdown-content a {
-    display: block;
-    padding: 1rem 1.5rem;
-    font-size: 1.5rem;
-    font-family: 'Poppins', sans-serif;
-    color: var(--text-color);
-    text-decoration: none;
-    transition: background 0.3s ease, color 0.3s ease;
-}
-
-.dropdown-content a:hover {
-    background: var(--main-color);
-    color: var(--second-bg-color);
-}
-
-/* Hover effect for desktop */
-.dropdown:hover .dropdown-content {
-    display: block;
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Adjust for mobile */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .dropdown-content {
-        position: static; /* Prevent overlap on mobile */
-        transform: none; /* No animation needed for mobile */
-        opacity: 1; /* Ensure visible by default when toggled */
-        box-shadow: none;
-    }
-
-    .dropdown-content a {
-        font-size: 1.6rem;
-        padding: 1.2rem;
-    }
-
-    .dropdown:hover .dropdown-content {
-        display: none; /* Disable hover effect on mobile */
-    }
 }
 
 #menu-icon {
@@ -157,6 +75,29 @@ section {
     color: var(--text-color);
     display: none;
 }
+
+/* Back Link */
+.back-link {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    margin-top: 10vh;
+}
+
+.back-link a {
+    font-size: 1.6rem;
+    color: var(--main-color);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.back-link a:hover {
+    color: var(--text-color);
+}
+
+/* Footer */
 .footer {
     display: flex;
     justify-content: space-between;
@@ -167,17 +108,18 @@ section {
 }
 
 .footer-text p {
-    font-size: 1.6rem;
+    font-size:
+    1.6rem;
 }
 
 .footer-iconTop a {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: .8rem;
+    padding: 0.8rem;
     background: var(--main-color);
-    border-radius: .8rem;
-    transition: .5s ease;
+    border-radius: 0.8rem;
+    transition: 0.5s ease;
 }
 
 .footer-iconTop a:hover {
@@ -186,75 +128,23 @@ section {
 
 .footer-iconTop a i {
     font-size: 2.4rem;
-    color: var (--second-bg-color);
+    color: var(--second-bg-color);
 }
 
-.gradient-background {
-    background: linear-gradient(120deg, #80deea, #4dd0e1, #26c6da, #00acc1); /* Gradient from aqua to teal */
-}
-
-.text-on-gradient {
-    color: #ffffff; /* Ensures readability on gradient */
-}
-
-
-
-.btn:hover {
-    background: var (--text-color);
-    color: var (--main-color);
-}
-
-.navbar a {
-    color: #ffffff; /* Teal */
-}
-
-.navbar a.active,
-.navbar a:hover {
-    color: #ff0000; /* Dark Green for active/hover states */
-}
-
-.social-media a,
-.footer-iconTop a {
-    border-color: var (--text-color); /* White borders */
-    color: var (--text-color); /* White icons */
-}
-
-.social-media a:hover,
-.footer-iconTop a:hover {
-    background: var (--text-color); /* White background on hover */
-    color: var (--main-color); /* Teal text/icon on hover */
-}
-
-.gallery-container .gallery-box {
-    border-color: var (--main-color); /* Teal borders */
-}
-
-.home,
-.about,
-.services,
-.gallery,
-.contact,
-.footer {
-    background: var (--bg-color); /* Aqua background for sections */
-}
-
-.about,
-.gallery,
-.footer {
-    background: var (--second-bg-color); /* Mint background for alternate sections */
-}
-
+/* Vehicle Details Section */
 .vehicle-details-section {
     padding: 10rem 9%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: flex-start;
-    gap: 3rem;
+    gap: 2rem;
     flex-wrap: wrap;
 }
 
 .details-container {
+    margin-top: 3vh;
     display: flex;
+    flex: 3;
     flex-direction: row;
     gap: 2rem;
     width: 100%;
@@ -264,23 +154,76 @@ section {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
-.details-left {
-    flex: 1;
+.vdp-sidebar {
+    flex: 1; /* Sidebar width */
+}
+/* Details Left: Carousel */
+.carousel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 100%;
 }
 
-.details-left .main-image img {
+.carousel .main-image {
+    position: relative;
     width: 100%;
+    max-width: 600px; /* Limit main image width */
+    margin-bottom: 1rem;
+}
+
+.carousel .main-image img {
+    width: 600px; /* Fixed width */
+    height: 400px; /* Fixed height */
+    object-fit: cover; /* Maintain aspect ratio and fill the box */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.thumbnail-strip img.active-thumbnail {
+    border-color: var(--main-color);
+    transform: scale(1.1);
+}
+
+
+/* Carousel Buttons */
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    background: var(--main-color);
+    color: var(--text-color);
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.carousel-button.prev {
+    left: -20px;
+}
+
+.carousel-button.next {
+    right: -20px;
+}
+
+.carousel-button:hover {
+    background: var(--text-color);
+    color: var(--main-color);
+    transform: scale(1.1);
+}
+
+/* Thumbnail Strip */
 .thumbnail-strip {
     display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
     justify-content: center;
-    flex-wrap: wrap;
+    gap: 1rem;
+    max-width: 600px;
+    overflow-x: auto; /* Enable horizontal scroll on smaller screens */
 }
 
 .thumbnail-strip img {
@@ -298,6 +241,7 @@ section {
     transform: scale(1.1);
 }
 
+/* Details Right */
 .details-right {
     flex: 1;
     padding: 1rem;
@@ -316,22 +260,51 @@ section {
     color: var(--text-color);
 }
 
-.key-details {
+.vehicle-info {
+    font-size: 1.2rem; /* Smaller font size */
+    color: #888888; /* Grey font color */
+    display: block; /* Align below price */
+    margin-top: 0.5rem; /* Spacing below the price */
+}
+
+
+.key-details-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Set 3 fixed columns */
+    gap: 1.5rem;
     list-style: none;
     padding: 0;
-    margin-bottom: 2rem;
+    margin: 0;
 }
 
-.key-details li {
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
+
+.key-details-grid li {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
 }
 
-.key-details li span {
-    font-weight: bold;
+.key-details-grid li span.label {
+    display: block;
+    font-size: 1.2rem;
+    color: var(--text-color);
+    font-weight: 500;
 }
 
-.description h4 {
+.key-details-grid li span.value {
+    display: block;
+    font-size: 1.6rem;
+    color: var(--text-color);
+    font-weight: 700;
+}
+
+.separator {
+    border: none;
+    border-top: 1px solid #ccc; /* Light grey line */
+    margin: 1.5rem 0; /* Add spacing above and below */
+}
+
+.description h4,
+.features h4 {
     font-size: 1.8rem;
     font-weight: bold;
     margin-bottom: 1rem;
@@ -341,13 +314,6 @@ section {
 .description p {
     font-size: 1.4rem;
     line-height: 1.6;
-}
-
-.features h4 {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    color: var(--main-color);
 }
 
 .features .accordion-item {
@@ -380,24 +346,95 @@ section {
     display: block;
 }
 
+/* Sticky Sidebar */
+.vdp-sidebar {
+    position: sticky;
+    top: 10rem; /* Adjust based on your header height */
+    background: var(--second-bg-color);
+    color: var(--text-color);
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 120px; /* Compact width */
+    margin-left: auto; /* Align to the right */
+    text-align: center; /* Center-align content */
+    
+}
+
+/* Price Section */
+.vdp-sidebar .price-section {
+    margin-bottom: 1rem; /* Smaller margin */
+}
+
+.vdp-sidebar .price-section h3 {
+    font-size: 1.4rem; /* Smaller font size for price */
+    font-weight: bold;
+    color: var(--main-color);
+    line-height: 1.2; /* Tighten spacing */
+}
+
+.vdp-sidebar .price-section p {
+    font-size: 1rem; /* Adjust description font */
+    margin-top: 0.3rem;
+    color: var(--text-color);
+    line-height: 1.1;
+}
+
+/* Call-to-Action Buttons */
+.vdp-sidebar .cta-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Tight spacing between buttons */
+}
+
+.vdp-sidebar .cta-button {
+    padding: 0.5rem; /* Smaller padding */
+    font-size: 1rem; /* Adjust font size */
+    font-weight: bold;
+    color: var(--main-color);
+    background: transparent;
+    border: 1px solid var(--main-color); /* Thinner border */
+    border-radius: 3px; /* Subtle rounding */
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Handle overflow gracefully */
+    text-overflow: ellipsis; /* Add ellipsis for overflow */
+}
+
+.vdp-sidebar .cta-button:hover {
+    background: var(--main-color);
+    color: var(--text-color);
+}
+
+/* Media Queries for Smaller Screens */
+@media (max-width: 768px) {
+    .vdp-sidebar {
+        max-width: 90px; /* Further compact width for smaller screens */
+        padding: 0.8rem; /* Reduce padding */
+    }
+
+    .vdp-sidebar .cta-button {
+        font-size: 0.9rem; /* Adjust button font size */
+        padding: 0.4rem;
+    }
+}
 
 
+
+
+/* Media Queries */
 @media (max-width: 768px) {
     .details-container {
         flex-direction: column;
     }
 
-    .details-left,
-    .details-right {
-        flex: 1 1 100%;
+    .thumbnail-strip img {
+        width: 60px;
+        height: 60px;
     }
 
     .details-right {
         text-align: center;
-    }
-
-    .thumbnail-strip img {
-        width: 60px;
-        height: 60px;
     }
 }
