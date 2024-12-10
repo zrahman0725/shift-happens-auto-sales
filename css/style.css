@@ -364,16 +364,7 @@ span {
     border: 1px solid var(--text-color);
 }
 
-@media (max-width: 768px) {
-    .overlay {
-        padding: 1rem;
-    }
 
-    .search-form select,
-    .search-form button {
-        width: 100%;
-    }
-}
 
 
 
@@ -800,6 +791,24 @@ span {
 
 
 
+
+
+
+
+
+
+@media (max-width: 768px) {
+    .overlay {
+        padding: 1rem;
+    }
+
+    .search-form select,
+    .search-form button {
+        width: 100%;
+    }
+}
+
+
 @media (max-width: 768px) {
     .contact-container {
         flex-direction: column; /* Stack the form and address */
@@ -978,6 +987,7 @@ span {
 
 
 @media (max-width: 768px) {
+
     .dropdown {
         width: 100%; /* Ensure dropdown spans full width */
         text-align: center;
