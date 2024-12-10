@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Shift Happens Auto Sales</title>
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet">
+
+    <link rel="stylesheet" href="css/loan.css">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+</head>
+
+<body>
+
+    <header class="header">
+        <a href="#" class="logo"><img src="images/IMG-20241122-WA0003_1468205583269761 (1).png" alt="">Shift Happens Auto Sales</a>
+
+        <i class='bx bx-menu' id="menu-icon"></i>
+
+        <nav class="navbar">
+            <a href="index.html#home" data-alt-link="home.html">Home</a>
+            <div class="dropdown">
+                <a href="inventory.html" data-alt-link="inventory.html">Inventory</a>
+                <div class="dropdown-menu">
+                    <a href="inventory.html">View Inventory</a>
+                    <a href="car-finder.html">Car Finder</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="finance.html" data-alt-link="finance.html">Finance</a>
+                <div class="dropdown-menu">
+                    <a href="finance-application.html">Finance Application</a>
+                    <a href="finance.html">Finance Department</a>
+                    <a href="finance.html#credit">Credit Tips</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="services.html" data-alt-link="services.html" class="active">Services</a>
+                <div class="dropdown-menu">
+                    <a href="detailing.html">Detailing</a>
+                    <a href="trade-in.html">Trade-ins</a>
+                    <a href="test-drive.html">Test Drives</a>
+                    <a href="car-loan.html">Loan Calculator</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="about.html" data-alt-link="about.html">Dealership</a>
+                <div class="dropdown-menu">
+                    <a href="about.html">About Us</a>
+                    <a href="index.html#contact">Contact</a>
+                </div>
+            </div>
+        </nav>
+        
+        
+    </header>
+
+    <section class="form" id="form">
+        <h2 class="heading">Loan <span>Calculator</span></h2>
+        <div class="loan-calculator">
+            <form id="loan-form">
+                <div class="form-group">
+                    <label for="loan-amount">Loan Amount ($):</label>
+                    <input type="number" id="loan-amount" placeholder="Enter loan amount" required>
+                </div>
+                <div class="form-group">
+                    <label for="interest-rate">Interest Rate (% per year):</label>
+                    <input type="number" id="interest-rate" placeholder="Enter annual interest rate" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="loan-term">Loan Term (years):</label>
+                    <input type="number" id="loan-term" placeholder="Enter loan term in years" required>
+                </div>
+                <button type="button" id="calculate-btn">Calculate</button>
+            </form>
+            <div id="result">
+                <p>Monthly Payment: <span id="monthly-payment">$0.00</span></p>
+            </div>
+        </div>
+    </section>
+    
+
+    <footer class="footer">
+        <div class="footer-text">
+            <p>Copyright &copy; 2024 by Shift Happens Auto Sales | All Rights Reserved. | <a href="admin-login.html">Admin</a> </p>
+        </div>
+
+        <div class="footer-iconTop">
+            <a href="#home"><i class='bx bx-up-arrow-alt'></i></a>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById("calculate-btn").addEventListener("click", function () {
+            const loanAmount = parseFloat(document.getElementById("loan-amount").value);
+            const annualInterestRate = parseFloat(document.getElementById("interest-rate").value);
+            const loanTermYears = parseFloat(document.getElementById("loan-term").value);
+    
+            if (isNaN(loanAmount) || isNaN(annualInterestRate) || isNaN(loanTermYears)) {
+                alert("Please fill in all fields with valid numbers.");
+                return;
+            }
+    
+            const monthlyInterestRate = (annualInterestRate / 100) / 12;
+            const numberOfPayments = loanTermYears * 12;
+    
+            const monthlyPayment = 
+                (loanAmount * monthlyInterestRate) / 
+                (1 - Math.pow(1 + monthlyInterestRate, -numberOfPayments));
+    
+            document.getElementById("monthly-payment").textContent = 
+                monthlyPayment.toFixed(2) ? `$${monthlyPayment.toFixed(2)}` : "$0.00";
+        });
+    </script>
+    
+
+</body>
+
+</html>
