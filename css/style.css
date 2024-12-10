@@ -793,40 +793,6 @@ span {
 
 
 
-
-
-
-
-@media (max-width: 768px) {
-    .overlay {
-        padding: 1rem;
-    }
-
-    .search-form select,
-    .search-form button {
-        width: 100%;
-    }
-}
-
-
-@media (max-width: 768px) {
-    .contact-container {
-        flex-direction: column; /* Stack the form and address */
-        align-items: center; /* Center align for better aesthetics */
-        gap: 2rem; /* Add spacing between form and address */
-    }
-
-    .contact-info {
-        max-width: 90%; /* Reduce width to fit smaller screens */
-        text-align: center; /* Center text for better readability */
-    }
-
-    .address-info {
-        font-size: 1.4rem; /* Adjust font size for smaller screens */
-        line-height: 2rem; /* Adjust line height */
-    }
-}
-
 @media (max-width: 768px) {
     .slideshow-container {
         margin-bottom: 2rem; /* Add spacing below the slideshow */
@@ -842,6 +808,32 @@ span {
         width: 70vw; /* Adjust image width */
         margin-top: 1rem;
     }
+
+    .overlay {
+        padding: 1rem;
+    }
+
+    .search-form select,
+    .search-form button {
+        width: 100%;
+    }
+
+    .contact-container {
+        flex-direction: column; /* Stack the form and address */
+        align-items: center; /* Center align for better aesthetics */
+        gap: 2rem; /* Add spacing between form and address */
+    }
+
+    .contact-info {
+        max-width: 90%; /* Reduce width to fit smaller screens */
+        text-align: center; /* Center text for better readability */
+    }
+
+    .address-info {
+        font-size: 1.4rem; /* Adjust font size for smaller screens */
+        line-height: 2rem; /* Adjust line height */
+    }
+
 }
 
 
@@ -945,6 +937,10 @@ span {
 
     .gallery-container {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .vehicle-card{
+        width: 60%;
     }
 }
 
