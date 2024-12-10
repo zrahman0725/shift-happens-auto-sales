@@ -193,530 +193,51 @@ span {
     color: var (--second-bg-color);
 }
 
-
-/* admin inventory */
-/* General Section Styles */
-.inventory {
-    padding: 8rem 10%;
+/* admin dashboard */
+.dashboard {
+    padding: 10rem 9%;
     background: var(--second-bg-color);
-}
-
-.inventory-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.inventory-container h3 {
-    font-size: 2.4rem;
-    margin-bottom: 1rem;
-    color: var(--main-color);
-}
-
-#add-vehicle-btn {
-    display: inline-block;
-    background: var(--main-color);
-    color: var(--text-color);
-    padding: 1rem 2rem;
-    font-size: 1.6rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-#add-vehicle-btn:hover {
-    background: var(--text-color);
-    color: var(--main-color);
-    transform: translateY(-2px);
-}
-
-/* Inventory Table */
-#inventory-list table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 2rem;
-}
-
-#inventory-list table th,
-#inventory-list table td {
-    text-align: left;
-    padding: 1.2rem;
-    border: 1px solid var(--main-color);
-}
-
-#inventory-list table th {
-    background: var(--main-color);
-    color: var(--text-color);
-    font-size: 1.6rem;
-}
-
-#inventory-list table td {
-    background: var(--second-bg-color);
-    color: var(--text-color);
-    font-size: 1.5rem;
-}
-
-/* Action Buttons */
-#inventory-list .btn {
-    padding: 0.6rem 1.2rem;
-    font-size: 1.4rem;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-#inventory-list .edit-btn {
-    background: #4caf50; /* Green */
-    color: white;
-}
-
-#inventory-list .edit-btn:hover {
-    background: #45a049;
-    transform: translateY(-2px);
-}
-
-#inventory-list .delete-btn {
-    background: #f44336; /* Red */
-    color: white;
-}
-
-#inventory-list .delete-btn:hover {
-    background: #e53935;
-    transform: translateY(-2px);
-}
-
-/* Modal Styles */
-.modal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 999;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0.3s, opacity 0.3s;
-}
-
-.modal:not(.hidden) {
-    visibility: visible;
-    opacity: 1;
-}
-
-.modal-content {
-    background: var(--bg-color);
-    padding: 2rem;
-    border-radius: 1rem;
-    width: 80%;
-    max-width: 500px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
-}
-
-.close-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-size: 2rem;
-    cursor: pointer;
-    color: var(--main-color);
-}
-
-/* Form Step Styles */
-.step {
-    display: none;
-}
-
-.step:not(.hidden) {
-    display: block;
-}
-
-.modal-content h3 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: var(--main-color);
-}
-
-.modal-content input {
-    width: 100%;
-    padding: 1.2rem;
-    margin: 0.8rem 0;
-    font-size: 1.6rem;
-    border: 1px solid var(--main-color);
-    border-radius: 0.5rem;
-}
-
-.modal-content input:focus {
-    outline: none;
-    border-color: var(--text-color);
-}
-
-.modal-content button {
-    background: var(--main-color);
-    color: var(--text-color);
-    padding: 1rem 2rem;
-    font-size: 1.6rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.modal-content button:hover {
-    background: var(--text-color);
-    color: var(--main-color);
-    transform: translateY(-2px);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .inventory-container {
-        padding: 1.5rem;
-    }
-
-    #inventory-list table th,
-    #inventory-list table td {
-        font-size: 1.4rem;
-    }
-
-    .modal-content {
-        width: 90%;
-    }
-
-    .modal-content h3 {
-        font-size: 1.8rem;
-    }
-
-    .modal-content input {
-        font-size: 1.4rem;
-    }
-
-    .modal-content button {
-        font-size: 1.4rem;
-    }
-}
-
-/* Table Pictures */
-.table-picture {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 5px;
-}
-
-/* Details View */
-.details-picture {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    margin: 0.5rem;
-    border-radius: 10px;
-}
-
-/* General Styling for Steps */
-.step {
-    display: none; /* Initially hidden */
-    flex-direction: column;
-    gap: 1.5rem; /* Space between fields */
-    max-height: calc(100vh - 12rem); /* Ensure it doesn't exceed screen height */
-    overflow-y: auto; /* Allow scrolling if content overflows */
-    padding: 2rem;
-    background: var(--bg-color); /* Match the background theme */
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.step:not(.hidden) {
-    display: flex; /* Visible and arranged in a column */
-}
-
-/* Field Labels */
-.step label {
-    font-size: 1.6rem;
-    color: var(--text-color);
-}
-
-/* Input Fields and Dropdowns */
-.step input,
-.step select {
-    width: 100%;
-    padding: 1.2rem;
-    font-size: 1.6rem;
-    color: var(--text-color);
-    background: var(--second-bg-color); /* Subtle background */
-    border: 1px solid var(--main-color);
-    border-radius: 0.5rem;
-    transition: border-color 0.3s ease;
-}
-
-.step input:focus,
-.step select:focus {
-    border-color: var(--text-color);
-    outline: none;
-}
-
-/* Hidden Field for "Other" */
-.step input.hidden {
-    display: none;
-}
-
-/* Button Container Styling */
-.step .button-container {
-    display: flex;
-    justify-content: space-between; /* Space between buttons */
-    gap: 1rem; /* Add spacing between buttons */
-    margin-top: 2rem; /* Space above the button container */
-}
-
-/* Individual Buttons */
-.step button {
-    flex: 1; /* Equal button width */
-    padding: 1rem 2.4rem;
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: var(--text-color);
-    background: var(--main-color);
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.step button:hover {
-    background: var(--text-color);
-    color: var(--main-color);
-    transform: translateY(-2px);
-}
-
-
-/* Fieldsets (For grouped features in steps, if needed) */
-.step fieldset {
-    border: 1px solid var(--main-color);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-radius: 0.5rem;
-}
-
-.step legend {
-    font-weight: bold;
-    color: var(--main-color);
-    margin-bottom: 1rem;
-}
-
-/* Responsive Design for Steps */
-@media (max-width: 768px) {
-    .step {
-        padding: 1.5rem;
-        max-height: calc(100vh - 10rem); /* Adjust for smaller screens */
-    }
-
-    .step input,
-    .step select {
-        font-size: 1.4rem;
-        padding: 1rem;
-    }
-
-    .step button {
-        font-size: 1.4rem;
-        padding: 0.8rem 1.5rem;
-    }
-}
-
-/* Scrollbar Styling for Modern Browsers */
-.step::-webkit-scrollbar {
-    width: 8px;
-}
-
-.step::-webkit-scrollbar-thumb {
-    background-color: var(--main-color);
-    border-radius: 4px;
-}
-
-.step::-webkit-scrollbar-thumb:hover {
-    background-color: var(--text-color);
-}
-
-
-
-/* Delete Confirmation Modal */
-#delete-confirmation-modal .modal-content {
     text-align: center;
-    padding: 2rem;
 }
 
-#delete-confirmation-modal h3 {
-    font-size: 2rem;
-    color: var(--main-color);
-    margin-bottom: 1rem;
+.dashboard h2 {
+    font-size: 4.5rem;
+    margin-bottom: 3rem;
 }
 
-#delete-confirmation-modal p {
-    font-size: 1.6rem;
-    color: var(--text-color);
-    margin-bottom: 2rem;
-}
-
-#delete-confirmation-modal .button-container {
+.dashboard-cards {
     display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-}
-
-#delete-confirmation-modal .btn {
-    flex: 1;
-    padding: 1rem 2rem;
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: var(--text-color);
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-}
-
-#delete-confirmation-modal .cancel-btn {
-    background: var(--second-bg-color);
-}
-
-#delete-confirmation-modal .cancel-btn:hover {
-    background: var(--main-color);
-}
-
-#delete-confirmation-modal .confirm-btn {
-    background: #f44336; /* Red */
-}
-
-#delete-confirmation-modal .confirm-btn:hover {
-    background: #e53935;
-}
-
-
-.vehicle-details {
-    display: flex;
-    gap: 2rem;
-    background: whitesmoke;
-    color: black;
-    border-radius: 1rem;
-    padding: 2rem;
-    max-width: 90%;
-    max-height: 90%;
-    overflow-y: auto;
-    margin: auto;
-}
-
-.details-container {
-    display: flex;
-    gap: 2rem;
-    flex-direction: row; /* Horizontal alignment */
-}
-
-.details-left {
-    flex: 1;
-    max-width: 50%;
-}
-
-.details-left .admin-carousel {
-    position: relative;
-}
-
-.details-left .main-image img {
-    width: 100%;
-    border-radius: 10px;
-}
-
-.thumbnail-strip {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
     justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
 }
 
-.thumbnail-strip img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    cursor: pointer;
-    border: 2px solid transparent;
-    border-radius: 5px;
-}
-
-.thumbnail-strip img.active {
-    border-color: var(--main-color);
-}
-
-.details-right {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    justify-content: flex-start;
-}
-
-.details-right h2 {
-    font-size: 2.4rem;
-    font-weight: bold;
-    color: var(--main-color);
-}
-
-.details-right h3 {
-    font-size: 2rem;
-    color: var(--main-color);
-    margin-bottom: 1rem;
-}
-
-.key-details {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.key-details li {
-    font-size: 1.4rem;
-    margin-bottom: 0.8rem;
-}
-
-.key-details li span {
-    font-weight: bold;
-    color: black;
-}
-
-.description h4,
-.features h4 {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-}
-
-.features .accordion-item {
-    margin-bottom: 1rem;
-    border: 1px solid var(--main-color);
-    border-radius: 5px;
-}
-
-.features .accordion-header {
-    padding: 1rem;
-    cursor: pointer;
-    background: var(--second-bg-color);
-    color: black;
-    font-weight: bold;
-}
-
-.features .accordion-body {
-    display: none;
-    padding: 1rem;
+.card {
     background: var(--bg-color);
+    border: 1px solid var(--main-color);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    width: 30rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-  
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
 
+.card h3 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--main-color);
+}
+
+.card p {
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
 
 
 /* Secondary Navbar */
@@ -745,17 +266,6 @@ span {
 .secondary-navbar a.active {
     color: var(--main-color);
     font-weight: 700;
-}
-
-
-
-span {
-    color: var(--main-color);
-}
-
-.heading {
-    text-align: center;
-    font-size: 4.5rem;
 }
 
 
