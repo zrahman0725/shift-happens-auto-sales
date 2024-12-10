@@ -10,7 +10,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet">
 
     <link rel="stylesheet" href="css/finance-form.css">
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?">
 
 </head>
 
@@ -452,6 +452,20 @@ document.getElementById('vehicle-search').addEventListener('focus', adjustDropdo
             selectedVehicleContainer.style.display = 'none';
             vehicleInput.value = ''; // Clear selected vehicle
         });
+    });
+</script>
+
+<!-- Navbar Toggle for Mobile -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuIcon = document.getElementById('menu-icon');
+        const navbar = document.querySelector('.navbar');
+
+        if (menuIcon && navbar) {
+            menuIcon.addEventListener('click', () => {
+                navbar.classList.toggle('active');
+            });
+        }
     });
 </script>
 
