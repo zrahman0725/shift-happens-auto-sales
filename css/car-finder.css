@@ -365,6 +365,14 @@ input:checked + .toggle-custom::before {
     font-family: 'Poppins', sans-serif;
 }
 
+.required-asterisk {
+    color: var(--main-color); /* Red color for the asterisk */
+    font-size: 1.4rem; /* Match the font size of the label */
+    margin-left: 0.2rem; /* Add slight spacing between the text and the asterisk */
+    vertical-align: top; /* Align it properly with the text */
+}
+
+
 /* screen size controls */
 @media (max-width: 1200px) {
     html {
