@@ -114,10 +114,10 @@
                 <p>+ taxes and fees</p>
             </div>
             <div class="cta-buttons">
-                <button class="cta-button">Apply Now</button>
-                <button class="cta-button">Request Info</button>
-                <button class="cta-button">Test Drive</button>
-                <button class="cta-button">Call Us</button>
+                <button class="cta-button" onclick="redirectToFinance()">Apply Now</button>
+                <button class="cta-button" onclick="redirectToContact()">Request Info</button>
+                <button class="cta-button" onclick="redirectToTestDrive()">Test Drive</button>
+                <a class="cta-button" href="tel:+18257364438">Call Us</a>
             </div>
         </div>
     </section>
@@ -128,7 +128,7 @@
             <p>Copyright &copy; 2024 by Shift Happens Auto Sales | All Rights Reserved. | <a href="admin-login.html">Admin</a></p>
         </div>
         <div class="footer-iconTop">
-            <a href="#vehicle-details"><i class='bx bx-up-arrow-alt'></i></a>
+            <a href="#"><i class='bx bx-up-arrow-alt'></i></a>
         </div>
     </footer>
 
@@ -246,7 +246,38 @@
 
         loadVehicleDetails();
     </script>
+    <script>
+        function redirectToFinance() {
+            const vehicleTitle = document.getElementById("vehicle-title").textContent;
+            const vehiclePrice = document.getElementById("vehicle-price").textContent;
+            const formattedVehicle = `${vehicleTitle} - ${vehiclePrice}`;
+            const urlParams = new URLSearchParams();
+            urlParams.append("vehicle", formattedVehicle);
 
+            window.location.href = `finance-application.html?${urlParams.toString()}`;
+        }
+
+        function redirectToTestDrive() {
+            const vehicleTitle = document.getElementById("vehicle-title").textContent;
+            const vehiclePrice = document.getElementById("vehicle-price").textContent;
+            const formattedVehicle = `${vehicleTitle} - ${vehiclePrice}`;
+            const urlParams = new URLSearchParams();
+            urlParams.append("vehicle", formattedVehicle);
+
+            window.location.href = `test-drive.html?${urlParams.toString()}`;
+        }
+
+        function redirectToContact() {
+            const vehicleTitle = document.getElementById("vehicle-title").textContent;
+            const vehiclePrice = document.getElementById("vehicle-price").textContent;
+            const formattedVehicle = `${vehicleTitle} - ${vehiclePrice}`;
+            const message = `Hello, I am interested in more information about the ${formattedVehicle}`;
+            const urlParams = new URLSearchParams();
+            urlParams.append("message", message);
+
+            window.location.href = `contact.html?${urlParams.toString()}`;
+        }
+    </script>
     <!-- Navbar Toggle for Mobile -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
