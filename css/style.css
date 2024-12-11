@@ -309,6 +309,7 @@ span {
     color: var(--text-color);
 }
 
+
 .background-video {
     position: absolute;
     top: 0;
@@ -793,48 +794,7 @@ span {
 
 
 
-@media (max-width: 768px) {
-    .slideshow-container {
-        margin-bottom: 2rem; /* Add spacing below the slideshow */
-    }
-    .home {
-        margin-top: 0; /* Remove negative margin on smaller screens */
-        flex-direction: column;
-    }
-    .home-content {
-        text-align: center; /* Center the title for smaller screens */
-    }
-    .home-img img {
-        width: 70vw; /* Adjust image width */
-        margin-top: 1rem;
-    }
 
-    .overlay {
-        padding: 1rem;
-    }
-
-    .search-form select,
-    .search-form button {
-        width: 100%;
-    }
-
-    .contact-container {
-        flex-direction: column; /* Stack the form and address */
-        align-items: center; /* Center align for better aesthetics */
-        gap: 2rem; /* Add spacing between form and address */
-    }
-
-    .contact-info {
-        max-width: 90%; /* Reduce width to fit smaller screens */
-        text-align: center; /* Center text for better readability */
-    }
-
-    .address-info {
-        font-size: 1.4rem; /* Adjust font size for smaller screens */
-        line-height: 2rem; /* Adjust line height */
-    }
-
-}
 
 
 /* screen size controls */
@@ -872,7 +832,6 @@ span {
 
 
 
-
 @media (max-width: 768px) {
     #menu-icon {
         display: block;
@@ -900,11 +859,44 @@ span {
         margin: 1rem 0; /* Space between links */
         text-align: center;
     }
-
-    .home {
-        flex-direction: column;
+    .dropdown {
+        width: 100%; /* Ensure dropdown spans full width */
+        text-align: center;
     }
 
+    .dropdown a {
+        display: block; /* Ensure links stack properly */
+        padding: 1rem; /* Add spacing for better touch interaction */
+    }
+
+    .dropdown-menu {
+        position: static; /* Remove absolute positioning */
+        display: none; /* Hidden by default */
+        background: transparent; /* Match the background for smooth appearance */
+        box-shadow: none; /* Remove shadow */
+    }
+
+    .dropdown-menu a {
+        padding: 1rem; /* Consistent padding */
+        font-size: 1.3rem; /* Adjust size for readability */
+        color: gray;
+
+    }
+
+    .dropdown.active .dropdown-menu {
+        display: block; /* Show dropdown menu when active */
+    }
+
+    .slideshow-container {
+        margin-bottom: 2rem; /* Add spacing below the slideshow */
+    }
+    .home {
+        margin-top: 0; /* Remove negative margin on smaller screens */
+        flex-direction: column;
+    }
+    .home-content {
+        text-align: center; /* Center the title for smaller screens */
+    }
     .home-content h3 {
         font-size: 2.6rem;
     }
@@ -917,6 +909,36 @@ span {
         width: 70vw;
         margin-top: 4rem;
     }
+
+    .background-video {
+        display: none;
+    }
+
+    .overlay {
+        padding: 1rem;
+    }
+
+    .search-form select,
+    .search-form button {
+        width: 100%;
+    }
+
+    .contact-container {
+        flex-direction: column; /* Stack the form and address */
+        align-items: center; /* Center align for better aesthetics */
+        gap: 2rem; /* Add spacing between form and address */
+    }
+
+    .contact-info {
+        max-width: 90%; /* Reduce width to fit smaller screens */
+        text-align: center; /* Center text for better readability */
+    }
+
+    .address-info {
+        font-size: 1.4rem; /* Adjust font size for smaller screens */
+        line-height: 2rem; /* Adjust line height */
+    }
+
 
     .about {
         flex-direction: column-reverse;
@@ -941,6 +963,15 @@ span {
 
     .vehicle-card{
         width: 60%;
+    }
+
+    .car-search {
+        background-image: url('images/Screen Shot 2024-12-10 at 4.34.32 PM.png');
+        background-size: cover; /* Ensures the entire image fits within the container */
+        background-repeat: no-repeat; /* Prevents the image from repeating */
+        background-position: center; /* Centers the image within the section */
+        padding: 0%;
+        margin: 0;
     }
 }
 
@@ -982,33 +1013,78 @@ span {
 
 
 
-@media (max-width: 768px) {
 
-    .dropdown {
-        width: 100%; /* Ensure dropdown spans full width */
-        text-align: center;
-    }
 
-    .dropdown a {
-        display: block; /* Ensure links stack properly */
-        padding: 1rem; /* Add spacing for better touch interaction */
-    }
 
-    .dropdown-menu {
-        position: static; /* Remove absolute positioning */
-        display: none; /* Hidden by default */
-        background: transparent; /* Match the background for smooth appearance */
-        box-shadow: none; /* Remove shadow */
-    }
-
-    .dropdown-menu a {
-        padding: 1rem; /* Consistent padding */
-        font-size: 1.3rem; /* Adjust size for readability */
-        color: gray;
-
-    }
-
-    .dropdown.active .dropdown-menu {
-        display: block; /* Show dropdown menu when active */
-    }
+.service {
+    position: relative; /* Ensure the .service-link can use absolute positioning */
+    overflow: hidden;
+    border-radius: 5px;
 }
+
+.service-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10; /* Make sure it's on top of all other elements in the service container */
+    background: transparent; /* Invisible but clickable */
+    cursor: pointer; /* Change the cursor to indicate clickability */
+}
+
+
+.service-title {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-size: 2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--text-color);
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.5rem;
+    z-index: 2;
+    text-align: left;
+    backdrop-filter: blur(5px); /* Blur effect */
+    -webkit-backdrop-filter: blur(5px); /* Safari support */
+}
+
+
+
+
+
+
+.service img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    z-index: 0;
+}
+
+.service .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.service:hover .overlay {
+    opacity: 1;
+}
+
+.service:hover img {
+    transform: scale(1.1);
+}
+
+
