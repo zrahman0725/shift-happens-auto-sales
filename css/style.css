@@ -390,16 +390,13 @@ span {
 
 .finance-link {
     color: var(--main-color);
-    font-weight: bold;
+    font-weight: 600;
     text-decoration: underline;
-    transition: color 0.3s ease, background-color 0.3s ease;
+    transition: color 0.3s ease;
 }
 
 .finance-link:hover {
     color: var(--text-color);
-    background-color: var(--main-color);
-    border-radius: 3px;
-    padding: 0 0.3rem;
 }
 
 .grid-container {
