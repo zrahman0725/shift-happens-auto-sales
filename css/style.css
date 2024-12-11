@@ -843,6 +843,9 @@ span {
 
 
 @media (max-width: 768px) {
+     .services {
+        min-height: auto
+    }
     #menu-icon {
         display: block;
     }
