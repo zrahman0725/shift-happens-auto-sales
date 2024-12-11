@@ -440,6 +440,13 @@ button:hover {
     text-align: left;
 }
 
+.error-message {
+    margin-top: 0.5rem;
+    display: block;
+    color: var(--main-color);
+    font-size: 1.2rem;
+}
+
 
 /* screen size controls */
 @media (max-width: 1200px) {
