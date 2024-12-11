@@ -17,7 +17,7 @@
 <body>
 
     <header class="header">
-        <a href="#" class="logo"><img src="images/IMG-20241122-WA0003_1468205583269761 (1).png" alt="">Shift Happens Auto Sales</a>
+        <a href="index.html" class="logo"><img src="images/IMG-20241122-WA0003_1468205583269761 (1).png" alt="">Shift Happens Auto Sales</a>
 
         <i class='bx bx-menu' id="menu-icon"></i>
 
@@ -243,9 +243,36 @@
         </div>
 
         <div class="footer-iconTop">
-            <a href="#home"><i class='bx bx-up-arrow-alt'></i></a>
+            <a href="#"><i class='bx bx-up-arrow-alt'></i></a>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const selectedVehicle = urlParams.get("vehicle");
+
+            if (selectedVehicle) {
+                const vehicleSearchInput = document.getElementById("vehicle-search");
+                const selectedVehicleText = document.getElementById("selected-vehicle-text");
+                const selectedVehicleContainer = document.getElementById("selected-vehicle");
+
+                vehicleSearchInput.value = selectedVehicle;
+                selectedVehicleText.textContent = selectedVehicle;
+                selectedVehicleContainer.style.display = "flex";
+            }
+
+            const clearButton = document.getElementById("clear-selection");
+            clearButton.addEventListener("click", () => {
+                const vehicleSearchInput = document.getElementById("vehicle-search");
+                const selectedVehicleContainer = document.getElementById("selected-vehicle");
+
+                vehicleSearchInput.value = "";
+                selectedVehicleContainer.style.display = "none";
+            });
+        });
+    </script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
