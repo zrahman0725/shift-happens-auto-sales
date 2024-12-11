@@ -249,12 +249,7 @@ span {
     width: 100%;
 }
 
-.carousel .main-image {
-    position: relative;
-    width: 100%;
-    max-width: 600px; /* Limit main image width */
-    margin-bottom: 1rem;
-}
+
 
 .carousel .main-image img {
     width: 600px; /* Fixed width */
@@ -520,7 +515,43 @@ span {
     .details-right {
         text-align: center;
     }
+
+    .carousel .main-image img {
+        max-width: 100%; /* Allow the container to shrink with the screen size */
+        max-height: 100%;
+        object-fit: contain; /* Maintain aspect ratio and fill the box */
+
+    }
+    .vdp-sidebar {
+        position: static; /* Remove sticky behavior */
+        max-width: 100%; /* Stretch to fit the screen */
+        width: 100%; /* Ensure full width */
+        margin: 2rem 0 0; /* Add spacing above */
+        text-align: center; /* Center-align content */
+        padding: 1rem; /* Add padding for better spacing */
+        background: var(--second-bg-color); /* Ensure background matches the theme */
+        border-radius: 0; /* Remove rounded corners for a seamless look */
+        box-shadow: none; /* Remove shadow for a flat design */
+    }
+
+    .vdp-sidebar .cta-buttons {
+        display: flex;
+        flex-direction: column; /* Stack buttons vertically */
+        gap: 1rem; /* Add spacing between buttons */
+    }
+
+    .vdp-sidebar .cta-button {
+        width: 100%; /* Ensure buttons stretch to full width */
+        padding: 1.2rem; /* Adjust padding for better touch interaction */
+        font-size: 1.6rem; /* Increase font size for readability */
+        border-radius: 0.5rem; /* Slight rounding for a polished look */
+    }
+    
+
 }
+
+
+
 
 
 /* screen size controls */
