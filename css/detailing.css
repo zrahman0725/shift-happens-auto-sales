@@ -414,6 +414,37 @@ span {
     color: #333;
 }
 
+/* Recommended Package Header */
+#recommended-package h2 {
+    font-size: 2.4rem; /* Adjust font size for emphasis */
+    color: var(--text-color); /* Use the secondary theme color */
+    margin-bottom: 1.5rem; /* Add spacing below */
+    margin-top: 1.5rem;
+    border-bottom: 2px solid var(--main-color); /* Add a decorative border */
+    display: inline-block; /* Keep the border close to the text */
+    letter-spacing: 0.1rem; /* Add letter spacing for readability */
+}
+
+/* "You Might Also Like" Header */
+#other-packages h3 {
+    font-size: 2rem; /* Slightly smaller than the main header */
+    color: var(--text-color); /* Use the secondary theme color */
+    text-align: center; /* Center align the text */
+    margin-top: 2rem; /* Add spacing above */
+    margin-bottom: 1rem; /* Add spacing below */
+    border-bottom: 2px solid var(--main-color); /* Add a decorative border */
+    display: inline-block; /* Keep the border close to the text */
+    padding-bottom: 0.5rem; /* Add spacing between text and border */
+}
+
+/* Header Hover Effect */
+#recommended-package h2:hover,
+#other-packages h3:hover {
+    transform: scale(1.05); /* Slightly enlarge the text */
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+
 
 /* Fade-in animation */
 @keyframes fadeIn {
@@ -522,6 +553,16 @@ span {
 
     .dropdown.active .dropdown-menu {
         display: block; /* Show dropdown menu when active */
+    }
+
+    .package-cards {
+        flex-direction: column; /* Stack the cards vertically */
+        gap: 1.5rem; /* Add spacing between cards */
+    }
+
+    .card {
+        width: 100%; /* Make the cards span the full width */
+        padding: 1.5rem; /* Adjust padding for smaller screens */
     }
 
 }
