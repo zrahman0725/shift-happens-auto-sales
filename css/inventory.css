@@ -320,12 +320,17 @@ span {
     color: var(--text-color);
 }
 
-.fine-print {
+.vehicle-details .fine-print {
     font-size: 1rem;
     color: var(--text-color);
-    margin-top: 0.5rem;
-    text-align: right;
+        text-align: right;
+        width: 100%; /* Ensure it spans the full width of the parent */
+        display: block; /* Reset display to block if it’s inheriting flex behavior */
+        margin: 0; /* Adjust margins if needed */
+
+    
 }
+
 
 /* Button Styles */
 .btn {
