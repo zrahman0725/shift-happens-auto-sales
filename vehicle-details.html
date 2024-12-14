@@ -207,42 +207,77 @@
         }
 
         function setupCarousel() {
-            let currentIndex = 0;
-            const mainImage = document.getElementById("main-carousel-image");
-            const thumbnails = document.querySelectorAll(".thumbnail-strip img");
-            const nextButton = document.querySelector(".carousel-button.next");
-            const prevButton = document.querySelector(".carousel-button.prev");
+    let currentIndex = 0;
+    const mainImage = document.getElementById("main-carousel-image");
+    const thumbnails = document.querySelectorAll(".thumbnail-strip img");
+    const nextButton = document.querySelector(".carousel-button.next");
+    const prevButton = document.querySelector(".carousel-button.prev");
+    const thumbnailStrip = document.querySelector(".thumbnail-strip");
 
-            const images = Array.from(thumbnails).map(img => img.src);
+    const images = Array.from(thumbnails).map(img => img.src);
 
-            function updateMainImage() {
-                if (images.length > 0) {
-                    mainImage.src = images[currentIndex];
-                    thumbnails.forEach((thumbnail, index) => {
-                        thumbnail.classList.toggle("active-thumbnail", index === currentIndex);
-                    });
-                }
-            }
-
-            nextButton.addEventListener("click", () => {
-                currentIndex = (currentIndex + 1) % images.length;
-                updateMainImage();
+    // Dynamically adjust thumbnail size for smaller screens
+    function adjustThumbnailSize() {
+        if (window.innerWidth <= 768) {
+            thumbnails.forEach(thumbnail => {
+                thumbnail.style.width = "50px";
+                thumbnail.style.height = "50px";
             });
-
-            prevButton.addEventListener("click", () => {
-                currentIndex = (currentIndex - 1 + images.length) % images.length;
-                updateMainImage();
+        } else {
+            thumbnails.forEach(thumbnail => {
+                thumbnail.style.width = "80px";
+                thumbnail.style.height = "80px";
             });
-
-            thumbnails.forEach((thumbnail, index) => {
-                thumbnail.addEventListener("click", () => {
-                    currentIndex = index;
-                    updateMainImage();
-                });
-            });
-
-            updateMainImage();
         }
+    }
+
+    // Initial size adjustment
+    adjustThumbnailSize();
+
+    // Re-adjust size on window resize
+    window.addEventListener("resize", adjustThumbnailSize);
+
+    function updateMainImage() {
+        if (images.length > 0) {
+            mainImage.src = images[currentIndex];
+            thumbnails.forEach((thumbnail, index) => {
+                thumbnail.classList.toggle("active-thumbnail", index === currentIndex);
+            });
+            scrollToActiveThumbnail();
+        }
+    }
+
+    function scrollToActiveThumbnail() {
+        const activeThumbnail = thumbnails[currentIndex];
+        if (activeThumbnail) {
+            activeThumbnail.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+                inline: "center",
+            });
+        }
+    }
+
+    nextButton.addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % images.length;
+        updateMainImage();
+    });
+
+    prevButton.addEventListener("click", () => {
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        updateMainImage();
+    });
+
+    thumbnails.forEach((thumbnail, index) => {
+        thumbnail.addEventListener("click", () => {
+            currentIndex = index;
+            updateMainImage();
+        });
+    });
+
+    updateMainImage();
+}
+
 
         loadVehicleDetails();
     </script>
