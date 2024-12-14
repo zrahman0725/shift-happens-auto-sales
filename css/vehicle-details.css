@@ -567,12 +567,6 @@ span {
         object-fit: cover; /* Ensure image proportions */
     }
 
-    .carousel .main-image img {
-        width: 100%; /* Adapt the main image to the screen size */
-        height: auto; /* Maintain aspect ratio */
-        max-height: 300px; /* Limit the height on smaller screens */
-    }
-
     .carousel-button {
         font-size: 1.5rem; /* Adjust button size */
         padding: 0.8rem; /* Reduce padding for smaller buttons */
