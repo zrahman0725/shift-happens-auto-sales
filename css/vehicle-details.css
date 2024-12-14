@@ -298,11 +298,14 @@ span {
 /* Thumbnail Strip */
 .thumbnail-strip {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 1rem;
     max-width: 600px;
-    overflow-x: auto; /* Enable horizontal scroll on smaller screens */
+    overflow-x: auto; /* Enable horizontal scroll */
+    scroll-behavior: smooth; /* Smooth scrolling */
+    padding: 0.5rem;
 }
+
 
 .thumbnail-strip img {
     width: 80px;
@@ -547,6 +550,34 @@ span {
         border-radius: 0.5rem; /* Slight rounding for a polished look */
     }
     
+    .thumbnail-strip {
+        display: flex;
+        justify-content: flex-start;
+        gap: 0.5rem; /* Reduce spacing for smaller screens */
+        max-width: 100%; /* Ensure it stretches to fit the screen */
+        overflow-x: auto; /* Enable horizontal scrolling */
+        padding: 0.5rem;
+        scroll-behavior: smooth; /* Smooth scrolling */
+    }
+
+    .thumbnail-strip img {
+        width: 50px; /* Smaller thumbnail size */
+        height: 50px; /* Maintain aspect ratio */
+        border-radius: 4px; /* Slight rounding for smaller images */
+        object-fit: cover; /* Ensure image proportions */
+    }
+
+    .carousel .main-image img {
+        width: 100%; /* Adapt the main image to the screen size */
+        height: auto; /* Maintain aspect ratio */
+        max-height: 300px; /* Limit the height on smaller screens */
+    }
+
+    .carousel-button {
+        font-size: 1.5rem; /* Adjust button size */
+        padding: 0.8rem; /* Reduce padding for smaller buttons */
+    }
+
 
 }
 
