@@ -242,6 +242,10 @@
     </div>
 </div>
 
+<div id="loading-spinner" class="hidden">
+    <div class="spinner"></div>
+    <p>Uploading images, please wait...</p>
+</div>
 
 
 
@@ -287,6 +291,17 @@
         let mode = "add"; // Tracks whether the form is in 'add' or 'edit' mode
         let currentEditId = null; // Stores the ID of the vehicle being edited
     
+        // Loading Spinner Elements
+        const loadingSpinner = document.getElementById('loading-spinner');
+    
+        function showLoading() {
+            loadingSpinner.classList.remove('hidden');
+        }
+    
+        function hideLoading() {
+            loadingSpinner.classList.add('hidden');
+        }
+    
         // Redirect unauthorized users
         onAuthStateChanged(auth, (user) => {
             if (!user) {
@@ -320,7 +335,6 @@
                 try {
                     const vehicleDoc = doc(db, "inventory", vehicleToDeleteId);
                     await deleteDoc(vehicleDoc);
-                    alert("Vehicle deleted successfully!");
                 } catch (error) {
                     console.error("Error deleting vehicle:", error);
                     alert("Failed to delete vehicle. Please try again.");
@@ -392,43 +406,43 @@
             let mainPictureUrl = null;
             const secondaryPicturesUrls = [];
     
-            if (mainPicture) {
-                mainPictureUrl = await uploadImageToImgBB(mainPicture);
-            }
-    
-            for (const file of secondaryPictures) {
-                const url = await uploadImageToImgBB(file);
-                if (url) secondaryPicturesUrls.push(url);
-            }
-    
-            if (!mainPictureUrl) {
-                alert('Main picture is required.');
-                return;
-            }
-    
-            const vehicleData = {
-                make: document.getElementById('make').value.trim(),
-                model: document.getElementById('model').value.trim(),
-                year: document.getElementById('year').value.trim(),
-                price: document.getElementById('price').value.trim(),
-                bodyStyle: document.getElementById('body-style').value,
-                engine: document.getElementById('engine').value,
-                transmission: document.getElementById('transmission').value,
-                color: document.getElementById('color').value === 'other'
-                    ? document.getElementById('other-color').value.trim()
-                    : document.getElementById('color').value,
-                mileage: document.getElementById('mileage').value.trim(),
-                vin: document.getElementById('vin').value.trim(),
-                stock: document.getElementById('stock').value.trim(),
-                mainPictureUrl,
-                secondaryPicturesUrls,
-                timestamp: new Date()
-            };
-    
             try {
+                showLoading(); // Show loading spinner
+                if (mainPicture) {
+                    mainPictureUrl = await uploadImageToImgBB(mainPicture);
+                }
+    
+                for (const file of secondaryPictures) {
+                    const url = await uploadImageToImgBB(file);
+                    if (url) secondaryPicturesUrls.push(url);
+                }
+    
+                if (!mainPictureUrl) {
+                    alert('Main picture is required.');
+                    return;
+                }
+    
+                const vehicleData = {
+                    make: document.getElementById('make').value.trim(),
+                    model: document.getElementById('model').value.trim(),
+                    year: document.getElementById('year').value.trim(),
+                    price: document.getElementById('price').value.trim(),
+                    bodyStyle: document.getElementById('body-style').value,
+                    engine: document.getElementById('engine').value,
+                    transmission: document.getElementById('transmission').value,
+                    color: document.getElementById('color').value === 'other'
+                        ? document.getElementById('other-color').value.trim()
+                        : document.getElementById('color').value,
+                    mileage: document.getElementById('mileage').value.trim(),
+                    vin: document.getElementById('vin').value.trim(),
+                    stock: document.getElementById('stock').value.trim(),
+                    mainPictureUrl,
+                    secondaryPicturesUrls,
+                    timestamp: new Date()
+                };
+    
                 if (mode === "add") {
                     await addDoc(inventoryRef, vehicleData);
-                    alert('Vehicle added successfully!');
                 } else if (mode === "edit" && currentEditId) {
                     const vehicleDoc = doc(db, "inventory", currentEditId);
                     await updateDoc(vehicleDoc, vehicleData);
@@ -439,6 +453,8 @@
             } catch (error) {
                 console.error("Error saving vehicle:", error);
                 alert("Failed to save vehicle. Please try again.");
+            } finally {
+                hideLoading(); // Hide loading spinner
             }
         });
     
@@ -571,6 +587,7 @@
         // Call to Populate Inventory Table on Page Load
         populateInventoryTable();
     </script>
+    
 
     <!-- Navbar Toggle for Mobile -->
 <script>
