@@ -194,11 +194,11 @@
     </div>
     <div>
         <label for="doors">Doors:</label>
-        <input type="number" id="doors" placeholder="Number of Doors" min="1" max="6" required>
+        <input type="number" id="doors" placeholder="Number of Doors" required>
     </div>
     <div>
         <label for="seats">Seats:</label>
-        <input type="number" id="seats" placeholder="Number of Seats" min="1" max="12" required>
+        <input type="number" id="seats" placeholder="Number of Seats" required>
     </div>
     <div class="button-container">
         <button type="button" id="prev-step-3" class="btn">Back</button>
@@ -287,6 +287,8 @@
 </form>
 </div>
 </div>
+
+
 
 <!-- Delete Confirmation Modal -->
 <div id="delete-confirmation-modal" class="modal hidden">
@@ -514,7 +516,7 @@ aiDescriptionToggle.addEventListener("change", async () => {
             // Reset Premium Price Toggle
             premiumToggle.checked = false;
             premiumPriceContainer.classList.add('hidden');
-            remiumPriceInput.value = ''; // Clear any existing value
+            premiumPriceInput.value = ''; // Clear any existing value
         });
     
         closeModalBtn.addEventListener('click', () => {
@@ -539,25 +541,62 @@ aiDescriptionToggle.addEventListener("change", async () => {
                         <td>${data.model}</td>
                         <td>${data.year}</td>
                         <td>$${data.price}</td>
-                        <td>
-                            <button class="btn details-btn">Details</button>
-                            <button class="btn edit-btn">Edit</button>
-                            <button class="btn delete-btn">Delete</button>
-                        </td>
+<td>
+    <div class="action-dropdown">
+        <button class="btn action-btn">Actions &#9662;</button>
+        <div class="action-menu hidden">
+            <a class="action-item details-action">Details</a>
+            <a class="action-item edit-action">Edit</a>
+            <a class="action-item sold-action">Mark as Sold</a>
+            <a class="action-item delete-action">Delete</a>
+        </div>
+    </div>
+</td>
+
                     `;
     
                     inventoryTableBody.appendChild(row);
-    
-                    const detailsBtn = row.querySelector('.details-btn');
-                    const editBtn = row.querySelector('.edit-btn');
-                    const deleteBtn = row.querySelector('.delete-btn');
-    
-                    detailsBtn.addEventListener('click', () => showVehicleDetails(data));
-                    editBtn.addEventListener('click', () => editVehicle(data, doc.id));
-                    deleteBtn.addEventListener('click', () => openDeleteConfirmationModal(doc.id));
-                });
-            });
-        }
+
+// Add Event Listeners for Dropdown Actions
+const dropdownBtn = row.querySelector('.action-btn');
+const actionMenu = row.querySelector('.action-menu');
+
+// Toggle Dropdown Visibility
+dropdownBtn.addEventListener('click', (event) => {
+    event.stopPropagation();
+    actionMenu.classList.toggle('hidden');
+    closeOtherDropdowns(actionMenu);
+});
+
+// Add Action Handlers
+const detailsAction = row.querySelector('.details-action');
+const editAction = row.querySelector('.edit-action');
+const deleteAction = row.querySelector('.delete-action');
+const soldAction = row.querySelector('.sold-action');
+
+detailsAction.addEventListener('click', () => showVehicleDetails(data));
+editAction.addEventListener('click', () => editVehicle(data, doc.id));
+deleteAction.addEventListener('click', () => openDeleteConfirmationModal(doc.id));
+soldAction.addEventListener('click', () => openMarkAsSoldModal(doc.id, data));
+});
+});
+}
+
+// Close Other Dropdowns
+function closeOtherDropdowns(openMenu) {
+document.querySelectorAll('.action-menu').forEach((menu) => {
+if (menu !== openMenu) {
+menu.classList.add('hidden');
+}
+});
+}
+
+// Hide All Dropdowns on Outside Click
+document.addEventListener('click', () => {
+document.querySelectorAll('.action-menu').forEach((menu) => {
+menu.classList.add('hidden');
+});
+});
     
         // Show Vehicle Details
 function showVehicleDetails(data) {
@@ -657,6 +696,93 @@ function showVehicleDetails(data) {
             }
         }
     
+
+// Add Mark as Sold Modal Elements
+const soldModal = document.createElement("div");
+soldModal.id = "sold-modal";
+soldModal.classList.add("modal", "hidden");
+soldModal.innerHTML = `
+    <div class="modal-content">
+        <span class="close-btn" id="close-sold-modal">&times;</span>
+        <h3>Mark as Sold</h3>
+        <form id="sold-form">
+            <label for="sold-price">Sold Price ($):</label>
+            <input type="number" id="sold-price" placeholder="Enter price" required>
+
+            <label for="sold-details">Sale Details:</label>
+            <textarea id="sold-details" placeholder="Enter details" rows="5"></textarea>
+
+            <div class="button-container">
+                <button type="button" class="btn cancel-btn" id="cancel-sold">Cancel</button>
+                <button type="submit" class="btn confirm-btn">Confirm</button>
+            </div>
+        </form>
+    </div>
+`;
+document.body.appendChild(soldModal);
+
+// Modal Elements
+const closeSoldModal = document.getElementById("close-sold-modal");
+const cancelSoldBtn = document.getElementById("cancel-sold");
+const soldForm = document.getElementById("sold-form");
+
+let vehicleToMarkSoldId = null; // Track the vehicle to be marked as sold
+let vehicleToMarkSoldData = null; // Track the data of the vehicle
+
+// Mark as Sold: Open Modal
+function openMarkAsSoldModal(id, data) {
+    vehicleToMarkSoldId = id;
+    vehicleToMarkSoldData = data;
+    soldModal.classList.remove("hidden");
+}
+
+// Close Sold Modal
+function closeSoldModalFn() {
+    vehicleToMarkSoldId = null;
+    vehicleToMarkSoldData = null;
+    soldModal.classList.add("hidden");
+}
+
+closeSoldModal.addEventListener("click", closeSoldModalFn);
+cancelSoldBtn.addEventListener("click", closeSoldModalFn);
+
+// Handle Sold Form Submission
+soldForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const soldPrice = document.getElementById("sold-price").value.trim();
+    const soldDetails = document.getElementById("sold-details").value.trim();
+
+    if (!soldPrice) {
+        alert("Please enter the sold price.");
+        return;
+    }
+
+    try {
+        // Create new document in the "sold" collection
+        const soldData = {
+            ...vehicleToMarkSoldData,
+            soldPrice,
+            soldDetails,
+            soldTimestamp: new Date(),
+        };
+        const soldRef = collection(db, "sold");
+        await addDoc(soldRef, soldData);
+
+        // Delete from "inventory"
+        const vehicleDoc = doc(db, "inventory", vehicleToMarkSoldId);
+        await deleteDoc(vehicleDoc);
+
+        alert("Vehicle marked as sold and moved to the 'Sold' database.");
+
+        closeSoldModalFn();
+    } catch (error) {
+        console.error("Error marking vehicle as sold:", error);
+        alert("Failed to mark vehicle as sold. Please try again.");
+    }
+});
+
+
         // Delete Vehicle
         function openDeleteConfirmationModal(id) {
             vehicleToDeleteId = id;
