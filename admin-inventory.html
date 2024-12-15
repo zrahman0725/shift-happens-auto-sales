@@ -101,10 +101,20 @@
     <input type="text" id="model" placeholder="Model" required>
     <input type="number" id="year" placeholder="Year" required>
     <input type="number" id="price" placeholder="Price ($)" required>
-    <div>
+<!-- Premium Price Toggle -->
+<div class="toggle-container">
+    <label class="toggle-label" for="premium-toggle">Premium Price:</label>
+    <input type="checkbox" id="premium-toggle" class="toggle-checkbox">
+    <label class="toggle-slider" for="premium-toggle"></label>
+</div>
+
+<!-- Premium Price Input (Hidden by Default) -->
+<div id="premium-price-container" class="hidden">
+    <input type="number" id="premium-price" placeholder="Premium Price ($)">
+</div>
+
         <button type="button" id="next-step-1" class="btn">Next</button>
     </div>
-</div>
 
 <!-- Step 2: Additional Vehicle Information -->
 <div class="step step-2 hidden">
@@ -112,12 +122,13 @@
     <label for="body-style">Body Style:</label>
     <select id="body-style" required>
         <option value="">Select Body Style</option>
-        <option value="sedan">Sedan</option>
-        <option value="suv">SUV / Crossover</option>
-        <option value="pickup">Pickup Truck</option>
-        <option value="minivan">Minivan / Van</option>
-        <option value="coupe">Coupe</option>
-        <option value="other">Other</option>
+        <option value="Sedan">Sedan</option>
+        <option value="Suv">SUV / Crossover</option>
+        <option value="Pickup Truck">Pickup Truck</option>
+        <option value="Minivan">Minivan / Van</option>
+        <option value="Coupe">Coupe</option>
+        <option value="Hatchback">Hatchback</option>
+        <option value="Other">Other</option>
     </select>
 
     <label for="engine">Engine:</label>
@@ -126,29 +137,30 @@
         <option value="4-cylinder">4-Cylinder</option>
         <option value="6-cylinder">6-Cylinder</option>
         <option value="8-cylinder">8-Cylinder</option>
-        <option value="other">Other</option>
+        <option value="Other">Other</option>
     </select>
 
     <label for="transmission">Transmission:</label>
     <select id="transmission" required>
         <option value="">Select Transmission</option>
-        <option value="automatic">Automatic</option>
-        <option value="manual">Manual / Standard</option>
-        <option value="cvt">Variable / CVT</option>
-        <option value="other">Other</option>
+        <option value="Automatic">Automatic</option>
+        <option value="Manual">Manual / Standard</option>
+        <option value="Electric">Electric</option>
+        <option value="CVT">Variable / CVT</option>
+        <option value="Other">Other</option>
     </select>
 
     <label for="color">Color:</label>
     <select id="color" required>
         <option value="">Select Color</option>
-        <option value="white">White</option>
-        <option value="black">Black</option>
-        <option value="grey">Grey</option>
-        <option value="silver">Silver</option>
-        <option value="bronze">Bronze</option>
-        <option value="blue">Blue</option>
-        <option value="red">Red</option>
-        <option value="other">Other</option>
+        <option value="White">White</option>
+        <option value="Black">Black</option>
+        <option value="Grey">Grey</option>
+        <option value="Silver">Silver</option>
+        <option value="Bronze">Bronze</option>
+        <option value="Blue">Blue</option>
+        <option value="Red">Red</option>
+        <option value="Other">Other</option>
     </select>
     <input type="text" id="other-color" placeholder="Specify Other Color" class="hidden">
     <div>
@@ -158,9 +170,74 @@
 </div>
 
 
-<!-- Step 3: Vehicle Identification -->
-<div class="step step-3 hidden">
-    <h3>Step 3: Vehicle Identification</h3>
+<div class="step step-3">
+    <h3>Step 3: Additional Vehicle Information Cont'd</h3>
+    <div>
+        <label for="fuel-type">Fuel Type:</label>
+        <select id="fuel-type" required>
+            <option value="" disabled selected>Select Fuel Type</option>
+            <option value="Gasoline">Gasoline</option>
+            <option value="Diesel">Diesel</option>
+            <option value="Electric">Electric</option>
+            <option value="Hybrid">Hybrid</option>
+        </select>
+    </div>
+    <div>
+        <label for="drive-train">Drive Train:</label>
+        <select id="drive-train" required>
+            <option value="" disabled selected>Select Drive Train</option>
+            <option value="FWD">Front-Wheel Drive (FWD)</option>
+            <option value="RWD">Rear-Wheel Drive (RWD)</option>
+            <option value="AWD">All-Wheel Drive (AWD)</option>
+            <option value="4WD">Four-Wheel Drive (4WD)</option>
+        </select>
+    </div>
+    <div>
+        <label for="doors">Doors:</label>
+        <input type="number" id="doors" placeholder="Number of Doors" min="1" max="6" required>
+    </div>
+    <div>
+        <label for="seats">Seats:</label>
+        <input type="number" id="seats" placeholder="Number of Seats" min="1" max="12" required>
+    </div>
+    <div class="button-container">
+        <button type="button" id="prev-step-3" class="btn">Back</button>
+        <button type="button" id="next-step-3" class="btn">Next</button>
+    </div>
+</div>
+
+<div class="step step-4">
+    <h3>Step 4: Additional Vehicle Information Cont'd</h3>
+    <div>
+        <label for="interior-color">Interior Color:</label>
+        <select id="interior-color" required>
+            <option value="" disabled selected>Select Interior Color</option>
+            <option value="Black">Black</option>
+            <option value="Gray">Gray</option>
+            <option value="Beige">Beige</option>
+            <option value="White">White</option>
+            <option value="Red">Red</option>
+            <option value="Brown">Brown</option>
+        </select>
+    </div>
+    <div>
+        <label for="highway-fuel">Highway Fuel Consumption:</label>
+        <input type="text" id="highway-fuel" placeholder="Enter highway fuel consumption" required>
+    </div>
+    <div>
+        <label for="city-fuel">City Fuel Consumption:</label>
+        <input type="text" id="city-fuel" placeholder="Enter city fuel consumption" required>
+
+    </div>
+    <div class="button-container">
+        <button type="button" id="prev-step-4" class="btn">Previous</button>
+        <button type="button" id="next-step-4" class="btn">Next</button>
+    </div>
+</div>
+
+<!-- Step 5: Vehicle Identification -->
+<div class="step step-5 hidden">
+    <h3>Step 5: Vehicle Identification</h3>
     <label for="mileage">Mileage (in kms):</label>
     <input type="number" id="mileage" placeholder="Enter mileage" required>
 
@@ -170,22 +247,40 @@
     <label for="stock">Stock #:</label>
     <input type="text" id="stock" placeholder="Enter Stock #" required>
     <div>
-        <button type="button" id="prev-step-3" class="btn">Back</button>
-        <button type="button" id="next-step-3" class="btn">Next</button>
+        <button type="button" id="prev-step-5" class="btn">Back</button>
+        <button type="button" id="next-step-5" class="btn">Next</button>
     </div>
 </div>
 
+<!-- Step 6: Vehicle Description -->
+<div class="step step-6 hidden">
+    <h3>Step 6: Vehicle Description</h3>
+    <label for="description">Vehicle Description:</label>
+    <textarea id="description" placeholder="Enter vehicle description" rows="5"></textarea>
 
-<!-- Step 4: Media Upload -->
-<div class="step step-4 hidden">
-    <h3>Step 4: Media Upload</h3>
+    <!-- Toggle for AI-generated description -->
+    <div class="toggle-container">
+        <label class="toggle-label" for="ai-description-toggle">Automatically Generate AI Description:</label>
+        <input type="checkbox" id="ai-description-toggle" class="toggle-checkbox">
+        <label class="toggle-slider" for="ai-description-toggle"></label>
+    </div>
+
+    <div class="button-container">
+        <button type="button" id="prev-step-6" class="btn">Back</button>
+        <button type="button" id="next-step-6" class="btn">Next</button>
+    </div>
+</div>
+
+<!-- Step 7: Media Upload -->
+<div class="step step-7 hidden">
+    <h3>Step 7: Media Upload</h3>
     <label for="main-picture">Main Picture (Required):</label>
     <input type="file" id="main-picture" accept="image/*" required>
 
     <label for="secondary-pictures">Secondary Pictures (Optional):</label>
     <input type="file" id="secondary-pictures" accept="image/*" multiple>
     <div>
-        <button type="button" id="prev-step-4" class="btn">Back</button>
+        <button type="button" id="prev-step-7" class="btn">Back</button>
         <button type="submit" class="btn">Save Vehicle</button>
     </div>
 </div>
@@ -259,10 +354,9 @@
         </div>
     </footer>
 
+
     <script type="module">
-        // Firebase Initialization and Authentication
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
         import {
             getFirestore,
             collection,
@@ -273,6 +367,7 @@
             updateDoc
         } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
     
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDv6Jkk-7XqeCMTy14Fjs_upMAjVM7uNVg",
             authDomain: "shift-happens-auto-sales.firebaseapp.com",
@@ -284,90 +379,102 @@
         };
     
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
         const db = getFirestore(app);
         const inventoryRef = collection(db, "inventory");
-    
-        let mode = "add"; // Tracks whether the form is in 'add' or 'edit' mode
-        let currentEditId = null; // Stores the ID of the vehicle being edited
-    
-        // Loading Spinner Elements
-        const loadingSpinner = document.getElementById('loading-spinner');
-    
-        function showLoading() {
-            loadingSpinner.classList.remove('hidden');
+        const aiDescriptionToggle = document.getElementById("ai-description-toggle");
+const descriptionTextarea = document.getElementById("description");
+
+// Listen for changes in the AI Description toggle
+aiDescriptionToggle.addEventListener("change", async () => {
+    if (aiDescriptionToggle.checked) {
+        // Collect details entered in previous steps
+        const make = document.getElementById("make").value.trim();
+        const model = document.getElementById("model").value.trim();
+        const year = document.getElementById("year").value.trim();
+
+        if (!make || !model || !year) {
+            alert("Please fill out the Make, Model, and Year before generating an AI description.");
+            aiDescriptionToggle.checked = false; // Reset the toggle
+            return;
         }
-    
-        function hideLoading() {
-            loadingSpinner.classList.add('hidden');
+
+        try {
+            // Call OpenAI API to generate a description
+            const apiKey = "your-openai-api-key"; // Replace with your OpenAI API Key
+            const prompt = `Write a detailed and attractive description for a ${year} ${make} ${model}.`;
+
+            const response = await fetch("https://api.openai.com/v1/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${apiKey}`,
+                },
+                body: JSON.stringify({
+                    model: "text-davinci-003",
+                    prompt: prompt,
+                    max_tokens: 150,
+                }),
+            });
+
+            const result = await response.json();
+            const generatedDescription = result.choices[0].text.trim();
+
+            // Populate the description field with the AI-generated text
+            descriptionTextarea.value = generatedDescription;
+
+        } catch (error) {
+            console.error("Error generating AI description:", error);
+            alert("Failed to generate AI description. Please try again.");
+            aiDescriptionToggle.checked = false; // Reset the toggle
         }
-    
-        // Redirect unauthorized users
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = "admin-login.html";
-            }
-        });
-    
-        // Modal and Form Steps Logic
+    } else {
+        // Clear the description if the toggle is turned off
+        descriptionTextarea.value = "";
+    }
+});
+
+        // Elements
         const modal = document.getElementById('vehicle-modal');
         const form = document.getElementById('vehicle-form');
+        const premiumToggle = document.getElementById('premium-toggle');
+        const premiumPriceContainer = document.getElementById('premium-price-container');
+        const premiumPriceInput = document.getElementById('premium-price');
         const deleteConfirmationModal = document.getElementById('delete-confirmation-modal');
         const cancelDeleteBtn = document.getElementById('cancel-delete');
         const confirmDeleteBtn = document.getElementById('confirm-delete');
+        const detailsModal = document.getElementById('vehicle-details-modal');
+        const closeDetailsModal = document.getElementById('close-details-modal');
+        const steps = document.querySelectorAll('.step');
+        const addVehicleBtn = document.getElementById('add-vehicle-btn');
+        const closeModalBtn = document.getElementById('close-modal');
+    
+        let currentStep = 0;
+        let mode = "add";
+        let currentEditId = null;
         let vehicleToDeleteId = null;
     
-        // Open Confirmation Modal for Delete
-        function openDeleteConfirmationModal(vehicleId) {
-            vehicleToDeleteId = vehicleId;
-            deleteConfirmationModal.classList.remove('hidden');
+        // Show/Hide Loading Spinner
+        function showLoading() {
+            document.getElementById('loading-spinner').classList.remove('hidden');
         }
     
-        // Close Confirmation Modal
-        function closeDeleteConfirmationModal() {
-            vehicleToDeleteId = null;
-            deleteConfirmationModal.classList.add('hidden');
+        function hideLoading() {
+            document.getElementById('loading-spinner').classList.add('hidden');
         }
     
-        // Confirm Deletion
-        confirmDeleteBtn.addEventListener('click', async () => {
-            if (vehicleToDeleteId) {
-                try {
-                    const vehicleDoc = doc(db, "inventory", vehicleToDeleteId);
-                    await deleteDoc(vehicleDoc);
-                } catch (error) {
-                    console.error("Error deleting vehicle:", error);
-                    alert("Failed to delete vehicle. Please try again.");
-                } finally {
-                    closeDeleteConfirmationModal();
-                }
+        // Premium Price Toggle
+        premiumToggle.addEventListener('change', () => {
+            if (premiumToggle.checked) {
+                premiumPriceContainer.classList.remove('hidden');
+                premiumPriceInput.setAttribute('required', 'true');
+            } else {
+                premiumPriceContainer.classList.add('hidden');
+                premiumPriceInput.removeAttribute('required');
+                premiumPriceInput.value = '';
             }
         });
     
-        // Cancel Deletion
-        cancelDeleteBtn.addEventListener('click', closeDeleteConfirmationModal);
-    
-        // Open Modal and Reset Steps
-        const addVehicleBtn = document.getElementById('add-vehicle-btn');
-        const closeModalBtn = document.getElementById('close-modal');
-        const steps = document.querySelectorAll('.step');
-        let currentStep = 0;
-    
-        addVehicleBtn.addEventListener('click', () => {
-            mode = "add"; // Set mode to 'add'
-            currentEditId = null; // Clear current edit ID
-            currentStep = 0;
-            updateSteps();
-            form.reset();
-            modal.classList.remove('hidden');
-        });
-    
-        // Close Modal
-        closeModalBtn.addEventListener('click', () => {
-            modal.classList.add('hidden');
-        });
-    
-        // Navigate Steps
+        // Multi-Step Form Navigation
         const nextButtons = document.querySelectorAll('[id^=next-step]');
         const prevButtons = document.querySelectorAll('[id^=prev-step]');
     
@@ -389,73 +496,29 @@
             });
         });
     
-        // Update Step Visibility
         function updateSteps() {
             steps.forEach((step, index) => {
                 step.classList.toggle('hidden', index !== currentStep);
             });
         }
     
-        // Form Submission Handler
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        // Add Vehicle
+        addVehicleBtn.addEventListener('click', () => {
+            mode = "add";
+            currentEditId = null;
+            currentStep = 0;
+            updateSteps();
+            form.reset();
+            modal.classList.remove('hidden');
+
+            // Reset Premium Price Toggle
+            premiumToggle.checked = false;
+            premiumPriceContainer.classList.add('hidden');
+            remiumPriceInput.value = ''; // Clear any existing value
+        });
     
-            const mainPicture = document.getElementById('main-picture').files[0];
-            const secondaryPictures = Array.from(document.getElementById('secondary-pictures').files);
-    
-            let mainPictureUrl = null;
-            const secondaryPicturesUrls = [];
-    
-            try {
-                showLoading(); // Show loading spinner
-                if (mainPicture) {
-                    mainPictureUrl = await uploadImageToImgBB(mainPicture);
-                }
-    
-                for (const file of secondaryPictures) {
-                    const url = await uploadImageToImgBB(file);
-                    if (url) secondaryPicturesUrls.push(url);
-                }
-    
-                if (!mainPictureUrl) {
-                    alert('Main picture is required.');
-                    return;
-                }
-    
-                const vehicleData = {
-                    make: document.getElementById('make').value.trim(),
-                    model: document.getElementById('model').value.trim(),
-                    year: document.getElementById('year').value.trim(),
-                    price: document.getElementById('price').value.trim(),
-                    bodyStyle: document.getElementById('body-style').value,
-                    engine: document.getElementById('engine').value,
-                    transmission: document.getElementById('transmission').value,
-                    color: document.getElementById('color').value === 'other'
-                        ? document.getElementById('other-color').value.trim()
-                        : document.getElementById('color').value,
-                    mileage: document.getElementById('mileage').value.trim(),
-                    vin: document.getElementById('vin').value.trim(),
-                    stock: document.getElementById('stock').value.trim(),
-                    mainPictureUrl,
-                    secondaryPicturesUrls,
-                    timestamp: new Date()
-                };
-    
-                if (mode === "add") {
-                    await addDoc(inventoryRef, vehicleData);
-                } else if (mode === "edit" && currentEditId) {
-                    const vehicleDoc = doc(db, "inventory", currentEditId);
-                    await updateDoc(vehicleDoc, vehicleData);
-                    alert('Vehicle updated successfully!');
-                }
-                form.reset();
-                modal.classList.add('hidden');
-            } catch (error) {
-                console.error("Error saving vehicle:", error);
-                alert("Failed to save vehicle. Please try again.");
-            } finally {
-                hideLoading(); // Hide loading spinner
-            }
+        closeModalBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
         });
     
         // Populate Inventory Table
@@ -496,70 +559,196 @@
             });
         }
     
-        // Details Modal Functionality
-        function showVehicleDetails(data) {
-            const modal = document.getElementById("vehicle-details-modal");
-            const mainImage = document.getElementById("main-carousel-image");
-            const thumbnailStrip = document.querySelector(".thumbnail-strip");
-            const title = document.getElementById("vehicle-title");
-            const price = document.getElementById("vehicle-price");
-            const detailsList = document.getElementById("vehicle-details-list");
-            const description = document.getElementById("vehicle-description");
-            const featuresAccordion = document.getElementById("features-accordion");
-    
-            // Populate Modal Content
-            mainImage.src = data.mainPictureUrl;
-            thumbnailStrip.innerHTML = "";
-            data.secondaryPicturesUrls.forEach((url, index) => {
-                const img = document.createElement("img");
-                img.src = url;
-                img.classList.toggle("active", index === 0);
-                img.addEventListener("click", () => {
-                    mainImage.src = url;
-                    document.querySelectorAll(".thumbnail-strip img").forEach(img => img.classList.remove("active"));
-                    img.classList.add("active");
-                });
-                thumbnailStrip.appendChild(img);
-            });
-    
-            title.textContent = `${data.year} ${data.make} ${data.model}`;
-            price.textContent = `$${data.price}`;
-    
-            detailsList.innerHTML = `
-                <li><span>VIN:</span> ${data.vin || "N/A"}</li>
-                <li><span>Stock #:</span> ${data.stock || "N/A"}</li>
-                <li><span>Mileage:</span> ${data.mileage || "N/A"} kms</li>
-                <li><span>Transmission:</span> ${data.transmission || "N/A"}</li>
-                <li><span>Color:</span> ${data.color || "N/A"}</li>
-            `;
-    
-            description.textContent = data.description || "No description available.";
-    
-            featuresAccordion.innerHTML = "";
-            Object.entries(data.features || {}).forEach(([category, items]) => {
-                const accordionItem = document.createElement("div");
-                accordionItem.className = "accordion-item";
-                accordionItem.innerHTML = `
-                    <div class="accordion-header">${category}</div>
-                    <div class="accordion-body hidden">
-                        <ul>${items.map(item => `<li>${item}</li>`).join("")}</ul>
-                    </div>
-                `;
-                accordionItem.querySelector(".accordion-header").addEventListener("click", () => {
-                    accordionItem.querySelector(".accordion-body").classList.toggle("hidden");
-                });
-                featuresAccordion.appendChild(accordionItem);
-            });
-    
-            modal.classList.remove("hidden");
-        }
+        // Show Vehicle Details
+function showVehicleDetails(data) {
+    const modal = document.getElementById("vehicle-details-modal");
+    const mainImage = document.getElementById("main-carousel-image");
+    const thumbnailStrip = document.querySelector(".thumbnail-strip");
+    const title = document.getElementById("vehicle-title");
+    const price = document.getElementById("vehicle-price");
+    const detailsList = document.getElementById("vehicle-details-list");
+    const description = document.getElementById("vehicle-description");
+    const featuresAccordion = document.getElementById("features-accordion");
+
+    // Populate Modal Content
+    mainImage.src = data.mainPictureUrl;
+    thumbnailStrip.innerHTML = ""; // Clear existing thumbnails
+
+    // Add Main Picture to Thumbnails
+    const mainThumbnail = document.createElement("img");
+    mainThumbnail.src = data.mainPictureUrl;
+    mainThumbnail.classList.add("active"); // Mark as active by default
+    mainThumbnail.addEventListener("click", () => {
+        mainImage.src = data.mainPictureUrl;
+        document.querySelectorAll(".thumbnail-strip img").forEach(img => img.classList.remove("active"));
+        mainThumbnail.classList.add("active");
+    });
+    thumbnailStrip.appendChild(mainThumbnail);
+
+    // Add Secondary Pictures to Thumbnails
+    data.secondaryPicturesUrls.forEach((url) => {
+        const img = document.createElement("img");
+        img.src = url;
+        img.addEventListener("click", () => {
+            mainImage.src = url;
+            document.querySelectorAll(".thumbnail-strip img").forEach(img => img.classList.remove("active"));
+            img.classList.add("active");
+        });
+        thumbnailStrip.appendChild(img);
+    });
+
+    title.textContent = `${data.year} ${data.make} ${data.model}`;
+    price.textContent = `$${data.price}`;
+
+    detailsList.innerHTML = `
+        <li><span>VIN:</span> ${data.vin || "N/A"}</li>
+        <li><span>Stock #:</span> ${data.stock || "N/A"}</li>
+        <li><span>Mileage:</span> ${data.mileage || "N/A"} kms</li>
+        <li><span>Transmission:</span> ${data.transmission || "N/A"}</li>
+        <li><span>Color:</span> ${data.color || "N/A"}</li>
+    `;
+
+    description.textContent = data.description || "No description available.";
+
+    featuresAccordion.innerHTML = "";
+    Object.entries(data.features || {}).forEach(([category, items]) => {
+        const accordionItem = document.createElement("div");
+        accordionItem.className = "accordion-item";
+        accordionItem.innerHTML = `
+            <div class="accordion-header">${category}</div>
+            <div class="accordion-body hidden">
+                <ul>${items.map(item => `<li>${item}</li>`).join("")}</ul>
+            </div>
+        `;
+        accordionItem.querySelector(".accordion-header").addEventListener("click", () => {
+            accordionItem.querySelector(".accordion-body").classList.toggle("hidden");
+        });
+        featuresAccordion.appendChild(accordionItem);
+    });
+
+    modal.classList.remove("hidden");
+}
+
     
         // Close Details Modal
         document.getElementById("close-details-modal").addEventListener("click", () => {
             document.getElementById("vehicle-details-modal").classList.add("hidden");
         });
     
-        // Upload Image to ImgBB
+        // Edit Vehicle
+        function editVehicle(data, id) {
+            mode = "edit";
+            currentEditId = id;
+            currentStep = 0;
+            updateSteps();
+            modal.classList.remove('hidden');
+    
+            document.getElementById('make').value = data.make;
+            document.getElementById('model').value = data.model;
+            document.getElementById('year').value = data.year;
+            document.getElementById('price').value = data.price;
+            if (data.premiumPrice) {
+                premiumToggle.checked = true;
+                premiumPriceContainer.classList.remove('hidden');
+                premiumPriceInput.value = data.premiumPrice;
+            } else {
+                premiumToggle.checked = false;
+                premiumPriceContainer.classList.add('hidden');
+            }
+        }
+    
+        // Delete Vehicle
+        function openDeleteConfirmationModal(id) {
+            vehicleToDeleteId = id;
+            deleteConfirmationModal.classList.remove('hidden');
+        }
+    
+        cancelDeleteBtn.addEventListener('click', () => {
+            vehicleToDeleteId = null;
+            deleteConfirmationModal.classList.add('hidden');
+        });
+    
+        confirmDeleteBtn.addEventListener('click', async () => {
+            if (vehicleToDeleteId) {
+                const vehicleDoc = doc(db, "inventory", vehicleToDeleteId);
+                await deleteDoc(vehicleDoc);
+                deleteConfirmationModal.classList.add('hidden');
+            }
+        });
+    
+        // Form Submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+    
+            const mainPicture = document.getElementById('main-picture').files[0];
+            const secondaryPictures = Array.from(document.getElementById('secondary-pictures').files);
+    
+            let mainPictureUrl = null;
+            const secondaryPicturesUrls = [];
+    
+            try {
+                showLoading();
+                if (mainPicture) {
+                    mainPictureUrl = await uploadImageToImgBB(mainPicture);
+                }
+    
+                for (const file of secondaryPictures) {
+                    const url = await uploadImageToImgBB(file);
+                    if (url) secondaryPicturesUrls.push(url);
+                }
+    
+                if (!mainPictureUrl) {
+                    alert('Main picture is required.');
+                    return;
+                }
+    
+                const vehicleData = {
+                    make: document.getElementById('make').value.trim(),
+                    model: document.getElementById('model').value.trim(),
+                    year: document.getElementById('year').value.trim(),
+                    price: document.getElementById('price').value.trim(),
+                    premiumPrice: premiumToggle.checked ? premiumPriceInput.value.trim() : null,
+                    fuelType: document.getElementById('fuel-type').value, // New field
+                    driveTrain: document.getElementById('drive-train').value, // New field
+                    doors: document.getElementById('doors').value.trim(), // New field
+                    seats: document.getElementById('seats').value.trim(), // New field
+                    interiorColor: document.getElementById('interior-color').value, // New field
+                    highwayFuel: document.getElementById('highway-fuel').value.trim(), // New field
+                    cityFuel: document.getElementById('city-fuel').value.trim(), // New field
+                    description: descriptionTextarea.value.trim(), // Include description
+                    bodyStyle: document.getElementById('body-style').value,
+                    engine: document.getElementById('engine').value,
+                    transmission: document.getElementById('transmission').value,
+                    color: document.getElementById('color').value === 'other'
+                        ? document.getElementById('other-color').value.trim()
+                        : document.getElementById('color').value,
+                    mileage: document.getElementById('mileage').value.trim(),
+                    vin: document.getElementById('vin').value.trim(),
+                    stock: document.getElementById('stock').value.trim(),
+                    mainPictureUrl,
+                    secondaryPicturesUrls,
+                    timestamp: new Date()
+                };
+    
+                if (mode === "add") {
+                    await addDoc(inventoryRef, vehicleData);
+                } else if (mode === "edit" && currentEditId) {
+                    const vehicleDoc = doc(db, "inventory", currentEditId);
+                    await updateDoc(vehicleDoc, vehicleData);
+                    alert('Vehicle updated successfully!');
+                }
+    
+                form.reset();
+                modal.classList.add('hidden');
+            } catch (error) {
+                console.error("Error saving vehicle:", error);
+                alert("Failed to save vehicle. Please try again.");
+            } finally {
+                hideLoading();
+            }
+        });
+    
+        // Upload Images to ImgBB
         async function uploadImageToImgBB(file) {
             const apiKey = '114bba60769f2d7d7bc403a7f0343c37';
             const formData = new FormData();
@@ -584,11 +773,12 @@
             }
         }
     
-        // Call to Populate Inventory Table on Page Load
+        // Populate Inventory Table on Load
         populateInventoryTable();
     </script>
     
 
+    
     <!-- Navbar Toggle for Mobile -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
