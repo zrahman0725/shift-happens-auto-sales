@@ -69,6 +69,46 @@
     <section class="inventory" id="inventory">
         <h2 class="heading">Inventory <span>Management</span></h2>
         <button id="add-vehicle-btn" class="btn">Add Vehicle</button>
+        <div class="controls">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search by Make, Model, or Year">
+            </div>
+            
+            
+            <div class="sort-icon-container">
+                <i class='bx bx-sort' id="sort-icon"></i>
+            </div>
+            
+            <!-- Sort Popup -->
+            <div id="sort-popup" class="sort-popup hidden">
+                <div class="sort-popup-content">
+                    <span class="close-sort-popup" id="close-sort-popup">&times;</span>
+                    <h3>Sort Options</h3>
+                    <div class="sort-options">
+                        <label for="sort-select">Sort by:</label>
+                        <select id="sort-select">
+                            <option value="year-asc">Year (Ascending)</option>
+                            <option value="year-desc">Year (Descending)</option>
+                            <option value="price-asc">Price (Low to High)</option>
+                            <option value="price-desc">Price (High to Low)</option>
+                            <option value="date-added-desc">Date Added (Newest First)</option>
+                            <option value="date-added-asc">Date Added (Oldest First)</option>
+                            <option value="mileage-asc">Mileage (Lowest First)</option>
+                            <option value="mileage-desc">Mileage (Highest First)</option>
+                            <option value="make-asc">Make (A-Z)</option>
+                            <option value="make-desc">Make (Z-A)</option>
+                            <option value="model-asc">Model (A-Z)</option>
+                            <option value="model-desc">Model (Z-A)</option>
+                        </select>
+                        
+                        <button id="apply-sort" class="btn">Apply Sort</button>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+        
         <div id="inventory-list" class="inventory-container">
             <h3>Inventory List</h3>
             <table>
@@ -368,11 +408,17 @@
         import {
             getFirestore,
             collection,
+            query,
+            orderBy,
             addDoc,
+            getDocs,
             onSnapshot,
             doc,
             deleteDoc,
             updateDoc
+
+
+
         } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
     
         // Firebase Configuration
@@ -390,6 +436,129 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const inventoryRef = collection(db, "inventory");
+
+        
+
+        // Integrate the new sorting code here
+        document.getElementById("apply-sort").addEventListener("click", async () => {
+    const sortSelect = document.getElementById("sort-select");
+    const selectedOption = sortSelect.value;
+
+    let field = "year"; // Default field
+    let direction = "asc"; // Default direction
+
+    switch (selectedOption) {
+        case "year-asc":
+            field = "year";
+            direction = "asc";
+            break;
+        case "year-desc":
+            field = "year";
+            direction = "desc";
+            break;
+        case "price-asc":
+            field = "price";
+            direction = "asc";
+            break;
+        case "price-desc":
+            field = "price";
+            direction = "desc";
+            break;
+        case "date-added-desc":
+            field = "timestamp"; // Assumes Firestore has a 'timestamp' field for date added
+            direction = "desc";
+            break;
+        case "date-added-asc":
+            field = "timestamp";
+            direction = "asc";
+            break;
+        case "mileage-asc":
+            field = "mileage";
+            direction = "asc";
+            break;
+        case "mileage-desc":
+            field = "mileage";
+            direction = "desc";
+            break;
+        case "make-asc":
+            field = "make";
+            direction = "asc";
+            break;
+        case "make-desc":
+            field = "make";
+            direction = "desc";
+            break;
+        case "model-asc":
+            field = "model";
+            direction = "asc";
+            break;
+        case "model-desc":
+            field = "model";
+            direction = "desc";
+            break;
+    }
+
+    try {
+        // Fetch sorted data from Firestore
+        const querySnapshot = await getDocs(query(inventoryRef, orderBy(field, direction)));
+
+        const inventoryTableBody = document.querySelector("#inventory-list tbody");
+        inventoryTableBody.innerHTML = ""; // Clear the existing table
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td><img src="${data.mainPictureUrl}" alt="${data.make} ${data.model}" class="table-picture"></td>
+                <td>${data.make}</td>
+                <td>${data.model}</td>
+                <td>${data.year}</td>
+                <td>$${data.price}</td>
+                <td>
+                    <div class="action-dropdown">
+                        <button class="btn action-btn">Actions &#9662;</button>
+                        <div class="action-menu hidden">
+                            <a class="action-item details-action">Details</a>
+                            <a class="action-item edit-action">Edit</a>
+                            <a class="action-item sold-action">Mark as Sold</a>
+                            <a class="action-item delete-action">Delete</a>
+                        </div>
+                    </div>
+                </td>
+            `;
+
+            inventoryTableBody.appendChild(row);
+            attachActionListeners(row, doc.id, data);
+        });
+
+        document.getElementById("sort-popup").classList.add("hidden"); // Close the popup
+    } catch (error) {
+        console.error("Error fetching sorted data:", error);
+        alert("Failed to sort inventory. Please try again.");
+    }
+});
+
+    function attachActionListeners(row, docId, data) {
+        const dropdownBtn = row.querySelector(".action-btn");
+        const actionMenu = row.querySelector(".action-menu");
+
+        dropdownBtn.addEventListener("click", (event) => {
+            event.stopPropagation();
+            actionMenu.classList.toggle("hidden");
+            closeOtherDropdowns(actionMenu);
+        });
+
+        const detailsAction = row.querySelector(".details-action");
+        const editAction = row.querySelector(".edit-action");
+        const deleteAction = row.querySelector(".delete-action");
+        const soldAction = row.querySelector(".sold-action");
+
+        detailsAction.addEventListener("click", () => showVehicleDetails(data));
+        editAction.addEventListener("click", () => editVehicle(data, docId));
+        deleteAction.addEventListener("click", () => openDeleteConfirmationModal(docId));
+        soldAction.addEventListener("click", () => openMarkAsSoldModal(docId, data));
+    }
         const aiDescriptionToggle = document.getElementById("ai-description-toggle");
 const descriptionTextarea = document.getElementById("description");
 
@@ -943,7 +1112,7 @@ soldForm.addEventListener("submit", async (e) => {
                     make: document.getElementById('make').value.trim(),
                     model: document.getElementById('model').value.trim(),
                     year: document.getElementById('year').value.trim(),
-                    price: document.getElementById('price').value.trim(),
+                    price: parseInt(document.getElementById('price').value.trim(), 10),
                     premiumPrice: premiumToggle.checked ? premiumPriceInput.value.trim() : null,
                     fuelType: document.getElementById('fuel-type').value, // New field
                     driveTrain: document.getElementById('drive-train').value, // New field
@@ -959,7 +1128,7 @@ soldForm.addEventListener("submit", async (e) => {
                     color: document.getElementById('color').value === 'other'
                         ? document.getElementById('other-color').value.trim()
                         : document.getElementById('color').value,
-                    mileage: document.getElementById('mileage').value.trim(),
+                    mileage: parseInt(document.getElementById('mileage').value.trim(), 10),
                     vin: document.getElementById('vin').value.trim(),
                     stock: document.getElementById('stock').value.trim(),
                     mainPictureUrl,
@@ -1019,6 +1188,44 @@ soldForm.addEventListener("submit", async (e) => {
     </script>
     
 
+    <script>
+
+    
+        // Sort Popup Logic
+        const sortIcon = document.getElementById("sort-icon");
+        const sortPopup = document.getElementById("sort-popup");
+        const closeSortPopup = document.getElementById("close-sort-popup");
+        const applySortButton = document.getElementById("apply-sort");
+    
+        sortIcon.addEventListener("click", () => {
+            sortPopup.classList.remove("hidden");
+        });
+    
+        closeSortPopup.addEventListener("click", () => {
+            sortPopup.classList.add("hidden");
+        });
+    
+    
+        // Search Functionality
+        const searchInput = document.getElementById("search-input");
+    
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.toLowerCase();
+            const rows = document.querySelectorAll("#inventory-list tbody tr");
+    
+            rows.forEach(row => {
+                const make = row.children[1].textContent.toLowerCase();
+                const model = row.children[2].textContent.toLowerCase();
+                const year = row.children[3].textContent.toLowerCase();
+    
+                if (make.includes(query) || model.includes(query) || year.includes(query)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        });
+    </script>
     
     <!-- Navbar Toggle for Mobile -->
 <script>
