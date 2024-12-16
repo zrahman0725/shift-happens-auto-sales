@@ -68,12 +68,10 @@ section {
     }
       
 
-.navbar a {
-    font-size: 1.7rem;
-    color: var(--text-color);
-    margin-left: 4rem;
-    font-family: cursive;
-
+    .navbar a {
+        font-size: 1.5rem;
+        color: var(--text-color);
+        margin-left: 3.5rem;
     }
 
 .navbar a:hover,
@@ -344,7 +342,8 @@ span {
 }
 
 .search-form select,
-.search-form button {
+.search-form button,
+.search-form input {
     padding: 1rem;
     font-size: 1.6rem;
     border: 1px solid var(--main-color);
@@ -782,6 +781,7 @@ span {
     color: var(--main-color);
 }
 
+
 /* Animation */
 @keyframes slide {
     0% {
@@ -929,7 +929,8 @@ span {
     }
 
     .search-form select,
-    .search-form button {
+    .search-form button,
+    .search-form input {
         width: 100%;
     }
 
