@@ -70,12 +70,10 @@ section {
     }
       
 
-.navbar a {
-    font-size: 1.7rem;
-    color: var(--text-color);
-    margin-left: 4rem;
-    font-family: cursive;
-
+    .navbar a {
+        font-size: 1.5rem;
+        color: var(--text-color);
+        margin-left: 3.5rem;
     }
 
 .navbar a:hover,
