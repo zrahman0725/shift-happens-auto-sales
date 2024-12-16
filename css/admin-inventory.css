@@ -596,6 +596,179 @@ span {
     animation: shake 0.3s ease-in-out;
 }
 
+
+
+.hidden {
+    display: none;
+}
+
+/* Controls Container */
+.controls {
+    display: flex;
+    justify-content: flex-end; /* Align controls to the right */
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem; /* Space between elements */
+}
+
+/* Search Bar */
+.search-container input {
+    padding: 1rem 1.5rem; /* Larger padding for a bigger input */
+    font-size: 1.6rem; /* Larger font size */
+    border: 2px solid var(--main-color); /* Highlighted border */
+    border-radius: 25px; /* Rounded edges */
+    width: 400px; /* Wider search bar */
+    background-color: var(--second-bg-color); /* Subtle background */
+    color: var(--text-color); /* White text color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+    transition: all 0.3s ease; /* Smooth animations */
+}
+
+.search-container input:focus,
+.search-container input:hover {
+    border-color: var(--text-color); /* Highlighted border on focus/hover */
+    outline: none; /* Remove default focus outline */
+    background-color: var(--bg-color); /* Slightly darker background */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Enhance shadow on focus */
+}
+
+.search-container input::placeholder {
+    color: var(--text-color); /* Match the theme color */
+    opacity: 0.7; /* Slightly faded for subtle effect */
+    font-style: italic; /* Optional: italicized placeholder */
+}
+
+/* Filter and Sort Icons */
+.sort-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#sort-icon {
+    font-size: 2.5rem;
+    color: var(--main-color);
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    margin-left: 1rem; /* Add space between icons and search input */
+}
+
+#sort-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Sort Popup Styling */
+.sort-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background: var(--second-bg-color); /* Use site's secondary background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Add depth */
+    width: 320px;
+    max-width: 90%;
+    padding: 20px;
+    color: var(--text-color); /* White text for dark theme */
+    font-family: 'Poppins', sans-serif; /* Match the site's typography */
+}
+
+/* Header Styling */
+.sort-popup h3 {
+    margin: 0 0 15px;
+    font-size: 1.8rem;
+    text-align: center;
+    color: var(--main-color); /* Accent color for the header */
+    text-transform: uppercase;
+}
+
+/* Sort Options Container */
+.sort-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Dropdown Styling */
+.sort-options select {
+    padding: 10px 12px;
+    border: 1px solid var(--main-color); /* Main color border */
+    border-radius: 4px;
+    background: var(--bg-color); /* Primary background for dropdown */
+    color: var(--text-color); /* White text for contrast */
+    font-size: 1.4rem;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+}
+
+.sort-options select:focus {
+    outline: none;
+    border-color: var(--main-color); /* Highlight border on focus */
+}
+
+/* Apply Sort Button */
+.sort-options button {
+    padding: 12px;
+    background: var(--main-color); /* Main color for button */
+    color: var(--text-color); /* White text */
+    border: none;
+    border-radius: 4px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.sort-options button:hover {
+    background: var(--text-color); /* Invert button color on hover */
+    color: var(--main-color); /* Main color for text */
+}
+
+/* Close Button */
+.close-sort-popup {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--main-color); /* Accent color for close button */
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-sort-popup:hover {
+    color: var(--text-color); /* White on hover */
+}
+
+/* Backdrop Effect */
+#sort-popup::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent dark overlay */
+    z-index: -1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sort-popup {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .sort-popup h3 {
+        font-size: 1.6rem;
+    }
+
+    .sort-options button {
+        font-size: 1.3rem;
+    }
+}
+
+
 @keyframes shake {
     0%, 100% { transform: translateX(0); }
     25% { transform: translateX(-5px); }
