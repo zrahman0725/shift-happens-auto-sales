@@ -174,7 +174,12 @@
                         <li><span class="label">Transmission</span><span class="value">${data.transmission}</span></li>
                         <li><span class="label">Color</span><span class="value">${data.color}</span></li>
                         <li><span class="label">Body Style</span><span class="value">${data.bodyStyle || "N/A"}</span></li>
+                        <li><span class="label">Doors</span><span class="value">${data.doors || "N/A"}</span></li>
+                        <li><span class="label">Seats</span><span class="value">${data.seats || "N/A"}</span></li>                                                
                         <li><span class="label">Engine Type</span><span class="value">${data.engine || "N/A"}</span></li>
+                        <li><span class="label">Fuel Type</span><span class="value">${data.fuelType || "N/A"}</span></li>
+                        <li><span class="label">Drivetrain Type</span><span class="value">${data.driveTrain || "N/A"}</span></li>
+
                         
                     `;
 
@@ -310,7 +315,7 @@
             const urlParams = new URLSearchParams();
             urlParams.append("message", message);
 
-            window.location.href = `contact.html?${urlParams.toString()}`;
+            window.location.href = `index.html?${urlParams.toString()}#contact`;
         }
     </script>
     <!-- Navbar Toggle for Mobile -->
