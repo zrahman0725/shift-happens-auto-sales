@@ -71,18 +71,24 @@
         <div class="dashboard-cards">
             <div class="card">
                 <h3>Total Sales</h3>
-                <p>$0</p>
+                <p id="total-sales">$0</p>
+            </div>
+            <div class="card">
+                <h3>Vehicles Sold</h3>
+                <p id="vehicles-sold">0</p>
             </div>
             <div class="card">
                 <h3>Active Listings</h3>
-                <p>0</p>
+                <p id="active-listings">0</p>
             </div>
             <div class="card">
                 <h3>New Messages</h3>
-                <p>0</p>
+                <p id="new-messages">0</p>
             </div>
         </div>
     </section>
+    
+    
 
     <!-- Footer -->
     <footer class="footer">
@@ -93,6 +99,8 @@
             <a href="#"><i class='bx bx-up-arrow-alt'></i></a>
         </div>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
@@ -116,6 +124,48 @@
                 window.location.href = "admin-login.html";
             }
         });
+
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+
+const db = getFirestore();
+
+
+// Fetch data for the dashboard
+async function updateDashboard() {
+    // Reference collections
+    const soldCollection = collection(db, "sold");
+    const inventoryCollection = collection(db, "inventory");
+
+    // Initialize variables
+    let totalSales = 0;
+    let vehiclesSold = 0;
+    let activeListings = 0;
+
+    try {
+        // Fetch sold data
+        const soldSnapshot = await getDocs(soldCollection);
+        soldSnapshot.forEach((doc) => {
+            const data = doc.data();
+            totalSales += data.soldPrice || 0; // Sum soldPrice
+        });
+        vehiclesSold = soldSnapshot.size; // Number of sold items
+
+        // Fetch inventory data
+        const inventorySnapshot = await getDocs(inventoryCollection);
+        activeListings = inventorySnapshot.size; // Number of active listings
+
+        // Update cards in the DOM
+        document.querySelector("#total-sales").textContent = `$${totalSales.toLocaleString()}`;
+        document.querySelector("#vehicles-sold").textContent = vehiclesSold;
+        document.querySelector("#active-listings").textContent = activeListings;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+}
+
+// Call the function on page load
+document.addEventListener("DOMContentLoaded", updateDashboard);
+
     </script>
 
     <!-- Navbar Toggle for Mobile -->
