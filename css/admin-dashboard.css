@@ -205,7 +205,7 @@ span {
 
 .dashboard-cards {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     gap: 2rem;
     flex-wrap: wrap;
 }
@@ -219,6 +219,11 @@ span {
     width: 30rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex: 1 1 calc(25% - 2rem); /* Flexible basis of 25% minus gap for 4 cards per row */
+    max-width: calc(25% - 2rem); /* Prevents cards from stretching too wide */
+    box-sizing: border-box; /* Includes padding and borders in width calculation */
+
+    
 }
 
 .card:hover {
@@ -235,6 +240,14 @@ span {
 .card p {
     font-size: 1.8rem;
     color: var(--text-color);
+}
+
+.chart-container {
+    background: var(--second-bg-color);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
 }
 
 
@@ -285,6 +298,10 @@ span {
 
     .footer {
         padding: 2rem 3%;
+    }
+    .card {
+        flex: 1 1 calc(50% - 2rem); /* Adjust to 2 cards per row */
+        max-width: calc(50% - 2rem);
     }
 }
 
@@ -345,6 +362,10 @@ span {
 
     .dropdown.active .dropdown-menu {
         display: block; /* Show dropdown menu when active */
+    }
+    .card {
+        flex: 1 1 100%; /* Stacks cards on top of each other for small screens */
+        max-width: 100%;
     }
 
 }
