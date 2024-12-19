@@ -486,6 +486,9 @@ span {
     color: var(--text-color);
 }
 
+
+
+
 /* Media Queries for Smaller Screens */
 @media (max-width: 768px) {
     .vdp-sidebar {
