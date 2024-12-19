@@ -973,12 +973,21 @@ soldModal.innerHTML = `
     <div class="modal-content">
         <span class="close-btn" id="close-sold-modal">&times;</span>
         <h3>Mark as Sold</h3>
-        <form id="sold-form">
-            <label for="sold-price">Sold Price ($):</label>
-            <input type="number" id="sold-price" placeholder="Enter price" required>
+<form id="sold-form">
+            <label for="buyer-name">Buyer Name:</label>
+            <input type="text" id="buyer-name" placeholder="Enter buyer's name" required>
+
+            <label for="buyer-contact">Buyer Contact:</label>
+            <input type="text" id="buyer-contact" placeholder="Enter buyer's contact" required>
+
+            <label for="sold-date">Sale Date:</label>
+            <input type="date" id="sold-date" required>
+
+            <label for="sold-price">Sale Price ($):</label>
+            <input type="number" id="sold-price" placeholder="Enter sold price" required>
 
             <label for="sold-details">Sale Details:</label>
-            <textarea id="sold-details" placeholder="Enter details" rows="5"></textarea>
+            <textarea id="sold-details" placeholder="Enter additional details" rows="4"></textarea>
 
             <div class="button-container">
                 <button type="button" class="btn cancel-btn" id="cancel-sold">Cancel</button>
@@ -1008,6 +1017,14 @@ function openMarkAsSoldModal(id, data) {
 function closeSoldModalFn() {
     vehicleToMarkSoldId = null;
     vehicleToMarkSoldData = null;
+
+    // Clear the fields in the modal
+    document.getElementById("sold-price").value = "";
+    document.getElementById("buyer-name").value = "";
+    document.getElementById("buyer-contact").value = "";
+    document.getElementById("sold-date").value = "";
+    document.getElementById("sold-details").value = "";
+
     soldModal.classList.add("hidden");
 }
 
@@ -1018,10 +1035,15 @@ cancelSoldBtn.addEventListener("click", closeSoldModalFn);
 soldForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const soldPrice = document.getElementById("sold-price").value.trim();
+    // Get values from the form
+    const soldPrice = parseFloat(document.getElementById("sold-price").value.trim());
+    const buyerName = document.getElementById("buyer-name").value.trim();
+    const buyerContact = document.getElementById("buyer-contact").value.trim();
+    const soldDate = document.getElementById("sold-date").value;
     const soldDetails = document.getElementById("sold-details").value.trim();
 
-    if (!soldPrice) {
+    if (!soldPrice || !buyerName || !buyerContact || !soldDate) {
+        alert("Please fill in all required fields.");
         return;
     }
 
@@ -1030,8 +1052,10 @@ soldForm.addEventListener("submit", async (e) => {
         const soldData = {
             ...vehicleToMarkSoldData,
             soldPrice,
+            buyerName,
+            buyerContact,
+            soldDate: new Date(soldDate),
             soldDetails,
-            soldTimestamp: new Date(),
         };
         const soldRef = collection(db, "sold");
         await addDoc(soldRef, soldData);
