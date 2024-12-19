@@ -1249,6 +1249,7 @@ span {
         font-size: 0.9rem; /* Adjust button font size */
         padding: 0.4rem;
     }
+
 }
 
 
@@ -1351,7 +1352,14 @@ span {
         display: block; /* Show dropdown menu when active */
     }
 
-    @media (max-width: 768px) {
+    .controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 1.5rem;
+        gap: 1rem;
+    }
+
         /* Inventory Container */
         .inventory-container {
             padding: 1rem;
@@ -1431,7 +1439,8 @@ span {
         .features .accordion-item {
             font-size: 1.2rem;
         }
-    }
+
+    
     
 
 }
