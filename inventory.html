@@ -65,7 +65,9 @@
         <div class="controls">
 
             <div class="filter-icon-container">
-                <i class='bx bx-filter' id="filter-icon"></i>
+                <button id="filter-icon" class="btn">
+                    <i class='bx bx-filter'></i> Filter
+                </button>
             </div>
 
             <!-- Filter Modal -->
@@ -160,9 +162,11 @@
 </div>
 
             
-            <div class="sort-icon-container">
-                <i class='bx bx-sort' id="sort-icon"></i>
-            </div>
+<div class="sort-icon-container">
+    <button id="sort-icon" class="btn">
+        <i class='bx bx-sort'></i> Sort
+    </button>
+</div>
             
             <!-- Sort Popup -->
             <div id="sort-popup" class="sort-popup hidden">
@@ -261,52 +265,79 @@
         
             // Display inventory
             function displayInventory(data) {
-                inventoryGrid.innerHTML = ''; // Clear existing content
-                data.forEach(item => {
-                    const card = document.createElement('div');
-                    card.classList.add('vehicle-card');
-                    card.innerHTML = `
-                        <a href="vehicle-details.html?id=${item.id}" class="vehicle-link">
-                            <div class="vehicle-image">
-                                <img src="${item.mainPictureUrl}" alt="${item.make} ${item.model}">
-                            </div>
-                            <div class="vehicle-details">
-                                <h3>${item.year} ${item.make} ${item.model}</h3>
-                                <p>
-                                    <span class="label">Mileage:</span>
-                                    <span class="value">${parseInt(item.mileage)} km</span>
-                                </p>
-                                <p>
-                                    <span class="label">Transmission:</span>
-                                    <span class="value">${item.transmission}</span>
-                                </p>
-                                <p class="price">
-                                    <span class="dealer-price">Premium Price: <span class="crossed-out">$${parseFloat(item.premiumPrice).toLocaleString('en-US')}</span></span>
-                                    <span class="discounted-price">$${parseInt(item.price).toLocaleString('en-US')}</span>
-                                </p>
-                                <p class="fine-print">+ Tax & Licensing</p>
-                                <button class="btn view-details-btn">View Details</button>
-                            </div>
-                        </a>
-                    `;
-                    inventoryGrid.appendChild(card);
-                });
-        
-                // Add Promotional Card
-                const promoCard = document.createElement('div');
-                promoCard.classList.add('promo-card');
-                promoCard.innerHTML = `
-                    <div class="vehicle-image">
-                        <img src="images/inventory_finance.jpeg" alt="Financing Promotion">
-                    </div>
-                    <div class="promo-details">
-                        <h3>Special Financing Rates</h3>
-                        <p>Low payments available. Get pre-approved today!</p>
-                        <a href="finance.html"><button class="btn">Financing Details</button></a>
-                    </div>
-                `;
-                inventoryGrid.appendChild(promoCard);
-            }
+    inventoryGrid.innerHTML = ''; // Clear existing content
+
+    if (data.length === 0) {
+        inventoryGrid.innerHTML = '<p>No results found for the selected filters.</p>';
+        return;
+    }
+
+    data.forEach((item, index) => {
+        // Create and append a vehicle card
+        const card = document.createElement('div');
+        card.classList.add('vehicle-card');
+        card.innerHTML = `
+            <a href="vehicle-details.html?id=${item.id}" class="vehicle-link">
+                <div class="vehicle-image">
+                    <img src="${item.mainPictureUrl}" alt="${item.make} ${item.model}">
+                </div>
+                <div class="vehicle-details">
+                    <h3>${item.year} ${item.make} ${item.model}</h3>
+                    <p>
+                        <span class="label">Mileage:</span>
+                        <span class="value">${parseInt(item.mileage)} km</span>
+                    </p>
+                    <p>
+                        <span class="label">Transmission:</span>
+                        <span class="value">${item.transmission}</span>
+                    </p>
+                    <p class="price">
+                        <span class="dealer-price">Premium Price: <span class="crossed-out">$${parseFloat(item.premiumPrice).toLocaleString('en-US')}</span></span>
+                        <span class="discounted-price">$${parseInt(item.price).toLocaleString('en-US')}</span>
+                    </p>
+                    <p class="fine-print">+ Tax & Licensing</p>
+                    <button class="btn view-details-btn">View Details</button>
+                </div>
+            </a>
+        `;
+        inventoryGrid.appendChild(card);
+
+        // Insert a promo card after every 6th vehicle card
+        if ((index + 1) % 6 === 0) {
+            const promoCard = document.createElement('div');
+            promoCard.classList.add('promo-card');
+            promoCard.innerHTML = `
+                <div class="vehicle-image">
+                    <img src="images/inventory_finance.jpeg" alt="Financing Promotion">
+                </div>
+                <div class="promo-details">
+                    <h3>Special Financing Rates</h3>
+                    <p>Low payments available. Get pre-approved today!</p>
+                    <a href="finance.html"><button class="btn">Financing Details</button></a>
+                </div>
+            `;
+            inventoryGrid.appendChild(promoCard);
+        }
+    });
+
+    // If the total number of items is not a multiple of 6, add one final promo card at the end
+    if (data.length % 6 !== 0) {
+        const finalPromoCard = document.createElement('div');
+        finalPromoCard.classList.add('promo-card');
+        finalPromoCard.innerHTML = `
+            <div class="vehicle-image">
+                <img src="images/inventory_finance.jpeg" alt="Financing Promotion">
+            </div>
+            <div class="promo-details">
+                <h3>Special Financing Rates</h3>
+                <p>Low payments available. Get pre-approved today!</p>
+                <a href="finance.html"><button class="btn">Financing Details</button></a>
+            </div>
+        `;
+        inventoryGrid.appendChild(finalPromoCard);
+    }
+}
+
         
 
         
@@ -440,6 +471,8 @@ function populateSelect(selectId, options, reset = true) {
         
                 const minPrice = parseInt(priceMinSlider.value);
                 const maxPrice = parseInt(priceMaxSlider.value);
+                const minMileage = filters.mileage_min ? parseInt(filters.mileage_min) : 0;
+                const maxMileage = filters.mileage_max ? parseInt(filters.mileage_max) : Infinity;
         
                 filteredData = inventoryData.filter(item => {
         return (!filters.make || item.make === filters.make) &&
@@ -451,7 +484,8 @@ function populateSelect(selectId, options, reset = true) {
                (!filters.engine || item.engine === filters.engine) &&
                (!filters.fuel || item.fuelType === filters.fuel) &&
                (!filters.transmission || item.transmission === filters.transmission) &&
-               item.price >= minPrice && item.price <= maxPrice;
+               item.price >= minPrice && item.price <= maxPrice &&
+               item.mileage >= minMileage && item.mileage <= maxMileage;
     });
 
         
