@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory - Shift Happens Auto Sales</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?">
+
+
+    <style>
+        .gallery-carousel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+            width: 80%;
+            max-height: 70vh; /* Limit the height of the carousel */
+        }
+    
+        .gallery-carousel .slick-slide {
+            padding: 0 10px;
+        }
+    
+        .gallery-carousel img {
+            max-height: 60vh; /* Limit the height of the images */
+            object-fit: cover; /* Preserve aspect ratio */
+            width: auto;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            border-radius: 10px; /* Add slight rounding to images */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for aesthetics */
+        }
+    
+        .gallery-carousel .slick-center img {
+            transform: scale(1.05); /* Slightly enlarge the centered image */
+            opacity: 1;
+        }
+    
+        .gallery-carousel .slick-slide:not(.slick-center) img {
+            transform: scale(0.9); /* Reduce size for non-centered images */
+            opacity: 0.7;
+        }
+    
+        .gallery-carousel .slick-prev,
+        .gallery-carousel .slick-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--main-color, #333); /* Use a default color */
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            z-index: 1000;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+    
+        .gallery-carousel .slick-prev {
+            left: -2.5rem;
+        }
+    
+        .gallery-carousel .slick-next {
+            right: -2.5rem;
+        }
+    
+        .thumbnail-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px auto;
+            gap: 10px; /* Add spacing between thumbnails */
+            width: 80%;
+        }
+    
+        .thumbnail-grid img {
+            width: 100px;
+            height: 60px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            border-radius: 5px; /* Add slight rounding to thumbnails */
+        }
+    
+        .thumbnail-grid img:hover,
+        .thumbnail-grid img.active-thumbnail {
+            transform: scale(1.1); /* Slightly enlarge hovered or active thumbnails */
+            border-color: var(--main-color, #333); /* Highlight active or hovered thumbnails */
+        }
+
+        /* Back Link */
+        .back-link {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+            margin-top: 10vh;
+        }
+
+        .back-link a {
+            font-size: 1.6rem;
+            color: var(--main-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .back-link a:hover {
+            color: var(--text-color);
+        }
+
+    
+        @media (max-width: 768px) {
+            .gallery-carousel img {
+                max-height: 50vh; /* Reduce height for smaller screens */
+            }
+    
+            .thumbnail-grid img {
+                width: 80px;
+                height: 50px;
+            }
+    
+            .gallery-carousel .slick-prev,
+            .gallery-carousel .slick-next {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+    </style>
+    
+</head>
+
+<body>
+    <div class="back-link">
+        <a href="vehicle-details.html?id=VEHICLE_ID">&lt; Back to Details</a>
+    </div>
+    <header class="header">
+        <a href="index.html" class="logo"><img src="images/IMG-20241122-WA0003_1468205583269761 (1).png" alt="">Shift Happens Auto Sales</a>
+
+        <i class='bx bx-menu' id="menu-icon"></i>
+        <nav class="navbar">
+            <a href="index.html#home" data-alt-link="home.html">Home</a>
+            <div class="dropdown">
+                <a href="inventory.html" data-alt-link="inventory.html" class="active">Inventory</a>
+                <div class="dropdown-menu">
+                    <a href="inventory.html">View Inventory</a>
+                    <a href="car-finder.html">Car Finder</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="finance.html" data-alt-link="finance.html">Finance</a>
+                <div class="dropdown-menu">
+                    <a href="finance-application.html">Finance Application</a>
+                    <a href="finance.html">Finance Department</a>
+                    <a href="finance.html#credit">Credit Tips</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="services.html" data-alt-link="services.html">Services</a>
+                <div class="dropdown-menu">
+                    <a href="detailing.html">Detailing</a>
+                    <a href="trade-in.html">Trade-ins</a>
+                    <a href="test-drive.html">Test Drives</a>
+                    <a href="car-loan.html">Loan Calculator</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="about.html" data-alt-link="about.html">Dealership</a>
+                <div class="dropdown-menu">
+                    <a href="about.html">About Us</a>
+                    <a href="index.html#contact-form">Contact</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <section class="gallery">
+        <div class="gallery-carousel">
+        </div>
+        <div class="thumbnail-grid">
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-text">
+            <p>Copyright &copy; 2024 by Shift Happens Auto Sales | All Rights Reserved. | <a href="admin-login.html">Admin</a></p>
+        </div>
+        <div class="footer-iconTop">
+            <a href="#"><i class='bx bx-up-arrow-alt'></i></a>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyDv6Jkk-7XqeCMTy14Fjs_upMAjVM7uNVg",
+            authDomain: "shift-happens-auto-sales.firebaseapp.com",
+            projectId: "shift-happens-auto-sales",
+            storageBucket: "shift-happens-auto-sales.appspot.com",
+            messagingSenderId: "224158026936",
+            appId: "1:224158026936:web:690dd13405f6b1bfc4b84d"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+    
+        async function loadFullscreenGallery() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const vehicleId = urlParams.get("id");
+    
+            if (vehicleId) {
+                const vehicleRef = doc(db, "inventory", vehicleId);
+                const vehicleDoc = await getDoc(vehicleRef);
+    
+                if (vehicleDoc.exists()) {
+                    const data = vehicleDoc.data();
+    
+                    const galleryCarousel = document.querySelector(".gallery-carousel");
+                    const thumbnailGrid = document.querySelector(".thumbnail-grid");
+    
+                    // Clear any existing content
+                    galleryCarousel.innerHTML = "";
+                    thumbnailGrid.innerHTML = "";
+    
+                    const imageUrls = [data.mainPictureUrl, ...data.secondaryPicturesUrls];
+    
+                    // Populate the gallery-carousel
+                    imageUrls.forEach((url) => {
+                        const div = document.createElement("div");
+                        const img = document.createElement("img");
+                        img.src = url;
+                        img.alt = "Gallery Image";
+                        div.appendChild(img);
+                        galleryCarousel.appendChild(div);
+                    });
+    
+                    // Populate the thumbnail-grid
+                    imageUrls.forEach((url) => {
+                        const img = document.createElement("img");
+                        img.src = url;
+                        img.alt = "Gallery Image";
+                        thumbnailGrid.appendChild(img);
+                    });
+    
+                    // Initialize the Slick carousel to match the original structure
+                    $(".gallery-carousel").slick({
+                        infinite: true,
+                        slidesToShow: 1,
+                        centerMode: true,
+                        variableWidth: true,
+                        prevArrow: '<button type="button" class="slick-prev">&lt;</button>',
+                        nextArrow: '<button type="button" class="slick-next">&gt;</button>',
+                    });
+    
+                    // Add click event to thumbnails to navigate the carousel
+                    $(".thumbnail-grid img").on("click", function () {
+                        const index = $(this).index();
+                        $(".gallery-carousel").slick("slickGoTo", index);
+                    });
+                } else {
+                    alert("Vehicle not found!");
+                }
+            } else {
+                alert("No vehicle ID provided!");
+            }
+        }
+    
+        loadFullscreenGallery();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const vehicleId = urlParams.get("id");
+
+            if (vehicleId) {
+                document.querySelector(".back-link a").href = `vehicle-details.html?id=${vehicleId}`;
+                
+                const vehicleRef = doc(db, "inventory", vehicleId);
+                const vehicleDoc = await getDoc(vehicleRef);
+
+                if (vehicleDoc.exists()) {
+                    // Existing functionality...
+                } else {
+                    alert("Vehicle not found!");
+                }
+            } else {
+                alert("No vehicle ID provided!");
+            }
+
+    </script>
+
+<script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+    let menuIcon = document.querySelector('#menu-icon');
+    let navbar = document.querySelector('.navbar');
+
+    if (menuIcon && navbar) {
+        menuIcon.onclick = () => {
+            menuIcon.classList.toggle('bx-x');
+            navbar.classList.toggle('active');
+        };
+    }
+
+    // Other scripts...
+});
+    </script>
+</body>
+
+</html>

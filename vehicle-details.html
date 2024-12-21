@@ -55,7 +55,7 @@
                 <a href="about.html" data-alt-link="about.html">Dealership</a>
                 <div class="dropdown-menu">
                     <a href="about.html">About Us</a>
-                    <a href="index.html#contact">Contact</a>
+                    <a href="index.html#contact-form">Contact</a>
                 </div>
             </div>
         </nav>
@@ -71,7 +71,10 @@
                 <div class="carousel">
                     <div class="main-image">
                         <button class="carousel-button prev">&lt;</button>
-                        <img id="main-carousel-image" src="" alt="Vehicle Image">
+                        <div class="main-image-container">
+                            <img id="main-carousel-image" src="" alt="Vehicle Image">
+                            <div class="hover-overlay">View Fullscreen</div>
+                        </div>
                         <button class="carousel-button next">&gt;</button>
                     </div>
                     <div class="thumbnail-strip">
@@ -146,6 +149,11 @@
             appId: "1:224158026936:web:690dd13405f6b1bfc4b84d"
         };
 
+        document.querySelector(".main-image-container").addEventListener("click", () => {
+            const vehicleId = new URLSearchParams(window.location.search).get("id");
+            window.location.href = `fullscreen.html?id=${vehicleId}`;
+        });
+
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
@@ -167,6 +175,39 @@
                     document.getElementById("vehicle-vin").textContent = `VIN: ${data.vin || "N/A"}`;
                     document.getElementById("vehicle-stock").textContent = `Stock #: ${data.stock || "N/A"}`;
                     document.getElementById("vehicle-description").textContent = data.description || "No description available.";
+                    
+                    // Set up the description with "Read More" functionality
+                    const descriptionElement = document.getElementById("vehicle-description");
+                    const fullDescription = data.description || "No description available.";
+                    const previewLength = 200;
+
+                    if (fullDescription.length > previewLength) {
+                        const previewText = fullDescription.substring(0, previewLength) + "...";
+                        descriptionElement.innerHTML = `
+                            <p id="description-preview">${previewText}</p>
+                            <p id="description-full" style="display: none;">${fullDescription}</p>
+                            <a href="#" id="toggle-description-link">See More</a>
+                        `;
+
+                        const toggleLink = document.getElementById("toggle-description-link");
+                        const preview = document.getElementById("description-preview");
+                        const fullText = document.getElementById("description-full");
+
+                        toggleLink.addEventListener("click", (event) => {
+                            event.preventDefault();
+                            if (toggleLink.textContent === "See More") {
+                                preview.style.display = "none";
+                                fullText.style.display = "inline";
+                                toggleLink.textContent = "See Less";
+                            } else {
+                                preview.style.display = "inline";
+                                fullText.style.display = "none";
+                                toggleLink.textContent = "See More";
+                            }
+                        });
+                    } else {
+                        descriptionElement.textContent = fullDescription;
+                    }
 
                     // Update key details in grid layout
                     document.getElementById("vehicle-details-list").innerHTML = `
@@ -203,6 +244,10 @@
                     });
 
                     setupCarousel();
+                    // Add click event to redirect to fullscreen page
+                    document.getElementById("main-carousel-image").addEventListener("click", () => {
+                    window.location.href = `fullscreen.html?id=${vehicleId}`;
+                    });
                 } else {
                     alert("Vehicle not found!");
                 }
@@ -330,6 +375,16 @@
             });
         }
     });
+
+    document.addEventListener("DOMContentLoaded", () => {
+    const body = document.body;
+    body.style.display = "none";
+
+    window.onload = () => {
+        body.style.display = "block";
+    };
+});
+
 </script>
 </body>
 

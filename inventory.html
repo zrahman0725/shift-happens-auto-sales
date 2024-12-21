@@ -51,7 +51,7 @@
                 <a href="about.html" data-alt-link="about.html">Dealership</a>
                 <div class="dropdown-menu">
                     <a href="about.html">About Us</a>
-                    <a href="index.html#contact">Contact</a>
+                    <a href="index.html#contact-form">Contact</a>
                 </div>
             </div>
         </nav>
@@ -176,6 +176,7 @@
                     <div class="sort-options">
                         <label for="sort-select">Sort by:</label>
                         <select id="sort-select">
+                            <option value="" disabled selected>Sort By</option>
                             <option value="year-asc">Year (Ascending)</option>
                             <option value="year-desc">Year (Descending)</option>
                             <option value="price-asc">Price (Low to High)</option>
@@ -208,7 +209,7 @@
             <p>Copyright &copy; 2024 by Shift Happens Auto Sales | All Rights Reserved. | <a href="admin-login.html">Admin</a></p>
         </div>
         <div class="footer-iconTop">
-            <a href="#">Filter<i class='bx bx-up-arrow-alt'></i></a>
+            <a href="#"><i class='bx bx-up-arrow-alt'></i></a>
         </div>
     </footer>
 
@@ -308,7 +309,7 @@
             promoCard.classList.add('promo-card');
             promoCard.innerHTML = `
                 <div class="vehicle-image">
-                    <img src="images/inventory_finance.jpeg" alt="Financing Promotion">
+                    <img src="images/promo.jpg" alt="Financing Promotion">
                 </div>
                 <div class="promo-details">
                     <h3>Special Financing Rates</h3>
@@ -611,7 +612,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             promoCard.classList.add('promo-card');
             promoCard.innerHTML = `
                 <div class="vehicle-image">
-                    <img src="images/inventory_finance.jpeg" alt="Financing Promotion">
+                    <img src="images/promo.jpg" alt="Financing Promotion">
                 </div>
                 <div class="promo-details">
                     <h3>Special Financing Rates</h3>
@@ -629,7 +630,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         finalPromoCard.classList.add('promo-card');
         finalPromoCard.innerHTML = `
             <div class="vehicle-image">
-                <img src="images/inventory_finance.jpeg" alt="Financing Promotion">
+                <img src="images/promo.jpg" alt="Financing Promotion">
             </div>
             <div class="promo-details">
                 <h3>Special Financing Rates</h3>
