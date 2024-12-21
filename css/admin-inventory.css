@@ -214,7 +214,8 @@ span {
     color: var(--main-color);
 }
 
-#add-vehicle-btn {
+#add-vehicle-btn, 
+#add-via-vin-btn {
     display: inline-block;
     background: var(--main-color);
     color: var(--text-color);
@@ -1511,3 +1512,34 @@ span {
     font-size: 1.6rem;
     margin-top: 1rem;
 }
+
+#vin-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+#vin-modal .modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+#vin-modal input {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.hidden {
+    display: none;
+}
+
