@@ -67,7 +67,7 @@
                 Provide your details below, and let us help you drive away with the car of your dreams.
             </p>
         </div>
-        <form class="finance-application-form">
+        <form id="financeApplicationForm" class="finance-application-form">
             <h3>Personal Information</h3>
             <div class="form-group">
                 <div>
@@ -130,6 +130,19 @@
                         <option value="" disabled selected>Select your province</option>
                         <option value="AB">Alberta</option>
                         <option value="BC">British Columbia</option>
+                        <option value="MB">Manitoba</option>
+                        <option value="NB">New Brunswick</option>
+                        <option value="NL">Newfoundland and Labrador</option>
+                        <option value="NS">Nova Scotia</option>
+                        <option value="NT">Northwest Territories</option>
+                        <option value="NU">Nunavut</option>
+                        <option value="ON">Ontario</option>
+                        <option value="PE">Prince Edward Island	</option>
+                        <option value="QC">Quebec</option>
+                        <option value="SK">Saskatchewan</option>
+                        <option value="YT">Yukon</option>
+
+
                         <!-- Add other provinces -->
                     </select>
                 </div>
@@ -228,7 +241,7 @@
         </div>
         <div>
             <label for="sin">SIN</label>
-            <input type="number" id="sin" name="sin" placeholder="Enter SIN number">
+            <input type="text" id="sin" name="sin" placeholder="Enter SIN number" pattern="\d*" maxlength="9">
         </div>
     </div>
 </div>
@@ -415,7 +428,8 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, addDoc, serverTimestamp} from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+
 
     const firebaseConfig = {
         apiKey: "AIzaSyDv6Jkk-7XqeCMTy14Fjs_upMAjVM7uNVg",
@@ -541,6 +555,58 @@ document.getElementById('vehicle-search').addEventListener('focus', adjustDropdo
             selectedVehicleContainer.style.display = 'none';
             vehicleInput.value = ''; // Clear selected vehicle
         });
+    });
+
+
+    // Handle form submission
+    document.getElementById("financeApplicationForm").addEventListener("submit", async (event) => {
+        event.preventDefault(); // Prevent default form submission
+
+        // Collect form data
+        const formData = {
+            formType: "finance-application",
+            prefix: document.getElementById("prefix").value,
+            firstName: document.getElementById("first-name").value,
+            lastName: document.getElementById("last-name").value,
+            phone: document.getElementById("phone").value,
+            email: document.getElementById("email").value,
+            contactMethod: document.getElementById("contact-method").value,
+            address: document.getElementById("address").value,
+            city: document.getElementById("city").value,
+            province: document.getElementById("province").value,
+            postalCode: document.getElementById("postal-code").value,
+            yearsLived: document.getElementById("years-lived").value,
+            housingStatus: document.getElementById("housing-status").value,
+            monthlyPayment: document.getElementById("monthly-payment").value,
+            employmentType: document.getElementById("employment-type").value || null,
+            occupation: document.getElementById("occupation").value || null,
+            employer: document.getElementById("employer").value || null,
+            employmentAddress: document.getElementById("employment-address").value || null,
+            durationYear: document.getElementById("duration-year").value || null,
+            durationMonth: document.getElementById("duration-month").value || null,
+            annualIncome: document.getElementById("annual-income").value || null,
+            sin: document.getElementById("sin").value || null,
+            bankruptcy: document.getElementById("bankruptcy").value,
+            repossession: document.getElementById("repossession").value,
+            coSigner: document.getElementById("co-signer").value,
+            creditRating: document.getElementById("credit-rating").value,
+            previousEmployment: {
+                previousEmployer: document.getElementById("previous-employer").value || null,
+                previousPhone: document.getElementById("previous-phone").value || null,
+                previousDurationYear: document.getElementById("previous-duration-year").value || null,
+                previousDurationMonth: document.getElementById("previous-duration-month").value || null
+            },
+            timestamp: serverTimestamp(),
+        };
+
+        try {
+            // Save data to Firestore in the 'new-forms' collection
+            await addDoc(collection(db, "new-forms"), formData);
+
+            document.getElementById("financeApplicationForm").reset(); // Reset form
+        } catch (error) {
+            console.error("Error submitting form: ", error);
+        }
     });
 </script>
 

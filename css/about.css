@@ -293,3 +293,165 @@ span {
         margin-top: 2rem;
     }
 }
+
+
+.about-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+    padding: 5rem 0;
+}
+
+.about-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.about-img {
+    width: 50%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.about-text {
+    width: 50%;
+}
+
+.about-text h3 {
+    font-size: 2.4rem;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: 2.4rem;
+    margin-bottom: 1rem;
+}
+
+.about-text p {
+    font-size: 1.6rem;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .about-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-img,
+    .about-text {
+        width: 100%;
+    }
+
+    .about-text {
+        padding: 0 2rem;
+    }
+}
+
+.benefits-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center the list horizontally */
+    gap: 2rem; /* Maintain spacing between list items */
+    margin: 0 auto; /* Center within the parent container */
+}
+
+.benefits-list i {
+    font-size: 2rem; /* Adjust icon size */
+    color: #fff; /* Icon color */
+    background-color: #4d4d4d; /* Background color */
+    width: 60px; /* Circle width */
+    height: 60px; /* Circle height */
+    display: flex; /* Center the icon */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    border-radius: 50%; /* Make it a circle */
+    margin-bottom: 15px; /* Space below the icon */
+}
+
+
+
+.benefits-list li {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s;
+    position: relative;
+}
+
+.benefits-list li img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.benefits-list .content {
+    display: none;
+    padding: 1rem;
+    background: var(--bg-color);
+    border-radius: 0.5rem;
+    position: absolute;
+    top: 10rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20rem;
+    text-align: center;
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 90%;
+    max-height: 80%;
+    overflow-y: auto;
+    text-align: center;
+    position: relative;
+    color: black;
+}
+
+.popup-content .close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.popup-content #popup-title {
+    margin-top: 2rem;
+}
+
+.popup-content #popup-text {
+    margin-top: 1rem;
+}
+
+.popup-content p {
+    font-size: 3rem; /* Adjust this value as needed */
+}

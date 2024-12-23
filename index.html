@@ -257,7 +257,6 @@
                 event.preventDefault();
                 emailjs.sendForm('service_1gclp48', 'template_vy5h7c6', contactForm)
                     .then((response) => {
-                        alert('Your message has been sent successfully!');
                         contactForm.reset();
                     })
                     .catch((error) => {
@@ -281,7 +280,7 @@
 <!-- Firebase Initialization and Carousel Population -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDv6Jkk-7XqeCMTy14Fjs_upMAjVM7uNVg",
@@ -381,6 +380,32 @@ document.addEventListener("DOMContentLoaded", populateMakeAndModel);
                 </div>`;
             carousel.appendChild(card);
         });
+    });
+
+        // Handle form submission
+        document.getElementById("contact-form").addEventListener("submit", async (event) => {
+        event.preventDefault(); // Prevent default form submission
+
+        // Collect form data
+        const formData = {
+            formType: "contact-form",
+            name: document.querySelector("[name='name']").value,
+            email: document.querySelector("[name='email']").value,
+            mobile: document.querySelector("[name='mobile']").value,
+            subject: document.querySelector("[name='subject']").value,
+            message: document.getElementById("message").value,
+            timestamp: serverTimestamp(),
+        };
+
+        try {
+            // Save data to Firestore in the 'new-forms' collection
+            await addDoc(collection(db, "new-forms"), formData);
+
+            document.getElementById("contact-form").reset(); // Reset form
+        } catch (error) {
+            console.error("Error submitting form: ", error);
+            alert("Oops! There was a problem submitting your form. Please try again later.");
+        }
     });
 </script>
 

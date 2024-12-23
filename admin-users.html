@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <h1>User Management</h1>
+        <div id="user-info">
+            <p><strong>Email:</strong> <span id="user-email">N/A</span></p>
+            <p><strong>Display Name:</strong> <span id="user-display-name">N/A</span></p>
+            <button id="update-name-btn">Update Display Name</button>
+            <button id="delete-account-btn" style="background-color: red; color: white;">Delete Account</button>
+        </div>
+        <div id="admin-actions">
+            <h2>Admin Actions</h2>
+            <p>Admin-only features like listing users require a backend.</p>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, updateProfile, deleteUser } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+        // Your Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDv6Jkk-7XqeCMTy14Fjs_upMAjVM7uNVg",
+            authDomain: "shift-happens-auto-sales.firebaseapp.com",
+            projectId: "shift-happens-auto-sales",
+            storageBucket: "shift-happens-auto-sales.appspot.com",
+            messagingSenderId: "224158026936",
+            appId: "1:224158026936:web:690dd13405f6b1bfc4b84d",
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // DOM Elements
+        const userEmail = document.getElementById("user-email");
+        const userDisplayName = document.getElementById("user-display-name");
+        const updateNameBtn = document.getElementById("update-name-btn");
+        const deleteAccountBtn = document.getElementById("delete-account-btn");
+
+        // Display current user info
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                userEmail.textContent = user.email || "N/A";
+                userDisplayName.textContent = user.displayName || "N/A";
+            } else {
+                alert("No user is logged in.");
+                window.location.href = "/login.html"; // Redirect to login
+            }
+        });
+
+        // Update display name
+        updateNameBtn.addEventListener("click", async () => {
+            const newName = prompt("Enter your new display name:");
+            if (newName) {
+                try {
+                    await updateProfile(auth.currentUser, { displayName: newName });
+                    userDisplayName.textContent = newName;
+                    alert("Display name updated!");
+                } catch (error) {
+                    console.error("Error updating display name:", error);
+                }
+            }
+        });
+
+        // Delete account
+        deleteAccountBtn.addEventListener("click", async () => {
+            if (confirm("Are you sure you want to delete your account?")) {
+                try {
+                    await deleteUser(auth.currentUser);
+                    alert("Account deleted.");
+                    window.location.href = "/login.html"; // Redirect to login
+                } catch (error) {
+                    console.error("Error deleting account:", error);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

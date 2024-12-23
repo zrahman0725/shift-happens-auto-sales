@@ -275,7 +275,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
     
         const firebaseConfig = {
             apiKey: "AIzaSyDv6Jkk-7XqeCMTy14Fjs_upMAjVM7uNVg",
@@ -401,35 +401,222 @@
                 vehicleInput.value = ''; // Clear selected vehicle
             });
         });
+
+        // Handle form submission
+    document.querySelector(".test-drive-from").addEventListener("submit", async (event) => {
+        event.preventDefault(); // Prevent default form submission
+
+        // Collect personal information
+        const formData = {
+            formType: "test-drive",
+            firstName: document.getElementById("first-name").value,
+            lastName: document.getElementById("last-name").value,
+            phone: document.getElementById("phone").value,
+            email: document.getElementById("email").value,
+            contactMethod: document.getElementById("contact-method").value,
+            selectedVehicle: document.getElementById("selected-vehicle-text").textContent || null,
+            availability: [],
+            timestamp: serverTimestamp(),
+        };
+
+        // Collect availability data
+        const days = document.querySelectorAll(".day-toggle:checked");
+        days.forEach(day => {
+            const dayName = day.value;
+            const selectedTimes = Array.from(
+                day.closest(".day").querySelectorAll(".selected-times div")
+            ).map(timeDiv => timeDiv.textContent.replace("✖", "").trim());
+
+            formData.availability.push({ day: dayName, times: selectedTimes });
+        });
+
+        try {
+            // Save data to Firestore in the 'new-forms' collection
+            await addDoc(collection(db, "new-forms"), formData);
+
+            document.querySelector(".test-drive-from").reset(); // Reset form
+            document.getElementById("selected-vehicle-text").textContent = ""; // Clear selected vehicle
+        } catch (error) {
+            console.error("Error submitting form: ", error);
+            alert("Error submitting form. Please try again.");
+        }
+    });
     </script>
     
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
+    const availabilityContainer = document.querySelector(".availability-container");
+
+    // Generate time options dynamically for each day
+    const generateTimeOptions = (day) => {
+        const times = [];
+        let startHour, endHour;
+
+        // Define working hours for each day
+        switch (day) {
+            case "Monday":
+            case "Tuesday":
+            case "Wednesday":
+            case "Thursday":
+                startHour = 10;
+                endHour = 19; // 7 PM
+                break;
+            case "Friday":
+            case "Saturday":
+                startHour = 10;
+                endHour = 18; // 6 PM
+                break;
+            case "Sunday":
+                return ""; // Closed
+            default:
+                return ""; // Invalid day
+        }
+
+        // Generate time slots
+        for (let hour = startHour; hour <= endHour; hour++) {
+            const formattedHour = hour % 12 === 0 ? 12 : hour % 12; // Convert to 12-hour format
+            const amPm = hour < 12 ? "AM" : "PM";
+            const timeString = `${formattedHour}:00 ${amPm}`;
+            times.push(`<option value="${timeString}">${timeString}</option>`);
+        }
+
+        return times.join("");
+    };
+
+    // Populate time options for each day's start and end time dropdowns
+    const populateTimeOptions = () => {
+        document.querySelectorAll(".day").forEach(dayElement => {
+            const day = dayElement.getAttribute("data-day"); // Get day name from the data attribute
+            const timeOptionsHTML = generateTimeOptions(day);
+
+            const startTimeSelect = dayElement.querySelector(".start-time");
+            const endTimeSelect = dayElement.querySelector(".end-time");
+
+            if (timeOptionsHTML) {
+                startTimeSelect.innerHTML = timeOptionsHTML;
+                endTimeSelect.innerHTML = timeOptionsHTML;
+                startTimeSelect.disabled = false;
+                endTimeSelect.disabled = false;
+            } else {
+                // Disable dropdowns for closed days
+                startTimeSelect.innerHTML = "";
+                endTimeSelect.innerHTML = "";
+                startTimeSelect.disabled = true;
+                endTimeSelect.disabled = true;
+            }
+        });
+    };
+
+    // Call populateTimeOptions after DOM is fully loaded
+    populateTimeOptions();
+
+    // Show or hide time-picker based on checkbox toggle
+    availabilityContainer.addEventListener("change", (event) => {
+        if (event.target.classList.contains("day-toggle")) {
+            const timePicker = event.target.closest(".day").querySelector(".time-picker");
+            timePicker.style.display = event.target.checked ? "block" : "none";
+        }
+    });
+
+    // Add time slot functionality
+    availabilityContainer.addEventListener("click", (event) => {
+        if (event.target.classList.contains("add-time-slot")) {
+            const timeSlot = event.target.closest(".time-slot");
+            const startTime = timeSlot.querySelector(".start-time").value;
+            const endTime = timeSlot.querySelector(".end-time").value;
+
+            if (startTime && endTime) {
+                const selectedTimes = timeSlot.closest(".time-picker").querySelector(".selected-times");
+
+                // Prevent duplicates
+                const newTimeRange = `${startTime} to ${endTime}`;
+                const existingTimes = Array.from(selectedTimes.children).map(div => div.textContent.replace("✖", "").trim());
+
+                if (!existingTimes.includes(newTimeRange)) {
+                    const timeDiv = document.createElement("div");
+                    timeDiv.textContent = newTimeRange;
+
+                    // Add remove button
+                    const removeButton = document.createElement("button");
+                    removeButton.textContent = "✖";
+                    removeButton.style.marginLeft = "8px";
+                    removeButton.style.cursor = "pointer";
+                    removeButton.addEventListener("click", () => {
+                        timeDiv.remove();
+                    });
+
+                    timeDiv.appendChild(removeButton);
+                    selectedTimes.appendChild(timeDiv);
+                } else {
+                }
+            } else {
+            }
+        }
+    });
+});
             const availabilityContainer = document.querySelector(".availability-container");
     
             // Generate time options dynamically
-            const generateTimeOptions = () => {
-                const times = [];
-                for (let hour = 0; hour < 24; hour++) {
-                    const formattedHour = hour % 12 === 0 ? 12 : hour % 12; // Convert to 12-hour format
-                    const amPm = hour < 12 ? "AM" : "PM";
-                    const timeString = `${formattedHour}:00 ${amPm}`;
-                    times.push(`<option value="${timeString}">${timeString}</option>`);
-                }
-                return times.join("");
-            };
+            const generateTimeOptions = (day) => {
+            const times = [];
+            let startHour, endHour;
+
+            // Define working hours for each day
+            switch (day) {
+                case "Monday":
+                case "Tuesday":
+                case "Wednesday":
+                case "Thursday":
+                    startHour = 10;
+                    endHour = 19; // 7 PM
+                    break;
+                case "Friday":
+                case "Saturday":
+                    startHour = 10;
+                    endHour = 18; // 6 PM
+                    break;
+                case "Sunday":
+                    return ""; // Closed
+                default:
+                    return ""; // Invalid day
+            }
+
+            // Generate time slots
+            for (let hour = startHour; hour <= endHour; hour++) {
+                const formattedHour = hour % 12 === 0 ? 12 : hour % 12; // Convert to 12-hour format
+                const amPm = hour < 12 ? "AM" : "PM";
+                const timeString = `${formattedHour}:00 ${amPm}`;
+                times.push(`<option value="${timeString}">${timeString}</option>`);
+            }
+
+            return times.join("");
+        };
+
     
             const timeOptionsHTML = generateTimeOptions();
     
-            // Populate time options for all select elements
             const populateTimeOptions = () => {
-                document.querySelectorAll(".start-time, .end-time").forEach(select => {
-                    select.innerHTML = timeOptionsHTML;
-                });
-            };
-    
-            // Populate options on page load
-            populateTimeOptions();
+        document.querySelectorAll(".day").forEach(dayElement => {
+            const day = dayElement.getAttribute("data-day"); // Get day name from the data attribute
+            const timeOptionsHTML = generateTimeOptions(day);
+
+            // Populate start and end time dropdowns
+            const startTimeSelect = dayElement.querySelector(".start-time");
+            const endTimeSelect = dayElement.querySelector(".end-time");
+
+            if (timeOptionsHTML) {
+                startTimeSelect.innerHTML = timeOptionsHTML;
+                endTimeSelect.innerHTML = timeOptionsHTML;
+            } else {
+                // Disable dropdowns for closed days
+                startTimeSelect.disabled = true;
+                endTimeSelect.disabled = true;
+            }
+        });
+    };
+
+    // Call populateTimeOptions after DOM is fully loaded
+    document.addEventListener("DOMContentLoaded", populateTimeOptions);
     
             // Show or hide time-picker based on checkbox
             availabilityContainer.addEventListener("change", (event) => {
@@ -476,14 +663,13 @@
                             timeDiv.appendChild(removeButton);
                             selectedTimes.appendChild(timeDiv);
                         } else {
-                            alert("This time range has already been added.");
                         }
                     } else {
-                        alert("Please select both a start and end time.");
                     }
                 }
             });
-        });
+
+            
     </script>
 
     <!-- Navbar Toggle for Mobile -->

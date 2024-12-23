@@ -6,11 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About - Shift Happens Auto Sales</title>
-
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet">
-
     <link rel="stylesheet" href="css/about.css">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 
 </head>
 
@@ -59,9 +58,116 @@
         
     </header>
 
-    <section class="form" id="form">
-        <h2 class="heading">Coming <span>Soon</span></h2>
+    <section class="about" id="about">
+        <div class="about-container">
+            <div class="about-content" style="justify-content: center;">
+                <h2 class="heading">About <span>Us</span></h2>
+            </div>
+    
+            <div class="about-content">
+                <h3>Our Benefits</h3>
+                <ul class="benefits-list">
+                    <li>
+                        <i class="fas fa-car"></i>
+                        <div class="content">
+                            <h3>Wide Vehicle Selection</h3>
+                            <p>We offer a diverse inventory of new and pre-owned vehicles to suit every need, budget, and lifestyle.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <div class="content">
+                            <h3>Flexible Financing</h3>
+                            <p>Get competitive financing options tailored to your budget and needs, making car ownership a reality.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-shield-alt"></i>
+                        <div class="content">
+                            <h3>Certified Pre-Owned</h3>
+                            <p>Our certified pre-owned vehicles are inspected and reconditioned to meet the highest standards for quality and reliability.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-clipboard-list"></i>
+                        <div class="content">
+                            <h3>Warranty Options</h3>
+                            <p>Enjoy peace of mind with our extended warranty packages for both new and pre-owned vehicles.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-road"></i>
+                        <div class="content">
+                            <h3>Test Drive Opportunities</h3>
+                            <p>Take your dream car for a spin and experience its performance and comfort firsthand.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-sync"></i>
+                        <div class="content">
+                            <h3>Trade-In Assistance</h3>
+                            <p>We make it easy to trade in your old vehicle for top dollar, reducing the cost of your new car.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-user-tie"></i>
+                        <div class="content">
+                            <h3>Exceptional Customer Service</h3>
+                            <p>Our friendly and knowledgeable staff is here to help you every step of the way, from browsing to purchase.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-tools"></i>
+                        <div class="content">
+                            <h3>Maintenance & Support</h3>
+                            <p>Our dealership offers ongoing maintenance and support to keep your vehicle running like new.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+    
+            <div class="about-content" style="text-align: center;">
+                <img src="images/124068.jpg" alt="Showroom Image" class="about-img" style="height: 350px;">
+                <div class="about-text">
+                    <h3>Our Signature Experience</h3>
+                    <p>At Shift Happens Auto Sales, we combine exceptional service with a seamless buying experience. Whether you're looking for a family SUV, a fuel-efficient sedan, or a rugged truck, our team is here to guide you every step of the way.</p>
+                </div>
+            </div>
+    
+            <div class="about-content" style="text-align: center;">
+                <div class="about-text">
+                    <h3>Our Philosophy</h3>
+                    <p>We believe buying a car should be exciting and stress-free. At Shift Happens Auto Sales, we prioritize transparency, quality, and customer satisfaction to ensure you drive away with confidence.</p>
+                </div>
+                <img src="images/bugatti.png" alt="Philosophy Image" class="about-img">
+            </div>
+            
+            <div class="about-content" style="text-align: center;">
+                <img src="images/finance.png" alt="Services Image" class="about-img">
+                <div class="about-text">
+                    <h3>Our Services</h3>
+                    <p>We offer a range of services, including trade-ins, financing, maintenance, and vehicle customization. Let us take care of everything while you focus on enjoying your new ride.</p>
+                </div>
+            </div>
+            
+            <div class="about-content" style="text-align: center;">
+                <div class="about-text">
+                    <h3>Our Team</h3>
+                    <p>Our team of automotive experts is passionate about helping you find the perfect car. With years of experience and a commitment to excellence, we're here to make your car-buying journey smooth and enjoyable.</p>
+                </div>
+                <img src="images/family.png" alt="Team Image" class="about-img">
+            </div>
+        </div>
     </section>
+
+    <div id="popup-container" class="popup-container">
+        <div class="popup-content">
+            <span class="close-button">&times;</span>
+            <h2 id="popup-title"></h2>
+            <div id="popup-text"></div>
+        </div>
+    </div>
+    
 
     <footer class="footer">
         <div class="footer-text">
@@ -75,6 +181,26 @@
 
     <!-- Navbar Toggle for Mobile -->
 <script>
+    document.querySelectorAll('.benefits-list li').forEach(item => {
+        item.addEventListener('click', () => {
+            const title = item.querySelector('.content h3').innerHTML;
+            const content = item.querySelector('.content p').innerHTML;
+            document.getElementById('popup-title').innerHTML = title;
+            document.getElementById('popup-text').innerHTML = content;
+            document.getElementById('popup-container').style.display = 'flex';
+        });
+    });
+
+    document.querySelector('.close-button').addEventListener('click', () => {
+        document.getElementById('popup-container').style.display = 'none';
+    });
+
+    document.getElementById('popup-container').addEventListener('click', (event) => {
+        if (event.target === document.getElementById('popup-container')) {
+            document.getElementById('popup-container').style.display = 'none';
+        }
+    });
+        
     document.addEventListener('DOMContentLoaded', () => {
         const menuIcon = document.getElementById('menu-icon');
         const navbar = document.querySelector('.navbar');

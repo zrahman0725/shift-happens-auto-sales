@@ -167,6 +167,65 @@
         </div>
     </footer>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+    
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDv6Jkk-7XqeCMTy14Fjs_upMAjVM7uNVg",
+            authDomain: "shift-happens-auto-sales.firebaseapp.com",
+            projectId: "shift-happens-auto-sales",
+            storageBucket: "shift-happens-auto-sales.appspot.com",
+            messagingSenderId: "224158026936",
+            appId: "1:224158026936:web:690dd13405f6b1bfc4b84d"
+        };
+    
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+    
+        // Handle form submission
+        document.querySelector(".car-finder-form").addEventListener("submit", async (event) => {
+            event.preventDefault(); // Prevent default form submission
+    
+            // Collect form data
+            const formData = {
+                formType: "car-finder",
+                firstName: document.getElementById("first-name").value,
+                lastName: document.getElementById("last-name").value,
+                email: document.getElementById("email").value,
+                phone: document.getElementById("phone").value,
+                contactMethod: document.getElementById("contact-method").value,
+                vehiclePreferences: {
+                    make: document.getElementById("make").value,
+                    model: document.getElementById("model").value || null,
+                    year: document.getElementById("year").value || null,
+                    budget: document.getElementById("budget").value || null,
+                    additionalInfo: document.getElementById("additional-info").value || null,
+                    advancedSearch: document.getElementById("advanced-search").checked,
+                    advancedDetails: {
+                        bodyStyle: document.getElementById("body-style").value || null,
+                        transmission: document.getElementById("transmission").value || null,
+                        mileage: document.getElementById("mileage").value || null,
+                    }
+                },
+                timestamp: serverTimestamp(),
+            };
+    
+            try {
+                // Save data to Firestore in the 'new-forms' collection
+                await addDoc(collection(db, "new-forms"), formData);
+    
+                document.querySelector(".car-finder-form").reset(); // Reset form
+            } catch (error) {
+                console.error("Error submitting form: ", error);
+                alert("Error submitting form. Please try again.");
+            }
+        });
+    </script>
+    
+
     <script>
         document.getElementById('advanced-search').addEventListener('change', function() {
             const advancedFields = document.querySelector('.advanced-search-fields');
