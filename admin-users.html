@@ -55,7 +55,7 @@
                 userDisplayName.textContent = user.displayName || "N/A";
             } else {
                 alert("No user is logged in.");
-                window.location.href = "/login.html"; // Redirect to login
+                window.location.href = "/admin-login.html"; // Redirect to login
             }
         });
 
@@ -79,7 +79,7 @@
                 try {
                     await deleteUser(auth.currentUser);
                     alert("Account deleted.");
-                    window.location.href = "/login.html"; // Redirect to login
+                    window.location.href = "/admin-login.html"; // Redirect to login
                 } catch (error) {
                     console.error("Error deleting account:", error);
                 }
