@@ -50,12 +50,8 @@
 
         // Display current user info
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                userEmail.textContent = user.email || "N/A";
-                userDisplayName.textContent = user.displayName || "N/A";
-            } else {
-                alert("No user is logged in.");
-                window.location.href = "/admin-login.html"; // Redirect to login
+            if (!user) {
+                window.location.href = "admin-login.html";
             }
         });
 

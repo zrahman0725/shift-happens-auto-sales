@@ -411,6 +411,13 @@
             appId: "1:224158026936:web:690dd13405f6b1bfc4b84d",
             measurementId: "G-09D7MLNSNS"
         };
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "admin-login.html";
+            }
+        });
+        
         let currentEditData = null;
 
         const app = initializeApp(firebaseConfig);
@@ -1255,8 +1262,21 @@
                     soldDate: new Date(soldDate),
                     soldDetails,
                 };
+
+                const formData = {
+                    ...vehicleToMarkSoldData,
+                    formType: "sold-form",
+                    soldPrice,
+                    buyerName,
+                    buyerContact,
+                    soldDate: new Date(soldDate),
+                    soldDetails,
+                };
+
                 const soldRef = collection(db, "sold");
                 await addDoc(soldRef, soldData);
+                const soldNum = collection(db, "new-forms");
+                await addDoc(soldNum, formData);
 
                 // Delete from "inventory"
                 const vehicleDoc = doc(db, "inventory", vehicleToMarkSoldId);

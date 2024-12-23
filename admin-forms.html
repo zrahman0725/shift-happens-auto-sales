@@ -186,12 +186,20 @@
         }
 
         .waiver-card .btn.delete {
+            margin-top: 5px;
             background-color: #e53935;
         }
 
         .waiver-card .btn.delete:hover {
             background-color: #b71c1c;
         }
+/* Sold Form - Soft Gray */
+.waiver-card.sold-form {
+    background-color: #e0e0e0; /* Light Gray */
+    border-left: 5px solid #9e9e9e; /* Medium Gray */
+    color: #000; /* Black Text */
+}
+
 
 /* Finance Application - Soft Yellow */
 .waiver-card.finance-application {
@@ -234,6 +242,21 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly bolder shadow */
 }
 
+.waiver-card.new-form {
+    position: relative;
+}
+
+.waiver-card.new-form::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50%;
+    z-index: 1;
+}
 
     </style>
 </head>
@@ -314,7 +337,7 @@
         <!-- Pagination Controls -->
         <div class="pagination">
             <button id="prev-page" class="btn">Previous</button>
-            <span id="page-info"></span>
+            <p id="page-info"></p>
             <button id="next-page" class="btn">Next</button>
         </div>
     </section>
@@ -355,9 +378,17 @@
         messagingSenderId: "224158026936",
         appId: "1:224158026936:web:690dd13405f6b1bfc4b84d"
     };
+
+    onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "admin-login.html";
+            }
+        });
+
+
     function updateFormSource() {
-    filterForms();
-}
+        filterForms();
+    }
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
@@ -386,62 +417,107 @@
     }
 
     // Render all forms in a single grid
-    function renderAllForms() {
+// Render all forms in a single grid
+function renderAllForms() {
     const allFormsGrid = document.getElementById("waivers-grid");
     allFormsGrid.innerHTML = ""; // Clear the grid
 
-    // Use filteredForms if available; otherwise, use all forms
     const formsToRender = filteredForms.length > 0 ? filteredForms : [...newForms, ...oldForms];
 
-    formsToRender.forEach(form => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = currentPage * itemsPerPage;
+
+    const paginatedForms = formsToRender.slice(startIndex, endIndex);
+
+    paginatedForms.forEach(form => {
+        const isNewForm = newForms.some(f => f.id === form.id);
+
+        // Handle dynamic field mapping based on form type
+        let name = "Unknown";
+        let contactDetails = "N/A";
+
+        if (form.formType === "sold-form") {
+            name = form.buyerName || "Unknown";
+            contactDetails = `<strong>Contact:</strong> ${form.buyerContact || "N/A"}`;
+        } else if (form.formType === "contact-form") {
+            name = form.name || "Unknown";
+            contactDetails = `<strong>Contact:</strong> ${form.mobile || "N/A"}`;
+        } else {
+            name = `${form.firstName || "Unknown"} ${form.lastName || ""}`;
+            contactDetails = `
+                <strong>Email:</strong> ${form.email || "N/A"}<br>
+                <strong>Phone:</strong> ${form.phone || "N/A"}
+            `;
+        }
+
         const card = document.createElement("div");
-        card.className = `waiver-card ${form.formType}`;
+        card.className = `waiver-card ${form.formType} ${isNewForm ? 'new-form' : ''}`;
         card.innerHTML = `
-            <h3>${form.firstName || "Unknown"} - ${form.formType.toUpperCase()}</h3>
-            <p><strong>Submitted By:</strong> ${form.firstName || "N/A"} ${form.lastName || ""}</p>
-            <p><strong>Email:</strong> ${form.email || "N/A"}</p>
-            <p><strong>Phone:</strong> ${form.phone || "N/A"}</p>
+            <h3>${name} - ${form.formType.toUpperCase()}</h3>
+            <p><strong>Submitted By:</strong> ${name}</p>
+            <p>${contactDetails}</p>
             <p><strong>Date:</strong> ${form.timestamp?.toDate().toLocaleString() || "N/A"}</p>
             <div class="buttons-container">
                 <button class="btn" onclick="viewForm('${form.id}')">View Details</button>
                 <button class="btn" onclick="downloadFormAsPDF('${form.id}')">Download PDF</button>
                 ${
-                    newForms.some(f => f.id === form.id)
+                    isNewForm
                         ? `<button class="btn" onclick="markAsRead('${form.id}')">Mark as Read</button>`
                         : `
                             <button class="btn" onclick="markAsUnread('${form.id}')">Mark as Unread</button>
-                            <button class="btn delete" onclick="deleteOldForm('${form.id}')">Delete Permanently</button>
+                            <button class="btn delete" onclick="deleteOldForm('${form.id}')" style="margin-top: 10px;">Delete Permanently</button>
                           `
                 }
             </div>
         `;
         allFormsGrid.appendChild(card);
     });
+
+    updatePaginationControls(formsToRender.length);
 }
 
 
+
+function updatePaginationControls(totalItems) {
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const pageInfo = document.getElementById("page-info");
+
+    document.getElementById("prev-page").disabled = currentPage === 1;
+    document.getElementById("next-page").disabled = currentPage === totalPages;
+
+    pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+}
+
+
+
     // Filter forms based on search or dropdown
-    function filterForms() {
-        const searchInput = document.getElementById("search-input").value.toLowerCase();
-        const filter = document.getElementById("form-filter").value;
+// Filter forms based on search or dropdown
+function filterForms() {
+    const searchInput = document.getElementById("search-input").value.toLowerCase();
+    const filter = document.getElementById("form-filter").value;
 
-        const allForms = [...newForms, ...oldForms];
-        filteredForms = allForms.filter(form => {
-            const matchesSearch = searchInput
-                ? form.firstName?.toLowerCase().includes(searchInput) ||
-                  form.lastName?.toLowerCase().includes(searchInput) ||
-                  form.formType?.toLowerCase().includes(searchInput)
-                : true;
+    const allForms = [...newForms, ...oldForms];
+    filteredForms = allForms.filter(form => {
+        const matchesSearch = searchInput
+            ? form.firstName?.toLowerCase().includes(searchInput) ||
+              form.lastName?.toLowerCase().includes(searchInput) ||
+              form.formType?.toLowerCase().includes(searchInput)
+            : true;
 
-            const matchesFilter = filter === "all" ||
-                (filter === "new" && newForms.some(f => f.id === form.id)) ||
-                (filter === "old" && oldForms.some(f => f.id === form.id));
+        const matchesFilter = filter === "all" ||
+            (filter === "new" && newForms.some(f => f.id === form.id)) ||
+            (filter === "old" && oldForms.some(f => f.id === form.id));
 
-            return matchesSearch && matchesFilter;
-        });
+        return matchesSearch && matchesFilter;
+    });
 
+    if (filteredForms.length === 0) {
+        document.getElementById("waivers-grid").innerHTML = `<p style="text-align: center; font-size: 1.2rem; color: gray;">No forms found.</p>`;
+    } else {
         renderAllForms();
     }
+}
+
 
     // View form details in a modal
     window.viewForm = function (formId) {
@@ -449,35 +525,57 @@
         const form = forms.find(f => f.id === formId);
         if (form) {
             const modalContent = document.getElementById("form-details-content");
-            modalContent.innerHTML = `
-                <p><strong>Form Type:</strong> ${form.formType.toUpperCase()}</p>
-                <p><strong>Submitted By:</strong> ${form.firstName || form.name || "N/A"} ${form.lastName || ""}</p>
-                <p><strong>Email:</strong> ${form.email || "N/A"}</p>
-                <p><strong>Phone:</strong> ${form.phone || form.mobile || "N/A"}</p>
-                <p><strong>Date:</strong> ${form.timestamp?.toDate().toLocaleString() || "N/A"}</p>
-            `;
 
             // Add additional form-specific details dynamically
             if (form.formType === "finance-application") {
                 modalContent.innerHTML += `
+                    <p><strong>Form Type:</strong> ${form.formType.toUpperCase()}</p>
+                    <p><strong>Submitted By:</strong> ${form.firstName || form.name || "N/A"} ${form.lastName || ""}</p>
+                    <p><strong>Email:</strong> ${form.email || "N/A"}</p>
+                    <p><strong>Phone:</strong> ${form.phone || form.mobile || "N/A"}</p>
+                    <p><strong>Date:</strong> ${form.timestamp?.toDate().toLocaleString() || "N/A"}</p>
                     <p><strong>Address:</strong> ${form.address || "N/A"}</p>
                     <p><strong>Monthly Payment:</strong> ${form.monthlyPayment || "N/A"}</p>
                 `;
             } else if (form.formType === "trade-in") {
                 modalContent.innerHTML += `
+                    <p><strong>Form Type:</strong> ${form.formType.toUpperCase()}</p>
+                    <p><strong>Submitted By:</strong> ${form.firstName || form.name || "N/A"} ${form.lastName || ""}</p>
+                    <p><strong>Email:</strong> ${form.email || "N/A"}</p>
+                    <p><strong>Phone:</strong> ${form.phone || form.mobile || "N/A"}</p>
+                    <p><strong>Date:</strong> ${form.timestamp?.toDate().toLocaleString() || "N/A"}</p>
                     <p><strong>Vehicle Make:</strong> ${form.vehicle?.make || "N/A"}</p>
                     <p><strong>Vehicle Model:</strong> ${form.vehicle?.model || "N/A"}</p>
                     <p><strong>Year:</strong> ${form.vehicle?.year || "N/A"}</p>
                 `;
             } else if (form.formType === "car-finder") {
                 modalContent.innerHTML += `
+                    <p><strong>Form Type:</strong> ${form.formType.toUpperCase()}</p>
+                    <p><strong>Submitted By:</strong> ${form.firstName || form.name || "N/A"} ${form.lastName || ""}</p>
+                    <p><strong>Email:</strong> ${form.email || "N/A"}</p>
+                    <p><strong>Phone:</strong> ${form.phone || form.mobile || "N/A"}</p>
+                    <p><strong>Date:</strong> ${form.timestamp?.toDate().toLocaleString() || "N/A"}</p>
                     <p><strong>Preferred Make:</strong> ${form.vehiclePreferences?.make || "N/A"}</p>
                     <p><strong>Budget:</strong> ${form.vehiclePreferences?.budget || "N/A"}</p>
                 `;
             } else if (form.formType === "test-drive") {
                 modalContent.innerHTML += `
+                    <p><strong>Form Type:</strong> ${form.formType.toUpperCase()}</p>
+                    <p><strong>Submitted By:</strong> ${form.firstName || form.name || "N/A"} ${form.lastName || ""}</p>
+                    <p><strong>Email:</strong> ${form.email || "N/A"}</p>
+                    <p><strong>Phone:</strong> ${form.phone || form.mobile || "N/A"}</p>
+                    <p><strong>Date:</strong> ${form.timestamp?.toDate().toLocaleString() || "N/A"}</p>
                     <p><strong>Selected Vehicle:</strong> ${form.selectedVehicle || "N/A"}</p>
                     <p><strong>Availability:</strong> ${form.availability?.map(a => `${a.day}: ${a.times.join(", ")}`).join("<br>") || "N/A"}</p>
+                `;
+            } else if (form.formType === "contact-form") {
+                modalContent.innerHTML += `
+                    <p><strong>Form Type:</strong> ${form.formType.toUpperCase()}</p>
+                    <p><strong>Submitted By:</strong> ${form.name || "N/A"}</p>
+                    <p><strong>Email:</strong> ${form.email || "N/A"}</p>
+                    <p><strong>Phone:</strong> ${form.mobile || "N/A"}</p>
+                    <p><strong>Date:</strong> ${form.timestamp?.toDate().toLocaleString() || "N/A"}</p>
+                    <p><strong>Message:</strong> ${form.message || "N/A"}</p>
                 `;
             }
 
@@ -508,20 +606,23 @@
             doc.save(`${form.formType}-${form.firstName || form.name || "Unknown"}.pdf`);
         }
     };
-    // Pagination controls
     document.getElementById("prev-page").addEventListener("click", () => {
-        if (currentPage > 1) {
-            currentPage--;
-            renderForms();
-        }
-    });
+    if (currentPage > 1) {
+        currentPage--;
+        renderAllForms();
+    }
+});
 
-    document.getElementById("next-page").addEventListener("click", () => {
-        if (currentPage * itemsPerPage < filteredForms.length) {
-            currentPage++;
-            renderForms();
-        }
-    });
+document.getElementById("next-page").addEventListener("click", () => {
+    const totalItems = filteredForms.length > 0 ? filteredForms.length : [...newForms, ...oldForms].length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    if (currentPage < totalPages) {
+        currentPage++;
+        renderAllForms();
+    }
+});
+
 
 
 
