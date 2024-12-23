@@ -385,6 +385,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
         import {
             getFirestore,
             collection,
@@ -412,23 +414,26 @@
             measurementId: "G-09D7MLNSNS"
         };
 
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = "admin-login.html";
-            }
-        });
-        
+
+
+
         let currentEditData = null;
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
+
         const inventoryRef = collection(db, "inventory");
         const vinModal = document.getElementById('vin-modal');
         const closeVinModal = document.getElementById('close-vin-modal');
         const fetchVinDataBtn = document.getElementById('fetch-vin-data');
         const vinInput = document.getElementById('vin-input');
         const addViaVinBtn = document.getElementById('add-via-vin-btn');
-
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "admin-login.html";
+            }
+        });
 
         function resetVinModal() {
             // Clear the VIN input field

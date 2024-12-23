@@ -368,6 +368,8 @@
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
     import { getFirestore, collection, doc, getDocs, addDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
 
     // Firebase configuration
     const firebaseConfig = {
@@ -379,11 +381,6 @@
         appId: "1:224158026936:web:690dd13405f6b1bfc4b84d"
     };
 
-    onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = "admin-login.html";
-            }
-        });
 
 
     function updateFormSource() {
@@ -393,6 +390,13 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
+
+onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            window.location.href = "admin-login.html";
+        }
+    });
 
     let newForms = [];
     let oldForms = [];
