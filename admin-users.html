@@ -247,13 +247,14 @@
                 // Authenticate as the user
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
-    
+
+                // Delete user document from Firestore
+                await deleteDoc(doc(db, "users", uid));
+
                 // Delete user from Firebase Authentication
                 await deleteUser(user);
     
-                // Delete user document from Firestore
-                await deleteDoc(doc(db, "users", uid));
-    
+
                 alert("User deleted successfully.");
                 fetchUsers(); // Refresh the list
             } catch (error) {
