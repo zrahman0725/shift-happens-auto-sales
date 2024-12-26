@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Admin Dashboard - Shift Happens Auto Sales</title>
     <link rel="stylesheet" href="css/admin-dashboard.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?">
@@ -131,15 +131,18 @@ const db = getFirestore();
 
 
 // Fetch data for the dashboard
+// Fetch data for the dashboard
 async function updateDashboard() {
     // Reference collections
     const soldCollection = collection(db, "sold");
     const inventoryCollection = collection(db, "inventory");
+    const newFormsCollection = collection(db, "new-forms");
 
     // Initialize variables
     let totalSales = 0;
     let vehiclesSold = 0;
     let activeListings = 0;
+    let newMessages = 0;
 
     try {
         // Fetch sold data
@@ -154,10 +157,15 @@ async function updateDashboard() {
         const inventorySnapshot = await getDocs(inventoryCollection);
         activeListings = inventorySnapshot.size; // Number of active listings
 
+        // Fetch new forms data
+        const newFormsSnapshot = await getDocs(newFormsCollection);
+        newMessages = newFormsSnapshot.size; // Number of new messages
+
         // Update cards in the DOM
         document.querySelector("#total-sales").textContent = `$${totalSales.toLocaleString()}`;
         document.querySelector("#vehicles-sold").textContent = vehiclesSold;
         document.querySelector("#active-listings").textContent = activeListings;
+        document.querySelector("#new-messages").textContent = newMessages; // Update New Messages card
     } catch (error) {
         console.error("Error fetching data:", error);
     }
@@ -165,6 +173,7 @@ async function updateDashboard() {
 
 // Call the function on page load
 document.addEventListener("DOMContentLoaded", updateDashboard);
+
 
     </script>
 

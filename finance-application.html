@@ -389,25 +389,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const employmentInfo = document.getElementById('employment-info');
     const previousEmploymentInfo = document.getElementById('previous-employment-info');
 
-    // Function to toggle the required attribute
-    function toggleRequiredFields(section, isVisible) {
-        const inputs = section.querySelectorAll("input, select");
-        inputs.forEach(input => {
-            if (isVisible) {
-                input.setAttribute("required", "required");
-            } else {
-                input.removeAttribute("required");
-            }
-        });
-    }
+
 
     // Event listeners for radio buttons
     yesRadio.addEventListener("change", function () {
         if (this.checked) {
             employmentInfo.style.display = "block";
             previousEmploymentInfo.style.display = "none";
-            toggleRequiredFields(employmentInfo, true);
-            toggleRequiredFields(previousEmploymentInfo, false);
+
         }
     });
 
@@ -415,14 +404,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (this.checked) {
             employmentInfo.style.display = "block";
             previousEmploymentInfo.style.display = "block";
-            toggleRequiredFields(employmentInfo, true);
-            toggleRequiredFields(previousEmploymentInfo, true);
+
         }
     });
 
     // Initialize fields on page load
-    toggleRequiredFields(employmentInfo, yesRadio.checked);
-    toggleRequiredFields(previousEmploymentInfo, noRadio.checked);
+
 })
 
 </script>

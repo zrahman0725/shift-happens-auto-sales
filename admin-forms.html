@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="css/admin-dashboard.css">
+    <title>Forms - Shift Happens Auto Sales</title>
+    <link rel="stylesheet" href="css/admin-forms.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
@@ -13,252 +13,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?">
 
-
-    <style>
-.search-bar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-.search-bar select {
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-.search-bar select:focus {
-    border-color: #00796b;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 121, 107, 0.5);
-}
-
-
-        .search-bar input {
-            padding: 0.75rem;
-            border: 1px solid #ccc;
-            border-radius: 25px;
-            width: 50%;
-            max-width: 400px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .search-bar input:focus {
-            border-color: #00796b;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 121, 107, 0.5);
-        }
-
-        .waivers-grid {
-            flex: 1;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .dashboard-container {
-            padding: 2rem;
-            padding-top: 5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .waiver-card {
-            background-color: #b2dfdb;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-        }
-
-        .waiver-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .waiver-card h3 {
-            margin-bottom: 0.5rem;
-            font-size: 1.25rem;
-        }
-
-        .waiver-card p {
-            margin: 0.25rem 0;
-        }
-
-        .waiver-card img {
-            margin: 0.5rem 0;
-        }
-
-        .waiver-card .btn {
-            background-color: #00796b;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-size: 0.9rem;
-        }
-
-        .waiver-card .btn:hover {
-            background-color: #004d40;
-        }
-
-        /* Pagination styles */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 2rem 0;
-            gap: 0.5rem;
-        }
-
-        .pagination .btn {
-            background-color: #00796b;
-            color: white;
-            border: none;
-            padding: 0.3rem 0.6rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-size: 0.9rem;
-        }
-
-        .pagination .btn:hover {
-            background-color: #004d40;
-        }
-
-
-        .modal {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding-top: 60px;
-}
-
-.modal-content {
-    background-color: #000000;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-    border-radius: 8px;
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-}
-
-#form-details-content p {
-    margin: 0.5rem 0;
-}
-
-
-        .modal h2 {
-            margin-top: 0;
-        }
-
-        .modal p {
-            margin: 0.5rem 0;
-        }
-
-        .waiver-card .btn.delete {
-            margin-top: 5px;
-            background-color: #e53935;
-        }
-
-        .waiver-card .btn.delete:hover {
-            background-color: #b71c1c;
-        }
-/* Sold Form - Soft Gray */
-.waiver-card.sold-form {
-    background-color: #e0e0e0; /* Light Gray */
-    border-left: 5px solid #9e9e9e; /* Medium Gray */
-    color: #000; /* Black Text */
-}
-
-
-/* Finance Application - Soft Yellow */
-.waiver-card.finance-application {
-    background-color: #fff3b0; /* Darker Light Yellow */
-    border-left: 5px solid #fbc02d; /* Golden Yellow */
-    color: #000; /* Black Text */
-}
-
-/* Trade-In - Soft Green */
-.waiver-card.trade-in {
-    background-color: #dcedc8; /* Darker Light Green */
-    border-left: 5px solid #388e3c; /* Medium Green */
-    color: #000; /* Black Text */
-}
-
-/* Car Finder - Soft Blue */
-.waiver-card.car-finder {
-    background-color: #bbdefb; /* Darker Light Blue */
-    border-left: 5px solid #1976d2; /* Medium Blue */
-    color: #000; /* Black Text */
-}
-
-/* Contact Form - Soft Red */
-.waiver-card.contact-form {
-    background-color: #ffcdd2; /* Darker Light Red */
-    border-left: 5px solid #d32f2f; /* Medium Red */
-    color: #000; /* Black Text */
-}
-
-/* Test Drive - Soft Purple */
-.waiver-card.test-drive {
-    background-color: #e1bee7; /* Darker Light Purple */
-    border-left: 5px solid #8e24aa; /* Medium Purple */
-    color: #000; /* Black Text */
-}
-
-/* Hover Effect - Subtle Elevation */
-.waiver-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly bolder shadow */
-}
-
-.waiver-card.new-form {
-    position: relative;
-}
-
-.waiver-card.new-form::before {
-    content: '';
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 15px;
-    height: 15px;
-    background-color: red;
-    border-radius: 50%;
-    z-index: 1;
-}
-
-    </style>
 </head>
 
 <body>
@@ -496,6 +250,7 @@ function updatePaginationControls(totalItems) {
 
     // Filter forms based on search or dropdown
 // Filter forms based on search or dropdown
+// Filter forms based on search or dropdown
 function filterForms() {
     const searchInput = document.getElementById("search-input").value.toLowerCase();
     const filter = document.getElementById("form-filter").value;
@@ -503,9 +258,13 @@ function filterForms() {
     const allForms = [...newForms, ...oldForms];
     filteredForms = allForms.filter(form => {
         const matchesSearch = searchInput
-            ? form.firstName?.toLowerCase().includes(searchInput) ||
-              form.lastName?.toLowerCase().includes(searchInput) ||
-              form.formType?.toLowerCase().includes(searchInput)
+            ? (
+                (form.firstName?.toLowerCase().includes(searchInput) || 
+                form.lastName?.toLowerCase().includes(searchInput)) || 
+                form.name?.toLowerCase().includes(searchInput) || 
+                form.buyerName?.toLowerCase().includes(searchInput) || 
+                form.formType?.toLowerCase().includes(searchInput)
+            )
             : true;
 
         const matchesFilter = filter === "all" ||
@@ -523,69 +282,75 @@ function filterForms() {
 }
 
 
+
     // View form details in a modal
     window.viewForm = function (formId) {
-        const forms = [...newForms, ...oldForms];
-        const form = forms.find(f => f.id === formId);
-        if (form) {
-            const modalContent = document.getElementById("form-details-content");
+    const forms = [...newForms, ...oldForms];
+    const form = forms.find(f => f.id === formId);
 
-            // Add additional form-specific details dynamically
-            if (form.formType === "finance-application") {
-                modalContent.innerHTML += `
-                    <p><strong>Form Type:</strong> ${form.formType.toUpperCase()}</p>
-                    <p><strong>Submitted By:</strong> ${form.firstName || form.name || "N/A"} ${form.lastName || ""}</p>
-                    <p><strong>Email:</strong> ${form.email || "N/A"}</p>
-                    <p><strong>Phone:</strong> ${form.phone || form.mobile || "N/A"}</p>
-                    <p><strong>Date:</strong> ${form.timestamp?.toDate().toLocaleString() || "N/A"}</p>
-                    <p><strong>Address:</strong> ${form.address || "N/A"}</p>
-                    <p><strong>Monthly Payment:</strong> ${form.monthlyPayment || "N/A"}</p>
-                `;
-            } else if (form.formType === "trade-in") {
-                modalContent.innerHTML += `
-                    <p><strong>Form Type:</strong> ${form.formType.toUpperCase()}</p>
-                    <p><strong>Submitted By:</strong> ${form.firstName || form.name || "N/A"} ${form.lastName || ""}</p>
-                    <p><strong>Email:</strong> ${form.email || "N/A"}</p>
-                    <p><strong>Phone:</strong> ${form.phone || form.mobile || "N/A"}</p>
-                    <p><strong>Date:</strong> ${form.timestamp?.toDate().toLocaleString() || "N/A"}</p>
-                    <p><strong>Vehicle Make:</strong> ${form.vehicle?.make || "N/A"}</p>
-                    <p><strong>Vehicle Model:</strong> ${form.vehicle?.model || "N/A"}</p>
-                    <p><strong>Year:</strong> ${form.vehicle?.year || "N/A"}</p>
-                `;
-            } else if (form.formType === "car-finder") {
-                modalContent.innerHTML += `
-                    <p><strong>Form Type:</strong> ${form.formType.toUpperCase()}</p>
-                    <p><strong>Submitted By:</strong> ${form.firstName || form.name || "N/A"} ${form.lastName || ""}</p>
-                    <p><strong>Email:</strong> ${form.email || "N/A"}</p>
-                    <p><strong>Phone:</strong> ${form.phone || form.mobile || "N/A"}</p>
-                    <p><strong>Date:</strong> ${form.timestamp?.toDate().toLocaleString() || "N/A"}</p>
-                    <p><strong>Preferred Make:</strong> ${form.vehiclePreferences?.make || "N/A"}</p>
-                    <p><strong>Budget:</strong> ${form.vehiclePreferences?.budget || "N/A"}</p>
-                `;
-            } else if (form.formType === "test-drive") {
-                modalContent.innerHTML += `
-                    <p><strong>Form Type:</strong> ${form.formType.toUpperCase()}</p>
-                    <p><strong>Submitted By:</strong> ${form.firstName || form.name || "N/A"} ${form.lastName || ""}</p>
-                    <p><strong>Email:</strong> ${form.email || "N/A"}</p>
-                    <p><strong>Phone:</strong> ${form.phone || form.mobile || "N/A"}</p>
-                    <p><strong>Date:</strong> ${form.timestamp?.toDate().toLocaleString() || "N/A"}</p>
-                    <p><strong>Selected Vehicle:</strong> ${form.selectedVehicle || "N/A"}</p>
-                    <p><strong>Availability:</strong> ${form.availability?.map(a => `${a.day}: ${a.times.join(", ")}`).join("<br>") || "N/A"}</p>
-                `;
-            } else if (form.formType === "contact-form") {
-                modalContent.innerHTML += `
-                    <p><strong>Form Type:</strong> ${form.formType.toUpperCase()}</p>
-                    <p><strong>Submitted By:</strong> ${form.name || "N/A"}</p>
-                    <p><strong>Email:</strong> ${form.email || "N/A"}</p>
-                    <p><strong>Phone:</strong> ${form.mobile || "N/A"}</p>
-                    <p><strong>Date:</strong> ${form.timestamp?.toDate().toLocaleString() || "N/A"}</p>
-                    <p><strong>Message:</strong> ${form.message || "N/A"}</p>
-                `;
-            }
+    if (form) {
+        const modalContent = document.getElementById("form-details-content");
+        modalContent.innerHTML = ""; // Clear previous content
 
-            document.getElementById("formDetailsModal").style.display = "block";
+        modalContent.innerHTML = `
+            <p><strong>Form Type:</strong> ${form.formType.toUpperCase()}</p>
+            <p><strong>Submitted By:</strong> ${form.buyerName || form.name || form.firstName || "N/A"} ${form.lastName || ""}</p>
+        `;
+
+        // Render contact information based on formType
+        if (form.formType === "sold-form") {
+            modalContent.innerHTML += `
+                <p><strong>Contact:</strong> ${form.buyerContact || "N/A"}</p>
+            `;
+        } else if (form.formType === "contact-form") {
+            modalContent.innerHTML += `
+                <p><strong>Contact:</strong> ${form.mobile || "N/A"}</p>
+            `;
+        } else {
+            modalContent.innerHTML += `
+                <p><strong>Email:</strong> ${form.email || "N/A"}</p>
+                <p><strong>Phone:</strong> ${form.phone || "N/A"}</p>
+            `;
         }
-    };
+
+        // Add form-specific details dynamically
+        if (form.formType === "finance-application") {
+            modalContent.innerHTML += `
+                <p><strong>Address:</strong> ${form.address || "N/A"}</p>
+                <p><strong>Monthly Payment:</strong> ${form.monthlyPayment || "N/A"}</p>
+            `;
+        } else if (form.formType === "trade-in") {
+            modalContent.innerHTML += `
+                <p><strong>Vehicle Make:</strong> ${form.vehicle?.make || "N/A"}</p>
+                <p><strong>Vehicle Model:</strong> ${form.vehicle?.model || "N/A"}</p>
+                <p><strong>Year:</strong> ${form.vehicle?.year || "N/A"}</p>
+            `;
+        } else if (form.formType === "car-finder") {
+            modalContent.innerHTML += `
+                <p><strong>Preferred Make:</strong> ${form.vehiclePreferences?.make || "N/A"}</p>
+                <p><strong>Budget:</strong> ${form.vehiclePreferences?.budget || "N/A"}</p>
+            `;
+        } else if (form.formType === "test-drive") {
+            modalContent.innerHTML += `
+                <p><strong>Selected Vehicle:</strong> ${form.selectedVehicle || "N/A"}</p>
+                <p><strong>Availability:</strong> ${form.availability?.map(a => `${a.day}: ${a.times.join(", ")}`).join("<br>") || "N/A"}</p>
+            `;
+        } else if (form.formType === "sold-form") {
+            modalContent.innerHTML += `
+                <p><strong>Sold Price:</strong> ${form.soldPrice || "N/A"}</p>
+                <p><strong>Sold Details:</strong> ${form.soldDetails || "N/A"}</p>
+                <p><strong>Sold Date:</strong> ${new Date(form.soldDate).toLocaleDateString() || "N/A"}</p>
+            `;
+        }
+
+        modalContent.innerHTML += `
+            <p><strong>Date:</strong> ${form.timestamp?.toDate().toLocaleString() || "N/A"}</p>
+        `;
+
+        document.getElementById("formDetailsModal").style.display = "block";
+    }
+};
+
 
     window.closeFormDetails = function () {
         document.getElementById("formDetailsModal").style.display = "none";
