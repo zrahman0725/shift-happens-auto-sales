@@ -523,6 +523,73 @@ span {
     color: var(--text-color);
 }
 
+.accordion {
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.accordion-item {
+    margin-bottom: 1px;
+    background-color: var(--second-bg-color);
+    color: var(--text-color);
+}
+
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: var(--main-bg-color);
+    color: var(--text-color);
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s ease;
+}
+
+.accordion-header:hover {
+    background-color: var(--hover-bg-color);
+}
+
+.accordion-icon {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.accordion-body {
+    display: none;
+    padding: 1rem;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.accordion-body.active {
+    display: block;
+}
+
+.accordion-body ul {
+    margin: 0;
+    padding-left: 1.5rem;
+    list-style-type: disc;
+}
+
+.cta-button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--button-bg-color);
+    color: var(--button-text-color);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.cta-button:hover {
+    background-color: var(--button-hover-bg-color);
+}
 
 
 

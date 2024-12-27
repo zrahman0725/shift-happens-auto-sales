@@ -369,3 +369,26 @@ span {
         margin-top: 2rem;
     }
 }
+
+/* Style for Forgot Password/Username link */
+#login-form p a {
+    color: var(--main-color); /* Red color to match theme */
+    font-size: 1.4rem; /* Make the link slightly smaller */
+    text-decoration: none; /* Remove underline */
+    margin-top: 1rem; /* Space it out from the other form elements */
+    display: inline-block; /* To allow margin around the link */
+    transition: color 0.3s ease; /* Smooth color change on hover */
+}
+
+/* Hover effect for the Forgot Password link */
+#login-form p a:hover {
+    color: var(--text-color); /* Change text color to white on hover */
+    text-decoration: underline; /* Add an underline on hover */
+}
+
+/* Mobile responsiveness for link styling */
+@media (max-width: 768px) {
+    #login-form p a {
+        font-size: 1.6rem; /* Adjust font size on smaller screens */
+    }
+}

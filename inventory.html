@@ -63,7 +63,11 @@
     <section class="inventory-section" id="inventory">
         <h2 class="heading"><span>Browse Our</span> Inventory</h2>
         <div class="controls">
-
+            <div class="sort-icon-container">
+                <button id="sort-icon" class="btn">
+                    <i class='bx bx-sort'></i> Sort
+                </button>
+            </div>
             <div class="filter-icon-container">
                 <button id="filter-icon" class="btn">
                     <i class='bx bx-filter'></i> Filter
@@ -155,18 +159,14 @@
             </div>
             
             <button type="button" id="apply-filter" class="btn">Apply Filters</button>
-            <button type="button" id="clear-filter" class="btn btn-clear">Clear Filters</button>
-
         </form>
     </div>
+
 </div>
+<button type="button" id="clear-filter" class="btn btn-clear">Clear Filters</button>
 
             
-<div class="sort-icon-container">
-    <button id="sort-icon" class="btn">
-        <i class='bx bx-sort'></i> Sort
-    </button>
-</div>
+
             
             <!-- Sort Popup -->
             <div id="sort-popup" class="sort-popup hidden">
@@ -177,12 +177,10 @@
                         <label for="sort-select">Sort by:</label>
                         <select id="sort-select">
                             <option value="" disabled selected>Sort By</option>
-                            <option value="year-asc">Year (Ascending)</option>
-                            <option value="year-desc">Year (Descending)</option>
+                            <option value="year-desc">Year (Newest First)</option>
+                            <option value="year-asc">Year (Oldest First)</option>
                             <option value="price-asc">Price (Low to High)</option>
                             <option value="price-desc">Price (High to Low)</option>
-                            <option value="date-added-desc">Date Added (Newest First)</option>
-                            <option value="date-added-asc">Date Added (Oldest First)</option>
                             <option value="mileage-asc">Mileage (Lowest First)</option>
                             <option value="mileage-desc">Mileage (Highest First)</option>
                             <option value="make-asc">Make (A-Z)</option>
@@ -226,7 +224,7 @@
             messagingSenderId: "224158026936",
             appId: "1:224158026936:web:690dd13405f6b1bfc4b84d"
         };
-        
+
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         
@@ -248,21 +246,85 @@
             const priceRangeDisplay = document.getElementById("price-range-display");
             const filterMake = document.getElementById("filter-make");
             const filterModel = document.getElementById("filter-model");
+            const backdrop = document.createElement("div");
+    backdrop.id = "sort-backdrop";
+    backdrop.classList.add("hidden"); // Ensure it's hidden on page load
+    document.body.appendChild(backdrop);
+
+    function closePopups() {
+        sortPopup.classList.add("hidden");
+        backdrop.classList.add("hidden");
+    }
+
+    // Show sort popup with backdrop
+    document.getElementById("sort-icon").addEventListener("click", () => {
+        sortPopup.classList.remove("hidden");
+        backdrop.classList.remove("hidden");
+    });
+
+    // Close sort popup when clicking outside
+    backdrop.addEventListener("click", closePopups);
+
+    // Close filter modal when clicking outside its content
+    document.addEventListener("click", (event) => {
+        if (
+            !filterModal.classList.contains("hidden") &&
+            !filterModal.querySelector(".modal-content").contains(event.target) &&
+            event.target !== document.getElementById("filter-icon")
+        ) {
+            filterModal.classList.add("hidden");
+        }
+    });
+
+    // Close with ESC key
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            closePopups();
+            filterModal.classList.add("hidden");
+        }
+    });
+
+
         
             let inventoryData = []; // Store fetched data for filtering and sorting
             let filteredData = []; // Data after applying filters
 
-        
+
             // Fetch inventory from Firestore
             async function fetchInventory() {
-                const inventoryRef = collection(db, 'inventory');
-                const inventorySnapshot = await getDocs(inventoryRef);
-        
-                inventoryData = inventorySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                filteredData = [...inventoryData]; // Initially, all data is shown
-                displayInventory(filteredData);
-                fetchFilterOptions(); // Populate filter options
-            }
+            const inventoryRef = collection(db, 'inventory');
+            const inventorySnapshot = await getDocs(inventoryRef);
+
+            // Fetch all inventory data
+            inventoryData = inventorySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            // Get URL parameters for filtering
+            const urlParams = new URLSearchParams(window.location.search);
+            const filters = {
+                make: urlParams.get("make"),
+                model: urlParams.get("model"),
+                year_min: urlParams.get("year_min") ? parseInt(urlParams.get("year_min")) : null,
+                year_max: urlParams.get("year_max") ? parseInt(urlParams.get("year_max")) : null,
+                price_min: urlParams.get("price_min") ? parseInt(urlParams.get("price_min")) : null,
+                price_max: urlParams.get("price_max") ? parseInt(urlParams.get("price_max")) : null,
+            };
+
+            // Apply filters from URL parameters
+            filteredData = inventoryData.filter(item => {
+                return (
+                    (!filters.make || item.make === filters.make) &&
+                    (!filters.model || item.model === filters.model) &&
+                    (!filters.year_min || item.year >= filters.year_min) &&
+                    (!filters.year_max || item.year <= filters.year_max) &&
+                    (!filters.price_min || item.price >= filters.price_min) &&
+                    (!filters.price_max || item.price <= filters.price_max)
+                );
+            });
+
+            // Display the filtered inventory
+            displayInventory(filteredData);
+            fetchFilterOptions(); // Populate filter options dynamically
+        }
         
             // Display inventory
             function displayInventory(data) {
@@ -327,7 +389,7 @@
         finalPromoCard.classList.add('promo-card');
         finalPromoCard.innerHTML = `
             <div class="vehicle-image">
-                <img src="images/inventory_finance.jpeg" alt="Financing Promotion">
+                <img src="images/promo2.jpg" alt="Financing Promotion">
             </div>
             <div class="promo-details">
                 <h3>Special Financing Rates</h3>
@@ -383,6 +445,8 @@
         
                 displayInventory(filteredData);
                 sortPopup.classList.add('hidden'); // Close the popup
+                closePopups();
+
             });
         
             // Open and close sort popup
@@ -390,8 +454,10 @@
                 sortPopup.classList.remove('hidden');
             });
         
+            
             closeSortPopup.addEventListener('click', () => {
                 sortPopup.classList.add('hidden');
+                closePopups();
             });
         
             // Show filter modal
@@ -403,6 +469,9 @@
             closeFilterModal.addEventListener("click", () => {
                 filterModal.classList.add("hidden");
             });
+
+            
+
         
             // Fetch unique filter options
             async function fetchFilterOptions() {
@@ -507,6 +576,7 @@ function populateSelect(selectId, options, reset = true) {
         priceRangeDisplay.textContent = `$${parseInt(priceMinSlider.min).toLocaleString()} - $${parseInt(priceMaxSlider.max).toLocaleString()}`;
 
         // Clear inventory grid to display all items
+        filteredData = inventoryData
         displayInventory(inventoryData);
     });
   
@@ -536,6 +606,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         price_min: urlParams.get("price_min") ? parseInt(urlParams.get("price_min")) : null,
         price_max: urlParams.get("price_max") ? parseInt(urlParams.get("price_max")) : null,
     };
+    
 
     const inventoryGrid = document.querySelector('.inventory-grid');
     const db = getFirestore(app); // Firebase should already be initialized
@@ -612,7 +683,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             promoCard.classList.add('promo-card');
             promoCard.innerHTML = `
                 <div class="vehicle-image">
-                    <img src="images/promo.jpg" alt="Financing Promotion">
+                    <img src="images/promo2.jpg" alt="Financing Promotion">
                 </div>
                 <div class="promo-details">
                     <h3>Special Financing Rates</h3>
@@ -646,6 +717,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const inventoryData = await fetchInventory();
     await applyFilters(inventoryData);
 });
+
+
+
 
 </script>
 

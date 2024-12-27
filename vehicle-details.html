@@ -103,8 +103,50 @@
                 <hr class="separator">
                 <div class="features">
                     <h4>Features & Specs</h4>
-                    <div id="features-accordion">
-                        <!-- Expandable categories will be populated dynamically -->
+                    <div class="accordion">
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <h6>Mechanical</h6>
+                                <h6 class="accordion-icon">▼</h6>
+                            </div>
+                            <div class="accordion-body" id="mechanical-specs"></div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <h6>Safety</h6>
+                                <h6 class="accordion-icon">▼</h6>
+                            </div>
+                            <div class="accordion-body" id="safety-specs"></div>
+                        </div>
+                        <!-- Repeat for other categories -->
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <h6>Exterior</h6>
+                                <h6 class="accordion-icon">▼</h6>
+                            </div>
+                            <div class="accordion-body" id="exterior-specs"></div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <h6>Interior</h6>
+                                <h6 class="accordion-icon">▼</h6>
+                            </div>
+                            <div class="accordion-body" id="interior-specs"></div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <h6>Entertainment</h6>
+                                <h6 class="accordion-icon">▼</h6>
+                            </div>
+                            <div class="accordion-body" id="entertainment-specs"></div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header" onclick="toggleAccordion(this)">
+                                <h6>Additional Features</h6>
+                                <h6 class="accordion-icon">▼</h6>
+                            </div>
+                            <div class="accordion-body" id="additional-specs"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -156,6 +198,11 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+
+
+
+
 
         async function loadVehicleDetails() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -384,6 +431,60 @@
         body.style.display = "block";
     };
 });
+async function loadFeatures(vehicleId) {
+    const featureCategories = [
+        "mechanical",
+        "safety",
+        "exterior",
+        "interior",
+        "entertainment",
+        "additional"
+    ];
+
+    for (const category of featureCategories) {
+        const specsElement = document.getElementById(`${category}-specs`);
+        // Simulate fetching data for the category (replace with actual API calls)
+        const data = await fetchFeatureData(vehicleId, category);
+
+        if (data && data.length > 0) {
+            specsElement.innerHTML = `<ul>${data.map(item => `<li>${item}</li>`).join("")}</ul>`;
+        } else {
+            specsElement.innerHTML = `
+                <button class="cta-button" onclick="redirectToContact()">Request Info</button>
+            `;
+        }
+    }
+}
+
+function toggleAccordion(header) {
+    const body = header.nextElementSibling;
+    const isActive = body.classList.contains("active");
+    const icon = header.querySelector(".accordion-icon");
+
+    if (!isActive) {
+        body.classList.add("active");
+        icon.textContent = "▲";
+    }
+    if (isActive){
+        body.classList.remove("active");
+        icon.textContent = "▼";
+
+    }
+}
+
+
+// Simulate an API call (replace with real API logic)
+async function fetchFeatureData(vehicleId, category) {
+    // Replace with actual database logic
+    return category === "mechanical" ? ["Engine: V6", "Transmission: Automatic"] : [];
+}
+
+// Load features on page load
+document.addEventListener("DOMContentLoaded", () => {
+    const vehicleId = new URLSearchParams(window.location.search).get("id");
+    if (vehicleId) loadFeatures(vehicleId);
+});
+
 
 </script>
 </body>

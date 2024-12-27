@@ -635,6 +635,26 @@ span {
     color: var(--text-color); /* White on hover */
 }
 
+#sort-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 998; /* Behind the sort popup */
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.3s ease, opacity 0.3s ease;
+}
+
+#sort-backdrop:not(.hidden) {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+
 /* Backdrop Effect */
 #sort-popup::before {
     content: "";
