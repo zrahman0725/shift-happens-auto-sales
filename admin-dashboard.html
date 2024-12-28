@@ -86,6 +86,16 @@
                 <p id="new-messages">0</p>
             </div>
         </div>
+        <div class="charts-container">
+            <div class="chart-container">
+                <canvas id="total-sales-line-chart"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="dashboard-line-chart"></canvas>
+            </div>
+        </div>
+        
+    
     </section>
     
     
@@ -174,6 +184,189 @@ async function updateDashboard() {
 // Call the function on page load
 document.addEventListener("DOMContentLoaded", updateDashboard);
 
+
+async function loadLineGraph() {
+    const ctx = document.getElementById('dashboard-line-chart').getContext('2d');
+
+    // Fetch the data
+    const soldCollection = collection(db, "sold");
+    const inventoryCollection = collection(db, "inventory");
+    const newFormsCollection = collection(db, "new-forms");
+
+    // Prepare data arrays
+    const months = [
+        "January", "February", "March", "April", "May", "June", 
+        "July", "August", "September", "October", "November", "December"
+    ];
+    let soldData = Array(12).fill(0); // Vehicles sold per month
+    let activeListingsData = Array(12).fill(0); // Active listings per month
+    let newMessagesData = Array(12).fill(0); // New messages per month
+
+    try {
+        // Fetch and process sold data
+        const soldSnapshot = await getDocs(soldCollection);
+        soldSnapshot.forEach((doc) => {
+            const data = doc.data();
+            const date = new Date(data.timestamp?.seconds * 1000); // Assuming Firestore timestamps
+            const monthIndex = date.getMonth(); // Get month index (0-11)
+            soldData[monthIndex] += 1;
+        });
+
+        // Fetch inventory data
+        const inventorySnapshot = await getDocs(inventoryCollection);
+        const currentMonth = new Date().getMonth(); // Current month
+        activeListingsData[currentMonth] = inventorySnapshot.size; // Active listings for the current month
+
+        // Fetch new messages data
+        const newFormsSnapshot = await getDocs(newFormsCollection);
+        newMessagesData[currentMonth] = newFormsSnapshot.size; // New messages for the current month
+
+        // Create the Chart
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        label: 'Vehicles Sold',
+                        data: soldData,
+                        borderColor: '#28a745', // Green color
+                        backgroundColor: 'rgba(40, 167, 69, 0.2)',
+                        fill: false,
+                        tension: 0.1,
+                    },
+                    {
+                        label: 'Active Listings',
+                        data: activeListingsData,
+                        borderColor: '#36A2EB',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: false,
+                        tension: 0.1,
+                    },
+                    {
+                        label: 'New Messages',
+                        data: newMessagesData,
+                        borderColor: '#FFCE56',
+                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                        fill: false,
+                        tension: 0.1,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Allow chart to adjust for smaller screens
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Dashboard Trends Over the Year',
+                    },
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Months',
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Count',
+                        },
+                    },
+                },
+            },
+        });
+    } catch (error) {
+        console.error("Error loading graph data:", error);
+    }
+}
+
+// Call the function on page load
+document.addEventListener("DOMContentLoaded", loadLineGraph);
+async function loadTotalSalesGraph() {
+    const ctx = document.getElementById('total-sales-line-chart').getContext('2d');
+
+    // Fetch the data
+    const soldCollection = collection(db, "sold");
+
+    // Prepare data arrays
+    const months = [
+        "January", "February", "March", "April", "May", "June", 
+        "July", "August", "September", "October", "November", "December"
+    ];
+    let totalSalesData = Array(12).fill(0); // Total sales per month
+
+    try {
+        // Fetch and process sold data
+        const soldSnapshot = await getDocs(soldCollection);
+        soldSnapshot.forEach((doc) => {
+            const data = doc.data();
+            const date = new Date(data.timestamp?.seconds * 1000); // Assuming Firestore timestamps
+            const monthIndex = date.getMonth(); // Get month index (0-11)
+            totalSalesData[monthIndex] += data.soldPrice || 0; // Sum sales for each month
+        });
+
+        // Create the Chart
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        label: 'Total Sales',
+                        data: totalSalesData,
+                        borderColor: '#4CAF50', // Green color
+                        backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                        fill: true,
+                        tension: 0.1,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Allow chart to adjust for smaller screens
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Total Sales by Month',
+                    },
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Months',
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Total Sales ($)',
+                        },
+                        ticks: {
+                            callback: function (value) {
+                                return `$${value.toLocaleString()}`; // Format y-axis as currency
+                            },
+                        },
+                    },
+                },
+            },
+        });
+    } catch (error) {
+        console.error("Error loading total sales graph data:", error);
+    }
+}
+
+// Call the function on page load
+document.addEventListener("DOMContentLoaded", loadTotalSalesGraph);
 
     </script>
 
