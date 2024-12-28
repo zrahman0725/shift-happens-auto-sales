@@ -434,8 +434,7 @@ span {
 
 .features .accordion-item {
     margin-bottom: 1rem;
-    border: 1px solid var(--text-color);
-    border-radius: 5px;
+    border: 2px solid #ccc;
 }
 
 .features .accordion-header {
@@ -528,11 +527,14 @@ span {
     border-radius: 5px;
     overflow: hidden;
 }
-
+h6 {
+    font-size:small;
+}
 .accordion-item {
     margin-bottom: 1px;
     background-color: var(--second-bg-color);
     color: var(--text-color);
+    border: #fff;
 }
 
 .accordion-header {
@@ -590,6 +592,10 @@ span {
 .cta-button:hover {
     background-color: var(--button-hover-bg-color);
 }
+
+
+
+
 
 
 

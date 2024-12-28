@@ -256,14 +256,6 @@
                         <label for="seats">Seats:</label>
                         <input type="number" id="seats" placeholder="Number of Seats" required>
                     </div>
-                    <div class="button-container">
-                        <button type="button" id="prev-step-3" class="btn">Back</button>
-                        <button type="button" id="next-step-3" class="btn">Next</button>
-                    </div>
-                </div>
-
-                <div class="step step-4">
-                    <h3>Step 4: Additional Vehicle Information Cont'd</h3>
                     <div>
                         <label for="interior-color">Interior Color:</label>
                         <select id="interior-color" required>
@@ -277,23 +269,15 @@
                         </select>
                     </div>
                     <div>
-                        <label for="highway-fuel">Highway Fuel Consumption:</label>
-                        <input type="text" id="highway-fuel" placeholder="Enter highway fuel consumption" required>
-                    </div>
-                    <div>
-                        <label for="city-fuel">City Fuel Consumption:</label>
-                        <input type="text" id="city-fuel" placeholder="Enter city fuel consumption" required>
-
-                    </div>
-                    <div class="button-container">
-                        <button type="button" id="prev-step-4" class="btn">Previous</button>
-                        <button type="button" id="next-step-4" class="btn">Next</button>
+                        <button type="button" id="prev-step-3" class="btn">Back</button>
+                        <button type="button" id="next-step-3" class="btn">Next</button>
                     </div>
                 </div>
 
-                <!-- Step 5: Vehicle Identification -->
-                <div class="step step-5 hidden">
-                    <h3>Step 5: Vehicle Identification</h3>
+
+                <!-- Step 4: Vehicle Identification -->
+                <div class="step step-4 hidden">
+                    <h3>Step 4: Vehicle Identification</h3>
                     <label for="mileage">Mileage (in kms):</label>
                     <input type="number" id="mileage" placeholder="Enter mileage" required>
 
@@ -303,14 +287,14 @@
                     <label for="stock">Stock #:</label>
                     <input type="text" id="stock" placeholder="Enter Stock #" required>
                     <div>
-                        <button type="button" id="prev-step-5" class="btn">Back</button>
-                        <button type="button" id="next-step-5" class="btn">Next</button>
+                        <button type="button" id="prev-step-4" class="btn">Back</button>
+                        <button type="button" id="next-step-4" class="btn">Next</button>
                     </div>
                 </div>
 
-                <!-- Step 6: Vehicle Description -->
-                <div class="step step-6 hidden">
-                    <h3>Step 6: Vehicle Description</h3>
+                <!-- Step 5: Vehicle Description -->
+                <div class="step step-5 hidden">
+                    <h3>Step 5: Vehicle Description</h3>
                     <label for="description">Vehicle Description:</label>
                     <textarea id="description" placeholder="Enter vehicle description" rows="5"></textarea>
 
@@ -321,15 +305,15 @@
                         <label class="toggle-slider" for="ai-description-toggle"></label>
                     </div>
 
-                    <div class="button-container">
-                        <button type="button" id="prev-step-6" class="btn">Back</button>
-                        <button type="button" id="next-step-6" class="btn">Next</button>
+                    <div>
+                        <button type="button" id="prev-step-5" class="btn">Back</button>
+                        <button type="button" id="next-step-5" class="btn">Next</button>
                     </div>
                 </div>
 
-                <!-- Step 7: Media Upload -->
-                <div class="step step-7 hidden">
-                    <h3>Step 7: Media Upload</h3>
+                <!-- Step 6: Media Upload -->
+                <div class="step step-6 hidden">
+                    <h3>Step 6: Media Upload</h3>
 
                         <!-- Existing Media Display -->
                         <div id="existing-media">
@@ -342,7 +326,7 @@
                     <label for="secondary-pictures">Secondary Pictures (Optional):</label>
                     <input type="file" id="secondary-pictures" accept="image/*" multiple>
                     <div>
-                        <button type="button" id="prev-step-7" class="btn">Back</button>
+                        <button type="button" id="prev-step-6" class="btn">Back</button>
                         <button type="submit" class="btn">Save Vehicle</button>
                     </div>
                 </div>
@@ -560,14 +544,20 @@
                     // Direct field assignments for non-dropdowns
                     document.getElementById('doors').value = vehicleData.Doors || ''; // Number of Doors
                     document.getElementById('seats').value = vehicleData.Seats || ''; // Seats
-                    document.getElementById('highway-fuel').value = vehicleData.FuelConsumptionHighway || ''; // Highway Fuel Consumption
-                    document.getElementById('city-fuel').value = vehicleData.FuelConsumptionCity || ''; // City Fuel Consumption
+
+                    // Categorize features
+                    const categorizedFeatures = categorizeFeatures(vehicleData);
+
+                    // Save features globally to include in vehicleData
+                    window.vehicleFeatures = categorizedFeatures; // Temporary storage
+     
 
                     // Hide VIN Modal and Show Form
                     vinModal.classList.add('hidden');
                     modal.classList.remove('hidden');
                     currentStep = 0;
                     updateSteps();
+
                 } else {
                     alert('No data found for the provided VIN.');
                 }
@@ -576,6 +566,101 @@
                 alert('Failed to fetch vehicle data. Please try again.');
             }
         });
+        function categorizeFeatures(vehicleData) {
+    return {
+        Mechanical: {
+            Engine: vehicleData.EngineCylinders || 'N/A',
+            Transmission: vehicleData.TransmissionStyle || 'N/A',
+            FuelType: vehicleData.FuelTypePrimary || 'N/A',
+            DriveTrain: vehicleData.DriveType || 'N/A',
+            EngineConfiguration: vehicleData.EngineConfiguration || 'N/A',
+            EngineModel: vehicleData.EngineModel || 'N/A',
+            EnginePowerKW: vehicleData.EngineKW || 'N/A',
+            EngineHP: vehicleData.EngineHP || 'N/A',
+            DisplacementCC: vehicleData.DisplacementCC || 'N/A',
+            DisplacementCI: vehicleData.DisplacementCI || 'N/A',
+            DisplacementL: vehicleData.DisplacementL || 'N/A',
+            Axles: vehicleData.Axles || 'N/A',
+            BrakeSystemType: vehicleData.BrakeSystemType || 'N/A',
+            BrakeSystemDesc: vehicleData.BrakeSystemDesc || 'N/A',
+            CoolingType: vehicleData.CoolingType || 'N/A',
+            Turbo: vehicleData.Turbo || 'N/A',
+        },
+        Safety: {
+            ABS: vehicleData.ABS || 'N/A',
+            AirBagLocFront: vehicleData.AirBagLocFront || 'N/A',
+            AirBagLocCurtain: vehicleData.AirBagLocCurtain || 'N/A',
+            AirBagLocKnee: vehicleData.AirBagLocKnee || 'N/A',
+            AirBagLocSide: vehicleData.AirBagLocSide || 'N/A',
+            ESC: vehicleData.ESC || 'N/A',
+            TractionControl: vehicleData.TractionControl || 'N/A',
+            ForwardCollisionWarning: vehicleData.ForwardCollisionWarning || 'N/A',
+            LaneDepartureWarning: vehicleData.LaneDepartureWarning || 'N/A',
+            LaneKeepSystem: vehicleData.LaneKeepSystem || 'N/A',
+            RearVisibilitySystem: vehicleData.RearVisibilitySystem || 'N/A',
+            ParkAssist: vehicleData.ParkAssist || 'N/A',
+            BlindSpotMon: vehicleData.BlindSpotMon || 'N/A',
+            BlindSpotIntervention: vehicleData.BlindSpotIntervention || 'N/A',
+            RearAutomaticEmergencyBraking: vehicleData.RearAutomaticEmergencyBraking || 'N/A',
+            PedestrianAutomaticEmergencyBraking: vehicleData.PedestrianAutomaticEmergencyBraking || 'N/A',
+            AutoReverseSystem: vehicleData.AutoReverseSystem || 'N/A',
+            DynamicBrakeSupport: vehicleData.DynamicBrakeSupport || 'N/A',
+        },
+        Exterior: {
+            BodyStyle: vehicleData.BodyClass || 'N/A',
+            Color: vehicleData.ExteriorColor || 'N/A',
+            WheelBaseType: vehicleData.WheelBaseType || 'N/A',
+            WheelBaseShort: vehicleData.WheelBaseShort || 'N/A',
+            WheelBaseLong: vehicleData.WheelBaseLong || 'N/A',
+            Length: vehicleData.VehicleLength || 'N/A',
+            Width: vehicleData.VehicleWidth || 'N/A',
+            Height: vehicleData.VehicleHeight || 'N/A',
+            Wheels: vehicleData.Wheels || 'N/A',
+            WheelSizeFront: vehicleData.WheelSizeFront || 'N/A',
+            WheelSizeRear: vehicleData.WheelSizeRear || 'N/A',
+            DaytimeRunningLight: vehicleData.DaytimeRunningLight || 'N/A',
+            LowerBeamHeadlampLightSource: vehicleData.LowerBeamHeadlampLightSource || 'N/A',
+            SemiautomaticHeadlampBeamSwitching: vehicleData.SemiautomaticHeadlampBeamSwitching || 'N/A',
+            AdaptiveHeadlights: vehicleData.AdaptiveHeadlights || 'N/A',
+        },
+        Interior: {
+            Seats: vehicleData.Seats || 'N/A',
+            SeatRows: vehicleData.SeatRows || 'N/A',
+            SeatBeltsAll: vehicleData.SeatBeltsAll || 'N/A',
+            InteriorColor: vehicleData.InteriorColor || 'N/A',
+            Trim: vehicleData.Trim || 'N/A',
+            Trim2: vehicleData.Trim2 || 'N/A',
+            CabinType: vehicleData.CabinType || 'N/A',
+            SteeringLocation: vehicleData.SteeringLocation || 'N/A',
+            KeylessIgnition: vehicleData.KeylessIgnition || 'N/A',
+        },
+        Entertainment: {
+            InfotainmentSystem: vehicleData.EntertainmentSystem || 'N/A',
+            Speakers: vehicleData.Audio || 'N/A',
+            NavigationSystem: vehicleData.NavigationSystem || 'N/A',
+        },
+        Additional: {
+            VIN: vehicleData.VIN || 'N/A',
+            Make: vehicleData.Make || 'N/A',
+            Model: vehicleData.Model || 'N/A',
+            ModelYear: vehicleData.ModelYear || 'N/A',
+            Manufacturer: vehicleData.Manufacturer || 'N/A',
+            PlantCity: vehicleData.PlantCity || 'N/A',
+            PlantState: vehicleData.PlantState || 'N/A',
+            PlantCountry: vehicleData.PlantCountry || 'N/A',
+            PlantCompanyName: vehicleData.PlantCompanyName || 'N/A',
+            GVWR: vehicleData.GVWR || 'N/A',
+            Series: vehicleData.Series || 'N/A',
+            Series2: vehicleData.Series2 || 'N/A',
+            EngineManufacturer: vehicleData.EngineManufacturer || 'N/A',
+            BasePrice: vehicleData.BasePrice || 'N/A',
+            TopSpeedMPH: vehicleData.TopSpeedMPH || 'N/A',
+            ErrorCode: vehicleData.ErrorCode || 'N/A',
+            ErrorText: vehicleData.ErrorText || 'N/A',
+        }
+    };
+}
+
 
 
         function selectDropdownOption(dropdownId, value) {
@@ -1366,8 +1451,6 @@
                     doors: document.getElementById('doors').value.trim(), // New field
                     seats: document.getElementById('seats').value.trim(), // New field
                     interiorColor: document.getElementById('interior-color').value, // New field
-                    highwayFuel: document.getElementById('highway-fuel').value.trim(), // New field
-                    cityFuel: document.getElementById('city-fuel').value.trim(), // New field
                     description: descriptionTextarea.value.trim(), // Include description
                     bodyStyle: document.getElementById('body-style').value,
                     engine: document.getElementById('engine').value,
@@ -1380,7 +1463,9 @@
                     stock: document.getElementById('stock').value.trim(),
                     mainPictureUrl,
                     secondaryPicturesUrls,
-                    timestamp: new Date()
+                    timestamp: new Date(),
+                    features: window.vehicleFeatures || {} // Add categorized features here
+
                 };
     
                 if (mode === "add") {
