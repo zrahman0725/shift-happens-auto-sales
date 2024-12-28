@@ -390,3 +390,34 @@ span {
         margin-top: 2rem;
     }
 }
+
+.charts-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    justify-content: space-between; /* Adds spacing between charts */
+    gap: 20px; /* Adds spacing between the charts */
+}
+
+.chart-container {
+    flex: 1; /* Distribute space evenly */
+    min-width: 300px; /* Ensure charts don't shrink too much */
+    max-width: 45%; /* Limit width to fit two charts side by side */
+    height: 400px; /* Set consistent height */
+    background: bisque; /* Lightened red */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+}
+
+@media screen and (max-width: 768px) {
+    .charts-container {
+        flex-direction: column; /* Stack charts vertically on small screens */
+    }
+
+    .chart-container {
+        max-width: 100%; /* Full width for stacked layout */
+        height: 300px; /* Adjust height for mobile */
+    }
+}
+
