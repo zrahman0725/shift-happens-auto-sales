@@ -65,6 +65,8 @@
         
         <section id="app">
             <h1>User Management</h1>
+
+
     
             <!-- User Info -->
             <div id="user-info">
@@ -74,11 +76,45 @@
                 <button id="reset-password-btn">Reset Password</button>
             </div>
     
-            <!-- Add New User -->
+            <!-- PIN Pad -->
+            <div id="pin-pad">
+                <h2>Enter PIN</h2>
+                <!-- Screen for entered PIN -->
+                <div id="pin-screen">
+                    <span id="pin-display">••••</span>
+                </div>
+                <!-- Keypad container -->
+                <div id="keypad">
+                    <div class="key-row">
+                        <button class="key">1</button>
+                        <button class="key">2</button>
+                        <button class="key">3</button>
+                    </div>
+                    <div class="key-row">
+                        <button class="key">4</button>
+                        <button class="key">5</button>
+                        <button class="key">6</button>
+                    </div>
+                    <div class="key-row">
+                        <button class="key">7</button>
+                        <button class="key">8</button>
+                        <button class="key">9</button>
+                    </div>
+                    <div class="key-row">
+                        <button class="key action-key">Clear</button>
+                        <button class="key">0</button>
+                        <button class="key action-key">Enter</button>
+                    </div>
+                </div>
+                <p id="pin-status" style="color: red; margin-top: 1rem;"></p>
+            </div>
+
+
 
     
-            <div id="user-management">
+            <div id="user-management" style="display: none;">
                 <h2>Admin Controls</h2>
+
                 <div>
                     <h3>Add New User</h3>
                     <form id="add-user-form">
@@ -108,6 +144,76 @@
             <a href="#"><i class='bx bx-up-arrow-alt'></i></a>
         </div>
     </footer>
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const correctPin = "1234"; // Replace with your desired PIN
+    const userManagement = document.getElementById("user-management");
+    const pinPad = document.getElementById("pin-pad");
+    const pinStatus = document.getElementById("pin-status");
+    const pinDisplay = document.getElementById("pin-display");
+    let enteredPin = "";
+
+    // Function to update the screen display
+    function updatePinDisplay() {
+        pinDisplay.textContent = enteredPin.padEnd(4, "•");
+    }
+
+    // Function to handle PIN validation
+    function validatePin() {
+        if (enteredPin === correctPin) {
+            userManagement.style.display = "block";
+            pinPad.style.display = "none";
+        } else {
+            pinStatus.textContent = "Incorrect PIN. Please try again.";
+        }
+        enteredPin = ""; // Reset the entered PIN
+        updatePinDisplay(); // Reset the screen display
+    }
+
+    // Handle button clicks
+    document.querySelectorAll(".key").forEach((key) => {
+        key.addEventListener("click", () => {
+            const value = key.textContent;
+
+            if (value === "Clear") {
+                enteredPin = "";
+                pinStatus.textContent = ""; // Clear the status message
+            } else if (value === "Enter") {
+                validatePin();
+            } else {
+                if (enteredPin.length < 4) {
+                    enteredPin += value;
+                }
+            }
+            updatePinDisplay();
+        });
+    });
+
+    // Handle keyboard input
+    document.addEventListener("keydown", (event) => {
+        const key = event.key;
+
+        if (!isNaN(key) && key.length === 1) {
+            // If a number key is pressed
+            if (enteredPin.length < 4) {
+                enteredPin += key;
+            }
+        } else if (key === "Backspace" || key === "Delete") {
+            // If Backspace or Delete is pressed, remove the last digit
+            enteredPin = enteredPin.slice(0, -1);
+        } else if (key === "Enter") {
+            // If Enter is pressed, validate the PIN
+            validatePin();
+        } else if (key === "Escape") {
+            // If Escape is pressed, clear the input
+            enteredPin = "";
+            pinStatus.textContent = ""; // Clear the status message
+        }
+        updatePinDisplay();
+    });
+});
+
+    </script>
     <script type="module">
         // Import Firebase modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
