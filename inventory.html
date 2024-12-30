@@ -505,13 +505,22 @@ function populateSelect(selectId, options, reset = true) {
 
         
             // Update models based on selected make
-            filterMake.addEventListener("change", (event) => {
-                const selectedMake = event.target.value;
-                const models = inventoryData
-                    .filter(item => !selectedMake || item.make === selectedMake)
-                    .map(item => item.model);
-                populateSelect("filter-model", [...new Set(models)]);
-            });
+// Update models based on selected make with counts
+filterMake.addEventListener("change", (event) => {
+    const selectedMake = event.target.value;
+
+    // Calculate the model counts for the selected make
+    const modelCounts = inventoryData
+        .filter(item => !selectedMake || item.make === selectedMake)
+        .reduce((acc, item) => {
+            acc[item.model] = (acc[item.model] || 0) + 1;
+            return acc;
+        }, {});
+
+    // Populate the Model dropdown
+    populateSelect("filter-model", Object.entries(modelCounts));
+});
+
         
             // Update price range dynamically
             function updatePriceRange() {
