@@ -488,7 +488,38 @@ async function fetchFilterOptions() {
         return acc;
     }, {});
     populateSelect("filter-model", Object.entries(models));
+
+    const bodystyles = inventoryData.reduce((acc, item) => {
+        acc[item.bodyStyle] = (acc[item.bodyStyle] || 0) + 1;
+        return acc;
+    }, {});
+    populateSelect("filter-bodystyle", Object.entries(bodystyles));
+
+    const colors = inventoryData.reduce((acc, item) => {
+        acc[item.color] = (acc[item.color] || 0) + 1;
+        return acc;
+    }, {});
+    populateSelect("filter-exterior-color", Object.entries(colors));
+
+    const engines = inventoryData.reduce((acc, item) => {
+        acc[item.engine] = (acc[item.engine] || 0) + 1;
+        return acc;
+    }, {});
+    populateSelect("filter-engine", Object.entries(engines));
+
+    const fuels = inventoryData.reduce((acc, item) => {
+        acc[item.fuelType] = (acc[item.fuelType] || 0) + 1;
+        return acc;
+    }, {});
+    populateSelect("filter-fuel", Object.entries(fuels));
+
+    const transmissions = inventoryData.reduce((acc, item) => {
+        acc[item.transmission] = (acc[item.transmission] || 0) + 1;
+        return acc;
+    }, {});
+    populateSelect("filter-transmission", Object.entries(transmissions));
 }
+
 
 // Populate a dropdown with options alphabetically and include counts
 function populateSelect(selectId, options, reset = true) {
