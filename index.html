@@ -302,36 +302,38 @@
     async function populateMakeAndModel() {
     const inventoryRef = collection(db, "inventory");
     const inventorySnapshot = await getDocs(inventoryRef);
-    const makes = new Set();
+    const makes = {};
     const models = {};
 
     inventorySnapshot.forEach((doc) => {
         const data = doc.data();
-        makes.add(data.make);
-        if (!models[data.make]) {
-            models[data.make] = new Set();
-        }
-        models[data.make].add(data.model);
+        if (!makes[data.make]) makes[data.make] = 0;
+        makes[data.make]++;
+        if (!models[data.make]) models[data.make] = {};
+        if (!models[data.make][data.model]) models[data.make][data.model] = 0;
+        models[data.make][data.model]++;
     });
 
+    const sortedMakes = Object.keys(makes).sort();
     const makeSelect = document.getElementById("make");
     const modelSelect = document.getElementById("model");
 
-    makes.forEach((make) => {
+    sortedMakes.forEach((make) => {
         const option = document.createElement("option");
         option.value = make;
-        option.textContent = make;
+        option.textContent = `${make} (${makes[make]})`;
         makeSelect.appendChild(option);
     });
 
     makeSelect.addEventListener("change", () => {
-        const selectedMake = makeSelect.value;
+        const selectedMake = makeSelect.value.split(" (")[0];
         modelSelect.innerHTML = '<option value="">Select Model</option>';
         if (models[selectedMake]) {
-            models[selectedMake].forEach((model) => {
+            const sortedModels = Object.keys(models[selectedMake]).sort();
+            sortedModels.forEach((model) => {
                 const option = document.createElement("option");
                 option.value = model;
-                option.textContent = model;
+                option.textContent = `${model} (${models[selectedMake][model]})`;
                 modelSelect.appendChild(option);
             });
         }
@@ -339,6 +341,7 @@
 }
 
 document.addEventListener("DOMContentLoaded", populateMakeAndModel);
+
     async function fetchCarouselInventory() {
         const inventoryRef = collection(db, "inventory");
         const inventorySnapshot = await getDocs(inventoryRef);

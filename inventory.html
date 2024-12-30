@@ -475,37 +475,33 @@
 
         
             // Fetch unique filter options
-            async function fetchFilterOptions() {
-    const makes = [...new Set(inventoryData.map(item => item.make))];
-    populateSelect("filter-make", makes);
+// Fetch unique filter options with counts
+async function fetchFilterOptions() {
+    const makes = inventoryData.reduce((acc, item) => {
+        acc[item.make] = (acc[item.make] || 0) + 1;
+        return acc;
+    }, {});
+    populateSelect("filter-make", Object.entries(makes));
 
-    const models = [...new Set(inventoryData.map(item => item.model))];
-    populateSelect("filter-model", models);
-
-    const bodystyles = [...new Set(inventoryData.map(item => item.bodyStyle))];
-    populateSelect("filter-bodystyle", bodystyles);
-
-    const colors = [...new Set(inventoryData.map(item => item.color))];
-    populateSelect("filter-exterior-color", colors);
-
-    const engines = [...new Set(inventoryData.map(item => item.engine))];
-    populateSelect("filter-engine", engines);
-
-    const fuels = [...new Set(inventoryData.map(item => item.fuelType))];
-    populateSelect("filter-fuel", fuels);
-
-    const transmissions = [...new Set(inventoryData.map(item => item.transmission))];
-    populateSelect("filter-transmission", transmissions);
+    const models = inventoryData.reduce((acc, item) => {
+        acc[item.model] = (acc[item.model] || 0) + 1;
+        return acc;
+    }, {});
+    populateSelect("filter-model", Object.entries(models));
 }
 
-// Populate a dropdown with options
+// Populate a dropdown with options alphabetically and include counts
 function populateSelect(selectId, options, reset = true) {
     const select = document.getElementById(selectId);
     if (reset) select.innerHTML = `<option value="">All</option>`;
-    options.forEach(option => {
-        select.innerHTML += `<option value="${option}">${option}</option>`;
-    });
+
+    options
+        .sort((a, b) => a[0].localeCompare(b[0])) // Sort alphabetically by the key (make or model)
+        .forEach(([option, count]) => {
+            select.innerHTML += `<option value="${option}">${option} (${count})</option>`;
+        });
 }
+
 
         
             // Update models based on selected make
