@@ -455,3 +455,66 @@ h3 {
 .popup-content p {
     font-size: 3rem; /* Adjust this value as needed */
 }
+
+.expandable-sections details {
+    width: 100%; /* Full-width container */
+    border: 1px solid var(--main-color);
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    overflow: hidden; /* Hide content before expansion */
+    transition: all 0.3s ease;
+    cursor: pointer; /* Indicate interactivity */
+    background-color: var(--second-bg-color);
+}
+
+.expandable-sections summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+}
+
+.expandable-sections summary:hover {
+    color: var(--main-color);
+}
+
+.expandable-sections summary:after {
+    content: '\25BA'; /* Right arrow */
+    font-size: 1.8rem;
+    margin-left: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.expandable-sections[open] summary:after {
+    transform: rotate(90deg); /* Downward arrow */
+}
+
+.details-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.5rem;
+}
+
+.details-content img {
+    width: 40%; /* Adjust image size */
+    height: auto;
+    border-radius: 8px;
+}
+
+.details-content p {
+    font-size: 1.6rem;
+    line-height: 1.8;
+    flex: 1; /* Allow text to grow */
+}
+
+/* Ensure smooth transitions */
+details[open] {
+    border-color: var(--main-color);
+    background-color: var(--second-bg-color);
+}

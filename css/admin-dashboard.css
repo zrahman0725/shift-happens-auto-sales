@@ -403,7 +403,7 @@ span {
     min-width: 300px; /* Ensure charts don't shrink too much */
     max-width: 45%; /* Limit width to fit two charts side by side */
     height: 400px; /* Set consistent height */
-    background: bisque; /* Lightened red */
+    background: bisque; /* or #2e2e2e*/
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

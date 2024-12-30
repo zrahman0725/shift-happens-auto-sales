@@ -236,6 +236,7 @@
                             <option value="Diesel">Diesel</option>
                             <option value="Electric">Electric</option>
                             <option value="Hybrid">Hybrid</option>
+                            <option value="Other">Other</option>
                         </select>
                     </div>
                     <div>
@@ -246,6 +247,8 @@
                             <option value="RWD">Rear-Wheel Drive (RWD)</option>
                             <option value="AWD">All-Wheel Drive (AWD)</option>
                             <option value="4WD">Four-Wheel Drive (4WD)</option>
+                            <option value="Other">Other</option>
+
                         </select>
                     </div>
                     <div>
@@ -266,6 +269,7 @@
                             <option value="White">White</option>
                             <option value="Red">Red</option>
                             <option value="Brown">Brown</option>
+                            <option value="Other">Other</option>
                         </select>
                     </div>
                     <div>
@@ -620,7 +624,7 @@
             WheelSizeRear: vehicleData.WheelSizeRear || 'N/A',
             DaytimeRunningLight: vehicleData.DaytimeRunningLight || 'N/A',
             LowerBeamHeadlampLightSource: vehicleData.LowerBeamHeadlampLightSource || 'N/A',
-            SemiautomaticHeadlampBeamSwitching: vehicleData.SemiautomaticHeadlampBeamSwitching || 'N/A',
+            HeadlampBeamSwitching: vehicleData.SemiautomaticHeadlampBeamSwitching || 'N/A',
             AdaptiveHeadlights: vehicleData.AdaptiveHeadlights || 'N/A',
         },
         Interior: {
@@ -681,7 +685,7 @@
             "sport utility vehicle": "suv",
             "multi-purpose vehicle": "crossover",
             "compact car": "sedan",
-            "electric": "ev",
+            "ev": "electric",
             "sedan/saloon": "sedan",
             "pickup truck": "pickup",
             "minivan/van": "minivan",
@@ -700,13 +704,38 @@
 
             // Drive Type Synonyms
             "fwd": "front-wheel drive",
+            "4x2": "front-wheel drive",
             "front-wheel drive": "front-wheel drive",
             "rwd": "rear-wheel drive",
             "rear-wheel drive": "rear-wheel drive",
             "awd": "all-wheel drive",
             "all-wheel drive": "all-wheel drive",
             "4wd": "four-wheel drive",
-            "four-wheel drive": "four-wheel drive"
+            "four-wheel drive": "four-wheel drive",
+
+            // Transmission Synonyms
+            "automatic": "automatic",
+            "manual": "manual",
+            "stick shift": "manual",
+            "auto": "automatic",
+            "cvti-s": "cvt",
+            "cvt": "cvt",
+            "continuously variable transmission": "cvt",
+            "dual-clutch": "other",
+            "dct": "other",
+            "semi-automatic": "other",
+            "tiptronic": "other",
+            "e-shift": "other",
+            "am": "other",
+            "automated manual": "other",
+            "sequential": "other",
+            "smg": "other",
+            "torque converter": "automatic",
+            "shiftable automatic": "automatic",
+            "geartronic": "automatic"
+
+
+
         };
 
 
@@ -1174,8 +1203,7 @@
 
             // Step 4: Fuel Consumption
             document.getElementById('interior-color').value = data.interiorColor || '';
-            document.getElementById('highway-fuel').value = data.highwayFuel || '';
-            document.getElementById('city-fuel').value = data.cityFuel || '';
+
 
             // Step 5: Vehicle Identification
             document.getElementById('mileage').value = data.mileage || '';
