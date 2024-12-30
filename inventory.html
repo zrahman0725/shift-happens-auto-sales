@@ -462,6 +462,7 @@
         
             // Show filter modal
             filterIcon?.addEventListener('click', () => {
+                event.stopPropagation(); // Prevent bubbling
                 filterModal.classList.remove("hidden");
             });
         
