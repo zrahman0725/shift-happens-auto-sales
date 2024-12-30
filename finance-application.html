@@ -589,10 +589,11 @@ document.getElementById('vehicle-search').addEventListener('focus', adjustDropdo
         try {
             // Save data to Firestore in the 'new-forms' collection
             await addDoc(collection(db, "new-forms"), formData);
-
             document.getElementById("financeApplicationForm").reset(); // Reset form
+            alert("Form submitted successfully!");
         } catch (error) {
             console.error("Error submitting form: ", error);
+            alert("Error submitting form. Please try again.");
         }
     });
 </script>

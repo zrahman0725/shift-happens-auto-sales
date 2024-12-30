@@ -211,21 +211,7 @@
                                     <div class="selected-times"></div>
                                 </div>
                             </div>
-                            <div class="day" data-day="Sunday">
-                                <label>
-                                    <input type="checkbox" name="days" value="Sunday" class="day-toggle">
-                                    Sunday
-                                </label>
-                                <div class="time-picker" style="display: none;">
-                                    <div class="time-slot">
-                                        <select name="Sunday-start-time" class="start-time"></select>
-                                        to
-                                        <select name="Sunday-end-time" class="end-time"></select>
-                                        <button type="button" class="add-time-slot" data-day="Sunday">+</button>
-                                    </div>
-                                    <div class="selected-times"></div>
-                                </div>
-                            </div>
+
                         </div>
                         
                         
@@ -436,6 +422,7 @@
 
             document.querySelector(".test-drive-from").reset(); // Reset form
             document.getElementById("selected-vehicle-text").textContent = ""; // Clear selected vehicle
+            alert("Form submitted successfully!");
         } catch (error) {
             console.error("Error submitting form: ", error);
             alert("Error submitting form. Please try again.");
@@ -466,8 +453,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 startHour = 10;
                 endHour = 18; // 6 PM
                 break;
-            case "Sunday":
-                return ""; // Closed
             default:
                 return ""; // Invalid day
         }
@@ -575,8 +560,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     startHour = 10;
                     endHour = 18; // 6 PM
                     break;
-                case "Sunday":
-                    return ""; // Closed
                 default:
                     return ""; // Invalid day
             }
