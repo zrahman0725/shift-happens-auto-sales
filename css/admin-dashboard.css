@@ -411,13 +411,27 @@ span {
 }
 
 @media screen and (max-width: 768px) {
-    .charts-container {
-        flex-direction: column; /* Stack charts vertically on small screens */
-    }
-
     .chart-container {
-        max-width: 100%; /* Full width for stacked layout */
-        height: 300px; /* Adjust height for mobile */
+        height: 300px; /* Set consistent height for mobile */
+        flex: 1 1 100%; /* Full width for small screens */
+        max-width: 100%; /* Prevent overflowing */
+        min-height: 300px; /* Minimum height to ensure visibility */
+        padding: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin: 1rem 0; /* Add spacing between charts */
+        background: bisque; /* Consistent background */
     }
 }
 
+@media screen and (max-width: 450px) {
+    .charts-container {
+        flex-direction: column; /* Stack charts vertically */
+        display: flex;
+        flex-wrap: wrap; /* Wrap charts on smaller screens */
+        justify-content: center; /* Center align charts */
+        gap: 1rem; /* Add spacing between charts */
+        margin: 1rem 0; /* Add some vertical margin */
+        
+    }
+}
