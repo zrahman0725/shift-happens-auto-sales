@@ -194,7 +194,6 @@ span {
 }
 
 .finance-application-form {
-    max-width: 70%;
     background: var(--second-bg-color);
     padding: 2rem 5%;
     margin: 2rem 0;
@@ -214,14 +213,108 @@ span {
 }
 
 .finance-application-form .form-group div {
-    flex: 1 1 calc(50% - 2rem); 
+    /* flex: 1 1 calc(50% - 2rem);  */
     min-width: 200px;
+}
+
+/* Housing Duration - Block Layout */
+.housing-duration {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.housing-duration label {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 1.6rem;
+}
+
+/* Input fields container */
+.duration-fields {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+/* Input fields */
+.duration-fields input {
+    width: 60px; /* Set a consistent width */
+    padding: 0.5rem;
+    font-size: 1.4rem;
+    border: 1px solid var(--main-color);
+    border-radius: 4px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    text-align: center;
+}
+
+/* Focus effect */
+.duration-fields input:focus {
+    border-color: var(--main-color);
+    box-shadow: 0 0 5px var(--main-color);
+}
+
+/* Labels for years & months */
+.duration-fields span {
+    font-size: 1.4rem;
+    color: var(--text-color);
 }
 
 label {
     display: block;
     font-size: 1.4rem;
     margin-bottom: 0.5rem;
+}
+/* Style for Date of Birth Field */
+#dob {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1.4rem;
+    border: 1px solid var(--main-color);
+    border-radius: 4px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    position: relative;
+}
+
+/* Ensures the text inside the field is readable */
+#dob::placeholder {
+    color: #999;
+}
+
+/* Focus effect */
+#dob:focus {
+    border-color: var(--main-color);
+    box-shadow: 0 0 5px var(--main-color);
+}
+
+/* Style the calendar icon (for WebKit-based browsers like Chrome & Edge) */
+#dob::-webkit-calendar-picker-indicator {
+    filter: invert(1); /* Makes the calendar icon white */
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+/* Ensures the calendar icon remains white on Firefox */
+#dob::-moz-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
+/* Ensures the calendar icon remains white on Edge */
+#dob::-ms-clear,
+#dob::-ms-reveal {
+    display: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    #dob {
+        font-size: 1.3rem;
+        padding: 0.7rem;
+    }
 }
 
 input[type="text"],
