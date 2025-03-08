@@ -292,11 +292,25 @@
 
             // Fetch inventory from Firestore
             async function fetchInventory() {
-            const inventoryRef = collection(db, 'inventory');
-            const inventorySnapshot = await getDocs(inventoryRef);
+    const inventoryRef = collection(db, 'inventory');
+    const inventorySnapshot = await getDocs(inventoryRef);
 
-            // Fetch all inventory data
-            inventoryData = inventorySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    inventoryData = inventorySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+    }));
+
+    // Sort by Firestore timestamp (newest first)
+    inventoryData.sort((a, b) => {
+        const dateA = a.timestamp ? a.timestamp.toDate() : new Date(0);
+        const dateB = b.timestamp ? b.timestamp.toDate() : new Date(0);
+        return dateB - dateA; // Newest first
+    });
+
+    filteredData = inventoryData; // Initially, display sorted data
+
+
+
 
             // Get URL parameters for filtering
             const urlParams = new URLSearchParams(window.location.search);
@@ -649,16 +663,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     const db = getFirestore(app); // Firebase should already be initialized
 
     async function fetchInventory() {
-        const inventoryRef = collection(db, 'inventory');
-        const inventorySnapshot = await getDocs(inventoryRef);
+    const inventoryRef = collection(db, 'inventory');
+    const inventorySnapshot = await getDocs(inventoryRef);
 
-        const inventoryData = inventorySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-        }));
+    inventoryData = inventorySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+    }));
 
-        return inventoryData;
-    }
+    // Sort by Firestore timestamp (newest first)
+    inventoryData.sort((a, b) => {
+        const dateA = a.timestamp ? a.timestamp.toDate() : new Date(0);
+        const dateB = b.timestamp ? b.timestamp.toDate() : new Date(0);
+        return dateB - dateA; // Newest first
+    });
+
+    filteredData = inventoryData; // Initially, display sorted data
+    displayInventory(filteredData);
+    fetchFilterOptions(); // Populate filter options dynamically
+}
+
 
     async function applyFilters(inventoryData) {
         const filteredData = inventoryData.filter(item => {
