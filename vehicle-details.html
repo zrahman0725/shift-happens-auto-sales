@@ -291,7 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     document.getElementById("vehicle-title").textContent = `${data.year} ${data.make} ${data.model}`;
                     document.getElementById("main-carousel-image").src = data.mainPictureUrl;
                     document.getElementById("vehicle-price").textContent = `$${parseFloat(data.price).toLocaleString('en-US')}`;
-                    document.getElementById("vehicle-vin").textContent = `VIN: ${data.vin || "N/A"}`;
+                    document.getElementById("vehicle-vin").textContent = `VIN: ${(data.vin || "N/A").toUpperCase()}`;
                     document.getElementById("vehicle-stock").textContent = `Stock #: ${data.stock || "N/A"}`;
                     document.getElementById("vehicle-description").textContent = data.description || "No description available.";
                     
