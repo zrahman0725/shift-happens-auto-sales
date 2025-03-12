@@ -941,3 +941,28 @@ span {
 }
 
 
+
+
+/* Sold Vehicle Banner */
+.sold-vehicle .vehicle-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.sold-vehicle .vehicle-image::before {
+    content: "SOLD";
+    position: absolute;
+    top: 10px;
+    left: -55px;
+    background: red;
+    color: white;
+    font-weight: bold;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    transform: rotate(-45deg);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    width: 150px;
+    text-align: center;
+}
