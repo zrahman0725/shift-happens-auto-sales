@@ -385,7 +385,9 @@
             onSnapshot,
             doc,
             deleteDoc,
-            updateDoc
+            updateDoc,
+            getDoc  // ✅ Add this to import getDoc
+
 
 
 
@@ -881,7 +883,7 @@
 
             editAction.addEventListener("click", () => editVehicle(data, docId));
             deleteAction.addEventListener("click", () => openDeleteConfirmationModal(docId));
-            soldAction.addEventListener("click", () => openMarkAsSoldModal(docId, data));
+            soldAction.addEventListener("click", () => markVehicleAsSold(docId));
         }
 
 
@@ -1066,61 +1068,63 @@
             modal.classList.add('hidden');
         });
     
-        // Populate Inventory Table
-        function populateInventoryTable() {
-            const inventoryTableBody = document.querySelector('#inventory-list tbody');
-            inventoryTableBody.innerHTML = "";
-    
-            onSnapshot(inventoryRef, (snapshot) => {
-                inventoryTableBody.innerHTML = "";
-    
-                snapshot.docs.forEach((doc) => {
-                    const data = doc.data();
-    
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td><img src="${data.mainPictureUrl}" alt="${data.make} ${data.model}" class="table-picture"></td>
-                        <td>${data.make}</td>
-                        <td>${data.model}</td>
-                        <td>${data.year}</td>
-                        <td>$${data.price}</td>
-                        <td>
-                            <div class="action-dropdown">
-                                <button class="btn action-btn">Actions &#9662;</button>
-                                <div class="action-menu hidden">
-                                    <a class="action-item edit-action">Edit</a>
-                                    <a class="action-item sold-action">Mark as Sold</a>
-                                    <a class="action-item delete-action">Delete</a>
-                                </div>
-                            </div>
-                        </td>
+// Populate Inventory Table
+function populateInventoryTable() {
+    const inventoryTableBody = document.querySelector('#inventory-list tbody');
+    inventoryTableBody.innerHTML = "";
 
-                    `;
-    
-                    inventoryTableBody.appendChild(row);
+    onSnapshot(inventoryRef, (snapshot) => {
+        inventoryTableBody.innerHTML = "";
 
-                    // Add Event Listeners for Dropdown Actions
-                    const dropdownBtn = row.querySelector('.action-btn');
-                    const actionMenu = row.querySelector('.action-menu');
+        snapshot.docs.forEach((doc) => {
+            const data = doc.data();
 
-                    // Toggle Dropdown Visibility
-                    dropdownBtn.addEventListener('click', (event) => {
-                        event.stopPropagation();
-                        actionMenu.classList.toggle('hidden');
-                        closeOtherDropdowns(actionMenu);
-                    });
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><img src="${data.mainPictureUrl}" alt="${data.make} ${data.model}" class="table-picture"></td>
+                <td>${data.make}</td>
+                <td>${data.model}</td>
+                <td>${data.year}</td>
+                <td>$${data.price}</td>
+                <td>
+                    <div class="action-dropdown">
+                        <button class="btn action-btn">Actions &#9662;</button>
+                        <div class="action-menu hidden">
+                            <a class="action-item edit-action">Edit</a>
+                            <a class="action-item sold-action">Mark as Sold</a>
+                            <a class="action-item delete-action">Delete</a>
+                        </div>
+                    </div>
+                </td>
+            `;
 
-                    // Add Action Handlers
-                    const editAction = row.querySelector('.edit-action');
-                    const deleteAction = row.querySelector('.delete-action');
-                    const soldAction = row.querySelector('.sold-action');
+            inventoryTableBody.appendChild(row);
 
-                    editAction.addEventListener('click', () => editVehicle(data, doc.id));
-                    deleteAction.addEventListener('click', () => openDeleteConfirmationModal(doc.id));
-                    soldAction.addEventListener('click', () => openMarkAsSoldModal(doc.id, data));
-                });
+            // Add Event Listeners for Dropdown Actions
+            const dropdownBtn = row.querySelector('.action-btn');
+            const actionMenu = row.querySelector('.action-menu');
+
+            // Toggle Dropdown Visibility
+            dropdownBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                actionMenu.classList.toggle('hidden');
+                closeOtherDropdowns(actionMenu);
             });
-        }
+
+            // Add Action Handlers
+            const editAction = row.querySelector('.edit-action');
+            const deleteAction = row.querySelector('.delete-action');
+            const soldAction = row.querySelector('.sold-action');
+
+            editAction.addEventListener('click', () => editVehicle(data, doc.id));
+            deleteAction.addEventListener('click', () => openDeleteConfirmationModal(doc.id));
+            
+            // ✅ Fix: Pass the correct doc.id instead of undefined docId
+            soldAction.addEventListener("click", () => markVehicleAsSold(doc.id));  
+        });
+    });
+}
+
 
         // Close Other Dropdowns
         function closeOtherDropdowns(openMenu) {
@@ -1329,84 +1333,33 @@
         let vehicleToMarkSoldId = null; // Track the vehicle to be marked as sold
         let vehicleToMarkSoldData = null; // Track the data of the vehicle
 
-        // Mark as Sold: Open Modal
-        function openMarkAsSoldModal(id, data) {
-            vehicleToMarkSoldId = id;
-            vehicleToMarkSoldData = data;
-            soldModal.classList.remove("hidden");
+        // Mark as Sold: Move vehicle to sold database
+async function markVehicleAsSold(id) {
+    try {
+        // Get the vehicle data from the inventory
+        const vehicleDocRef = doc(db, "inventory", id);
+        const vehicleSnapshot = await getDoc(vehicleDocRef);
+
+        if (!vehicleSnapshot.exists()) {
+            alert("Error: Vehicle not found in inventory.");
+            return;
         }
 
-        // Close Sold Modal
-        function closeSoldModalFn() {
-            vehicleToMarkSoldId = null;
-            vehicleToMarkSoldData = null;
+        const vehicleData = vehicleSnapshot.data();
 
-            // Clear the fields in the modal
-            document.getElementById("sold-price").value = "";
-            document.getElementById("buyer-name").value = "";
-            document.getElementById("buyer-contact").value = "";
-            document.getElementById("sold-date").value = "";
-            document.getElementById("sold-details").value = "";
+        // Move to "sold" collection while keeping the timestamp
+        const soldRef = collection(db, "sold");
+        await addDoc(soldRef, vehicleData); // Copies all fields
 
-            soldModal.classList.add("hidden");
-        }
+        // Delete from "inventory" collection
+        await deleteDoc(vehicleDocRef);
 
-        closeSoldModal.addEventListener("click", closeSoldModalFn);
-        cancelSoldBtn.addEventListener("click", closeSoldModalFn);
-
-        // Handle Sold Form Submission
-        soldForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            // Get values from the form
-            const soldPrice = parseFloat(document.getElementById("sold-price").value.trim());
-            const buyerName = document.getElementById("buyer-name").value.trim();
-            const buyerContact = document.getElementById("buyer-contact").value.trim();
-            const soldDate = document.getElementById("sold-date").value;
-            const soldDetails = document.getElementById("sold-details").value.trim();
-
-            if (!soldPrice || !buyerName || !buyerContact || !soldDate) {
-                alert("Please fill in all required fields.");
-                return;
-            }
-
-            try {
-                // Create new document in the "sold" collection
-                const soldData = {
-                    ...vehicleToMarkSoldData,
-                    soldPrice,
-                    buyerName,
-                    buyerContact,
-                    soldDate: new Date(soldDate),
-                    soldDetails,
-                };
-
-                const formData = {
-                    ...vehicleToMarkSoldData,
-                    formType: "sold-form",
-                    soldPrice,
-                    buyerName,
-                    buyerContact,
-                    soldDate: new Date(soldDate),
-                    soldDetails,
-                };
-
-                const soldRef = collection(db, "sold");
-                await addDoc(soldRef, soldData);
-                const soldNum = collection(db, "new-forms");
-                await addDoc(soldNum, formData);
-
-                // Delete from "inventory"
-                const vehicleDoc = doc(db, "inventory", vehicleToMarkSoldId);
-                await deleteDoc(vehicleDoc);
-
-
-                closeSoldModalFn();
-            } catch (error) {
-                console.error("Error marking vehicle as sold:", error);
-            }
-        });
-
+        alert("Vehicle successfully marked as sold.");
+    } catch (error) {
+        console.error("Error marking vehicle as sold:", error);
+        alert("Failed to mark vehicle as sold.");
+    }
+}
 
         // Delete Vehicle
         function openDeleteConfirmationModal(id) {
