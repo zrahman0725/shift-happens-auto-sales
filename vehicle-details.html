@@ -215,8 +215,16 @@
 
     try {
         // Fetch the vehicle document from Firestore
-        const vehicleRef = doc(db, "inventory", vehicleId);
-        const vehicleDoc = await getDoc(vehicleRef);
+        const inventoryRef = doc(db, "inventory", vehicleId);
+        const soldRef = doc(db, "sold", vehicleId);
+
+        const [inventoryDoc, soldDoc] = await Promise.all([
+            getDoc(inventoryRef),
+            getDoc(soldRef)
+        ]);
+
+        // Determine which document exists
+        const vehicleDoc = inventoryDoc.exists() ? inventoryDoc : soldDoc.exists() ? soldDoc : null;
 
         if (!vehicleDoc.exists()) {
             console.error("Vehicle not found!");
@@ -276,13 +284,60 @@ document.addEventListener("DOMContentLoaded", () => {
     if (vehicleId) loadFeatures(vehicleId);
 });
 
+async function fetchVehicleDetails() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const vehicleId = urlParams.get('id'); // Get the vehicle ID from the URL
+
+    if (!vehicleId) {
+        console.error("No vehicle ID provided in the URL.");
+        return;
+    }
+
+    const inventoryRef = doc(db, "inventory", vehicleId);
+    const soldRef = doc(db, "sold", vehicleId);
+
+    try {
+        // Try fetching from the "inventory" collection first
+        let vehicleSnapshot = await getDoc(inventoryRef);
+        let status = "Available"; 
+
+        if (!vehicleSnapshot.exists()) {
+            // If not found in "inventory", check "sold" collection
+            vehicleSnapshot = await getDoc(soldRef);
+            status = "Sold";
+        }
+
+        if (!vehicleSnapshot.exists()) {
+            console.error("Vehicle not found in any database.");
+            return;
+        }
+
+        const vehicleData = vehicleSnapshot.data();
+        displayVehicleDetails(vehicleData, status);
+
+    } catch (error) {
+        console.error("Error fetching vehicle details:", error);
+    }
+}
+
+
+
         async function loadVehicleDetails() {
             const urlParams = new URLSearchParams(window.location.search);
             const vehicleId = urlParams.get("id");
 
             if (vehicleId) {
-                const vehicleRef = doc(db, "inventory", vehicleId);
-                const vehicleDoc = await getDoc(vehicleRef);
+                const inventoryRef = doc(db, "inventory", vehicleId);
+                const soldRef = doc(db, "sold", vehicleId);
+
+                // Fetch both documents
+                const [inventoryDoc, soldDoc] = await Promise.all([
+                    getDoc(inventoryRef),
+                    getDoc(soldRef)
+                ]);
+
+                // Determine which one exists
+                const vehicleDoc = inventoryDoc.exists() ? inventoryDoc : soldDoc.exists() ? soldDoc : null;
 
                 if (vehicleDoc.exists()) {
                     const data = vehicleDoc.data();
