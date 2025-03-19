@@ -966,3 +966,30 @@ span {
     width: 150px;
     text-align: center;
 }
+
+
+
+
+#search-bar {
+    width: 30rem;
+    /* max-width: 500px; */
+    /* padding: 1.2rem 1.5rem; */
+    font-size: 1.6rem;
+    border: 2px solid var(--main-color);
+    border-radius: 50px;
+    background: var(--second-bg-color);
+    color: var(--text-color);
+    outline: none;
+    transition: 0.3s ease-in-out;
+}
+
+#search-bar::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    padding-left: 3%;
+}
+
+#search-bar:focus {
+    border-color: var(--text-color);
+    box-shadow: 0 0 10px var(--main-color);
+}
+
