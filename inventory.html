@@ -63,6 +63,10 @@
     <section class="inventory-section" id="inventory">
         <h2 class="heading"><span>Browse Our</span> Inventory</h2>
         <div class="controls">
+            <div class="search-container">
+                <input type="text" id="search-bar" placeholder="Search by Make, Model, or Year">
+            </div>
+            
             <div class="sort-icon-container">
                 <button id="sort-icon" class="btn">
                     <i class='bx bx-sort'></i> Sort
@@ -315,6 +319,29 @@
         }))
     ];
 
+// Search bar event listener with combined filtering
+document.getElementById("search-bar").addEventListener("input", function () {
+    const query = this.value.toLowerCase().trim();
+
+    // If search bar is empty, show all inventory
+    if (!query) {
+        displayInventory(inventoryData);
+        return;
+    }
+
+    // Filter inventory based on combined search query
+    const filteredResults = inventoryData.filter(vehicle => {
+        // Create a single searchable string
+        const vehicleString = `${vehicle.year} ${vehicle.make} ${vehicle.model}`.toLowerCase();
+
+        // Match against the entire string
+        return vehicleString.includes(query);
+    });
+
+    // Update display
+    displayInventory(filteredResults);
+});
+
     // ✅ Sorting: Available first, then Sold, both sorted by timestamp (newest first)
     inventoryData.sort((a, b) => {
         // Step 1: Sort by status (Available first, Sold last)
@@ -413,7 +440,7 @@
             promoCard.classList.add('promo-card');
             promoCard.innerHTML = `
                 <div class="vehicle-image">
-                    <img src="images/promo.jpg" alt="Financing Promotion">
+                    <img src="images/promo2.jpg" alt="Financing Promotion">
                 </div>
                 <div class="promo-details">
                     <h3>Special Financing Rates</h3>
@@ -431,7 +458,7 @@
         finalPromoCard.classList.add('promo-card');
         finalPromoCard.innerHTML = `
             <div class="vehicle-image">
-                <img src="images/promo2.jpg" alt="Financing Promotion">
+                <img src="images/promo.jpg" alt="Financing Promotion">
             </div>
             <div class="promo-details">
                 <h3>Special Financing Rates</h3>
@@ -800,7 +827,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             promoCard.classList.add('promo-card');
             promoCard.innerHTML = `
                 <div class="vehicle-image">
-                    <img src="images/promo.jpg" alt="Financing Promotion">
+                    <img src="images/promo2.jpg" alt="Financing Promotion">
                 </div>
                 <div class="promo-details">
                     <h3>Special Financing Rates</h3>
