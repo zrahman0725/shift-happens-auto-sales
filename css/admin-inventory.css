@@ -1543,3 +1543,73 @@ span {
     display: none;
 }
 
+
+
+/* Style for the sortable list */
+.sortable-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0;
+    list-style: none;
+    max-height: 200px; /* Prevents excessive height */
+    overflow-y: auto; /* Enables scrolling if there are many images */
+}
+
+/* Style for individual images */
+.sortable-item {
+    position: relative;
+    width: 100px;  /* Adjust width */
+    height: 100px; /* Adjust height */
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f8f8;
+}
+
+/* Make images fit inside the box */
+.sortable-item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* Remove button for each image */
+.sortable-item .remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    padding: 3px 6px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.sortable-item .remove-image:hover {
+    background: rgba(255, 0, 0, 1);
+}
+
+@media (max-width: 768px) {
+    .sortable-item {
+        width: 70px;
+        height: 70px;
+    }
+
+    .sortable-item img {
+        border-radius: 4px;
+    }
+
+    .remove-image {
+        top: 2px;
+        right: 2px;
+        font-size: 10px;
+        padding: 2px 4px;
+    }
+}
