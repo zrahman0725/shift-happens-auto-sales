@@ -320,15 +320,21 @@
                     <h3>Step 6: Media Upload</h3>
 
                         <!-- Existing Media Display -->
-                        <div id="existing-media">
+                        <div id="existing-media" class="sortable-list">
                             <!-- Existing media links will be populated dynamically -->
                         </div>
+                        
 
                     <label for="main-picture">Main Picture (Required):</label>
                     <input type="file" id="main-picture" accept="image/*" required>
 
                     <label for="secondary-pictures">Secondary Pictures (Optional):</label>
                     <input type="file" id="secondary-pictures" accept="image/*" multiple>
+
+                    <ul id="sortable-images" class="sortable-list">
+                        <!-- Images will be listed here dynamically -->
+                    </ul>
+
                     <div>
                         <button type="button" id="prev-step-6" class="btn">Back</button>
                         <button type="submit" class="btn">Save Vehicle</button>
@@ -370,6 +376,71 @@
         </div>
     </footer>
 
+<!-- Include Sortable.js (CDN) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const imageList = document.getElementById("sortable-images");
+    const secondaryPicturesInput = document.getElementById("secondary-pictures");
+
+// Enable Sortable.js for existing media (during edit)
+new Sortable(document.getElementById("existing-media"), {
+    animation: 150,
+    ghostClass: "sortable-ghost",
+});
+
+
+    // Function to handle image previews and allow sorting
+    function handleImageUpload(files) {
+        imageList.innerHTML = ""; // Clear existing previews
+
+        Array.from(files).forEach((file) => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const listItem = document.createElement("li");
+                listItem.classList.add("sortable-item");
+                listItem.innerHTML = `
+                    <img src="${e.target.result}" alt="Uploaded Image">
+                    <button class="remove-image">X</button>
+                `;
+
+                // Remove image when "X" button is clicked
+                listItem.querySelector(".remove-image").addEventListener("click", function () {
+                    listItem.remove();
+                });
+
+                imageList.appendChild(listItem);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Listen for file uploads
+    secondaryPicturesInput.addEventListener("change", function () {
+        handleImageUpload(this.files);
+    });
+
+    // Function to get the reordered list of images before submitting
+    function getSortedImages() {
+        const sortedImages = [];
+        document.querySelectorAll("#sortable-images img").forEach((img) => {
+            sortedImages.push(img.src); // Store the reordered image URLs
+        });
+        return sortedImages;
+    }
+
+    // Modify the form submission to include the reordered images
+    document.getElementById("vehicle-form").addEventListener("submit", function (e) {
+        e.preventDefault(); // Prevent default form submission
+
+        const sortedImages = getSortedImages();
+        console.log("Final Image Order:", sortedImages); // Send this data to backend
+
+        // Now send sortedImages along with other form data to Firebase
+    });
+});
+</script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
@@ -1242,32 +1313,29 @@ function populateInventoryTable() {
 
         // Helper Function to Create Media Items
         function createMediaItem(url, isMain) {
-            const mediaItem = document.createElement('div');
-            mediaItem.classList.add('media-item');
-            mediaItem.innerHTML = `
-                <img src="${url}" alt="Media" class="media-thumbnail">
-                <span>${isMain ? 'Main Picture' : 'Secondary Picture'}</span>
-                <button class="remove-media-btn" data-url="${url}">X</button>
-            `;
+    const mediaItem = document.createElement('li');
+    mediaItem.classList.add('media-item', 'sortable-item');
+    mediaItem.innerHTML = `
+        <img src="${url}" alt="Media" class="media-thumbnail">
+        <span>${isMain ? 'Main Picture' : 'Secondary Picture'}</span>
+        <button class="remove-media-btn" data-url="${url}">X</button>
+    `;
 
-            // Remove Media Button
-            mediaItem.querySelector('.remove-media-btn').addEventListener('click', (e) => {
-                e.preventDefault();
-                mediaItem.remove(); // Remove the item from the DOM
-
-                if (isMain) {
-                    // For main picture, alert user and reset
-                    currentEditData.mainPictureUrl = null;
-                } else {
-                    // For secondary pictures, remove the URL from secondaryPicturesUrls
-                    currentEditData.secondaryPicturesUrls = currentEditData.secondaryPicturesUrls.filter(
-                        (existingUrl) => existingUrl !== url
-                    );
-                }
-            });
-
-            return mediaItem;
+    mediaItem.querySelector('.remove-media-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        mediaItem.remove();
+        if (isMain) {
+            currentEditData.mainPictureUrl = null;
+        } else {
+            currentEditData.secondaryPicturesUrls = currentEditData.secondaryPicturesUrls.filter(
+                (existingUrl) => existingUrl !== url
+            );
         }
+    });
+
+    return mediaItem;
+}
+
 
         function validateCurrentStep() {
             const currentStepElement = steps[currentStep];
@@ -1389,7 +1457,9 @@ async function markVehicleAsSold(id) {
             const secondaryPictures = Array.from(document.getElementById('secondary-pictures').files);
 
             let mainPictureUrl = null;
-            const secondaryPicturesUrls = [...(currentEditData?.secondaryPicturesUrls || [])];
+// Collect reordered secondary picture URLs from existing media
+const secondaryPicturesUrls = Array.from(document.querySelectorAll('#existing-media li:not(:first-child) img'))
+    .map(img => img.src);
 
             try {
                 showLoading();
@@ -1444,12 +1514,12 @@ async function markVehicleAsSold(id) {
                     stock: document.getElementById('stock').value.trim(),
                     mainPictureUrl,
                     secondaryPicturesUrls,
-                    timestamp: new Date(),
                     features: window.vehicleFeatures || {} // Add categorized features here
 
                 };
     
                 if (mode === "add") {
+                    vehicleData.timestamp = new Date();
                     await addDoc(inventoryRef, vehicleData);
                 } else if (mode === "edit" && currentEditId) {
                     const vehicleDoc = doc(db, "inventory", currentEditId);
