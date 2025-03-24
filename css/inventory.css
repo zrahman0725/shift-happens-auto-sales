@@ -985,7 +985,7 @@ span {
 
 #search-bar::placeholder {
     color: rgba(255, 255, 255, 0.6);
-    padding-left: 3%;
+    text-indent: 10px;
 }
 
 #search-bar:focus {

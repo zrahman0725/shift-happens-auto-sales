@@ -85,7 +85,10 @@
 
             <!-- Right Section: Vehicle Information -->
             <div class="details-right">
-                <h2 id="vehicle-title"></h2>
+                <h2>
+                    <span id="vehicle-title"></span>
+                    <span id="vehicle-trim" style="font-weight: normal; font-size: 18px; margin-left: 8px; color: #666;"></span>
+                  </h2>                  
                 <h3 id="vehicle-price"></h3>
                 <span class="vehicle-info">
                     <span style="color: #888888;" id="vehicle-vin">VIN: N/A</span> | 
@@ -344,6 +347,7 @@ async function fetchVehicleDetails() {
 
                     // Update main vehicle details
                     document.getElementById("vehicle-title").textContent = `${data.year} ${data.make} ${data.model}`;
+                    document.getElementById("vehicle-trim").textContent = data.trim ? `| ${data.trim}` : '';
                     document.getElementById("main-carousel-image").src = data.mainPictureUrl;
                     document.getElementById("vehicle-price").textContent = `$${parseFloat(data.price).toLocaleString('en-US')}`;
                     document.getElementById("vehicle-vin").textContent = `VIN: ${(data.vin || "N/A").toUpperCase()}`;

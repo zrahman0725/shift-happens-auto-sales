@@ -153,9 +153,10 @@
                 <!-- Step 1: Vehicle Basic Information -->
                 <div class="step step-1">
                     <h3>Step 1: Vehicle Basic Information</h3>
+                    <input type="number" id="year" placeholder="Year" required>
                     <input type="text" id="make" placeholder="Make" required>
                     <input type="text" id="model" placeholder="Model" required>
-                    <input type="number" id="year" placeholder="Year" required>
+                    <input type="text" id="trim" placeholder="Trim">
                     <input type="number" id="price" placeholder="Price ($)" required>
                     <!-- Premium Price Toggle -->
                     <div class="toggle-container">
@@ -1240,6 +1241,7 @@ function populateInventoryTable() {
             // Step 1: Basic Information
             document.getElementById('make').value = data.make || '';
             document.getElementById('model').value = data.model || '';
+            document.getElementById('trim').value = data.trim || '';
             document.getElementById('year').value = data.year || '';
             document.getElementById('price').value = data.price || '';
 
@@ -1495,6 +1497,7 @@ const secondaryPicturesUrls = Array.from(document.querySelectorAll('#existing-me
                     make: document.getElementById('make').value.trim(),
                     model: document.getElementById('model').value.trim(),
                     year: document.getElementById('year').value.trim(),
+                    trim: document.getElementById('trim').value.trim(),
                     price: parseInt(document.getElementById('price').value.trim(), 10),
                     premiumPrice: premiumToggle.checked ? premiumPriceInput.value.trim() : null,
                     fuelType: document.getElementById('fuel-type').value, // New field
