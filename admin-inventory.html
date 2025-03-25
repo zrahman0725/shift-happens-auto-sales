@@ -1231,6 +1231,7 @@ function populateInventoryTable() {
             // Ensure data consistency
             currentEditData = {
                 ...data,
+                features: data.features || {}, // 👈 Add this line
                 secondaryPicturesUrls: data.secondaryPicturesUrls || [], // Always default to an empty array
             };
 
@@ -1491,7 +1492,15 @@ const secondaryPicturesUrls = Array.from(document.querySelectorAll('#existing-me
                     const url = await uploadImageToImgBB(file);
                     if (url) secondaryPicturesUrls.push(url);
                 }
+                let finalFeatures = {};
 
+if (mode === "edit" && currentEditData && currentEditData.features) {
+    finalFeatures = currentEditData.features;
+}
+
+if (window.vehicleFeatures) {
+    finalFeatures = window.vehicleFeatures;
+}
         
                 const vehicleData = {
                     make: document.getElementById('make').value.trim(),
@@ -1517,9 +1526,10 @@ const secondaryPicturesUrls = Array.from(document.querySelectorAll('#existing-me
                     stock: document.getElementById('stock').value.trim(),
                     mainPictureUrl,
                     secondaryPicturesUrls,
-                    features: window.vehicleFeatures || {} // Add categorized features here
+                    features: finalFeatures // Add categorized features here
 
                 };
+
     
                 if (mode === "add") {
                     vehicleData.timestamp = new Date();
