@@ -480,6 +480,22 @@ document.getElementById('vehicle-search').addEventListener('focus', adjustDropdo
             });
         }
     });
+
+    function isMobile() {
+    return window.innerWidth <= 768;
+}
+
+if (isMobile()) {
+    // Disable dropdown toggles on mobile – just navigate to main link
+    document.querySelectorAll(".dropdown > a").forEach(link => {
+        link.addEventListener("click", (e) => {
+            const href = link.getAttribute("href");
+            if (href) {
+                window.location.href = href; // Navigate directly
+            }
+        });
+    });
+}
 </script>
 
 

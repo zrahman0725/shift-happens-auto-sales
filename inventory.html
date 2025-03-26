@@ -412,7 +412,11 @@ document.getElementById("search-bar").addEventListener("input", function () {
                     <img src="${item.mainPictureUrl}" alt="${item.make} ${item.model}">
                 </div>
                 <div class="vehicle-details">
-                    <h3>${item.year} ${item.make} ${item.model}</h3>
+                    <h3>
+  ${item.year} ${item.make} ${item.model}
+  ${item.trim ? `<span style="font-weight: normal; font-size: 13px; color: #666; margin-left: 6px;">${item.trim}</span>` : ''}
+</h3>
+
                     <p>
                         <span class="label">Mileage:</span>
                         <span class="value">${parseInt(item.mileage)} km</span>
@@ -799,7 +803,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <img src="${item.mainPictureUrl}" alt="${item.make} ${item.model}">
                 </div>
                 <div class="vehicle-details">
-                    <h3>${item.year} ${item.make} ${item.model}</h3>
+                    <h3>
+  ${item.year} ${item.make} ${item.model}
+  ${item.trim ? `<span style="font-weight: normal; font-size: 13px; color: #666; margin-left: 6px;">${item.trim}</span>` : ''}
+</h3>
+
                     <p>
                         <span class="label">Mileage:</span>
                         <span class="value">${parseInt(item.mileage)} km</span>
@@ -862,6 +870,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     const inventoryData = await fetchInventory();
     await applyFilters(inventoryData);
 });
+
+
+function isMobile() {
+    return window.innerWidth <= 768;
+}
+
+if (isMobile()) {
+    // Disable dropdown toggles on mobile – just navigate to main link
+    document.querySelectorAll(".dropdown > a").forEach(link => {
+        link.addEventListener("click", (e) => {
+            const href = link.getAttribute("href");
+            if (href) {
+                window.location.href = href; // Navigate directly
+            }
+        });
+    });
+}
 
 
 
