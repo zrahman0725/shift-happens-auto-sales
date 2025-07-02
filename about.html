@@ -25,10 +25,6 @@
             <a href="index.html#home" data-alt-link="home.html">Home</a>
             <div class="dropdown">
                 <a href="inventory.html" data-alt-link="inventory.html">Inventory</a>
-                <div class="dropdown-menu">
-                    <a href="inventory.html">View Inventory</a>
-                    <a href="car-finder.html">Car Finder</a>
-                </div>
             </div>
             <div class="dropdown">
                 <a href="finance.html" data-alt-link="finance.html">Finance</a>
@@ -211,23 +207,6 @@
             });
         }
     });
-
-    function isMobile() {
-    return window.innerWidth <= 768;
-}
-
-if (isMobile()) {
-    // Disable dropdown toggles on mobile – just navigate to main link
-    document.querySelectorAll(".dropdown > a").forEach(link => {
-        link.addEventListener("click", (e) => {
-            const href = link.getAttribute("href");
-            if (href) {
-                window.location.href = href; // Navigate directly
-            }
-        });
-    });
-}
-
 
 
 </script>

@@ -25,10 +25,7 @@
             <a href="index.html#home" data-alt-link="home.html">Home</a>
             <div class="dropdown">
                 <a href="inventory.html" data-alt-link="inventory.html">Inventory</a>
-                <div class="dropdown-menu">
-                    <a href="inventory.html">View Inventory</a>
-                    <a href="car-finder.html">Car Finder</a>
-                </div>
+
             </div>
             <div class="dropdown">
                 <a href="finance.html" data-alt-link="finance.html">Finance</a>
@@ -63,25 +60,67 @@
         <h2 class="heading">Loan <span>Calculator</span></h2>
         <div class="loan-calculator">
             <form id="loan-form">
+    
+                <!-- Slider Block -->
                 <div class="form-group">
-                    <label for="loan-amount">Loan Amount ($):</label>
-                    <input type="number" id="loan-amount" placeholder="Enter loan amount" required>
+                    <label for="vehicle-price">Price of your new vehicle: <span id="vehicle-price-value">$20,000</span></label>
+                    <input type="range" id="vehicle-price" min="1000" max="100000" step="500" value="20000">
                 </div>
+    
                 <div class="form-group">
-                    <label for="interest-rate">Interest Rate (% per year):</label>
-                    <input type="number" id="interest-rate" placeholder="Enter annual interest rate" step="0.01" required>
+                    <label for="trade-in">Value of your trade-in vehicle: <span id="trade-in-value">$0</span></label>
+                    <input type="range" id="trade-in" min="0" max="50000" step="500" value="0">
                 </div>
+    
                 <div class="form-group">
-                    <label for="loan-term">Loan Term (years):</label>
-                    <input type="number" id="loan-term" placeholder="Enter loan term in years" required>
+                    <label for="existing-loan">Your existing vehicle loan balance: <span id="existing-loan-value">$0</span></label>
+                    <input type="range" id="existing-loan" min="0" max="50000" step="500" value="0">
                 </div>
+    
+                <div class="form-group">
+                    <label for="down-payment">Your down payment: <span id="down-payment-value">$0</span></label>
+                    <input type="range" id="down-payment" min="0" max="50000" step="500" value="0">
+                </div>
+    
+                <div class="form-group">
+                    <label for="loan-term">Duration of your loan: <span id="loan-term-value">60 months</span></label>
+                    <input type="range" id="loan-term" min="12" max="96" step="12" value="60">
+                </div>
+    
+                <div class="form-group">
+                    <label for="sales-tax">Provincial sales tax: <span id="sales-tax-value">13%</span></label>
+                    <input type="range" id="sales-tax" min="0" max="15" step="0.1" value="13">
+                </div>
+    
+                <div class="form-group">
+                    <label for="interest-rate">Expected interest rate: <span id="interest-rate-value">6.5%</span></label>
+                    <input type="range" id="interest-rate" min="0" max="20" step="0.1" value="6.5">
+                </div>
+    
                 <button type="button" id="calculate-btn">Calculate</button>
             </form>
-            <div id="result">
-                <p>Monthly Payment: <span id="monthly-payment">$0.00</span></p>
+    
+            <div id="result" class="results">
+                <h3>Your total amount to be financed will be</h3>
+                <p class="total-financed" id="total-financed">$0.00</p>
+    
+                <h3>With the following payments:</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Payment Frequency</th>
+                            <th>Payment Amount</th>
+                            <th>Total Interest to be Paid<br>over the Duration of the Loan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="payment-table">
+                        <!-- Rows will be inserted here -->
+                    </tbody>
+                </table>
             </div>
         </div>
     </section>
+    
     
 
     <footer class="footer">
@@ -94,7 +133,7 @@
         </div>
     </footer>
 
-    <script>
+    <!-- <script>
         document.getElementById("calculate-btn").addEventListener("click", function () {
             const loanAmount = parseFloat(document.getElementById("loan-amount").value);
             const annualInterestRate = parseFloat(document.getElementById("interest-rate").value);
@@ -115,7 +154,7 @@
             document.getElementById("monthly-payment").textContent = 
                 monthlyPayment.toFixed(2) ? `$${monthlyPayment.toFixed(2)}` : "$0.00";
         });
-    </script>
+    </script> -->
 
     <!-- Navbar Toggle for Mobile -->
 <script>
@@ -129,22 +168,97 @@
             });
         }
     });
+</script>
+<script>
+    const formatCurrency = value => {
+        return `$${parseFloat(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    };
 
-    function isMobile() {
-    return window.innerWidth <= 768;
-}
+    // Element references
+    const sliders = {
+        "vehicle-price": "vehicle-price-value",
+        "trade-in": "trade-in-value",
+        "existing-loan": "existing-loan-value",
+        "down-payment": "down-payment-value",
+        "loan-term": "loan-term-value",
+        "sales-tax": "sales-tax-value",
+        "interest-rate": "interest-rate-value"
+    };
 
-if (isMobile()) {
-    // Disable dropdown toggles on mobile – just navigate to main link
-    document.querySelectorAll(".dropdown > a").forEach(link => {
-        link.addEventListener("click", (e) => {
-            const href = link.getAttribute("href");
-            if (href) {
-                window.location.href = href; // Navigate directly
+    // Live update slider values
+    Object.keys(sliders).forEach(id => {
+        const slider = document.getElementById(id);
+        const label = document.getElementById(sliders[id]);
+
+        const updateValue = () => {
+            let value = slider.value;
+            if (id === "loan-term") {
+                label.textContent = `${value} months`;
+            } else if (id === "sales-tax" || id === "interest-rate") {
+                label.textContent = `${parseFloat(value).toFixed(1)}%`;
+            } else {
+                label.textContent = formatCurrency(value);
             }
+        };
+
+        slider.addEventListener("input", updateValue);
+        updateValue(); // initialize on load
+    });
+
+    document.getElementById("calculate-btn").addEventListener("click", () => {
+        // Get values
+        const price = parseFloat(document.getElementById("vehicle-price").value);
+        const tradeIn = parseFloat(document.getElementById("trade-in").value);
+        const existingLoan = parseFloat(document.getElementById("existing-loan").value);
+        const downPayment = parseFloat(document.getElementById("down-payment").value);
+        const loanTerm = parseInt(document.getElementById("loan-term").value);
+        const salesTax = parseFloat(document.getElementById("sales-tax").value);
+        const interestRate = parseFloat(document.getElementById("interest-rate").value);
+
+        const priceWithTax = price * (1 + (salesTax / 100));
+        const loanBase = priceWithTax - tradeIn - downPayment + existingLoan;
+
+        const monthlyInterest = (interestRate / 100) / 12;
+        const totalMonths = loanTerm;
+
+        const calcPayment = (principal, rate, n) => {
+            if (rate === 0) return principal / n;
+            return (principal * rate) / (1 - Math.pow(1 + rate, -n));
+        };
+
+        // Payment frequencies
+        const paymentPlans = [
+            { label: "Monthly", periods: 12 },
+            { label: "Bi-weekly", periods: 26 },
+            { label: "Weekly", periods: 52 }
+        ];
+
+        // Update total to finance
+        document.getElementById("total-financed").textContent = formatCurrency(loanBase);
+
+        // Generate table rows
+        const tbody = document.getElementById("payment-table");
+        tbody.innerHTML = "";
+
+        paymentPlans.forEach(plan => {
+            const totalPayments = plan.periods * (loanTerm / 12);
+            const periodRate = (interestRate / 100) / plan.periods;
+
+            const payment = calcPayment(loanBase, periodRate, totalPayments);
+            const totalPaid = payment * totalPayments;
+            const totalInterest = totalPaid - loanBase;
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${plan.label}</td>
+                <td>${formatCurrency(payment)}</td>
+                <td>${formatCurrency(totalInterest)}</td>
+            `;
+
+            tbody.appendChild(row);
         });
     });
-}
 </script>
     
 
