@@ -181,7 +181,7 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: -15rem; /* Pull the section closer to the slideshow */
+    margin-top: -10rem; /* Pull the section closer to the slideshow */
 
 
 }
