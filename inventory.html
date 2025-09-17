@@ -340,17 +340,16 @@ document.getElementById("search-bar").addEventListener("input", function () {
 });
 
     // ✅ Sorting: Available first, then Sold, both sorted by timestamp (newest first)
-// ✅ Sorting: newest uploads first (ignores Available/Sold grouping)
-inventoryData.sort((a, b) => {
-  const toJSDate = (t) =>
-    !t ? new Date(0)
-       : typeof t.toDate === "function" ? t.toDate() // Firestore Timestamp
-       : t instanceof Date ? t
-       : new Date(t); // fallback if stored as ISO string
+    inventoryData.sort((a, b) => {
+        // Step 1: Sort by status (Available first, Sold last)
+        if (a.status === "Available" && b.status === "Sold") return -1;
+        if (a.status === "Sold" && b.status === "Available") return 1;
 
-  return toJSDate(b.timestamp) - toJSDate(a.timestamp);
-});
-
+        // Step 2: Within each status, sort by timestamp (newest first)
+        const dateA = a.timestamp ? a.timestamp.toDate() : new Date(0);
+        const dateB = b.timestamp ? b.timestamp.toDate() : new Date(0);
+        return dateB - dateA;
+    });
 
     filteredData = inventoryData; // Initially, display sorted data
 
@@ -745,17 +744,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     ];
 
     // ✅ Sorting: Available first, then Sold, both sorted by timestamp (newest first)
-// ✅ Sorting: newest uploads first (ignores Available/Sold grouping)
-inventoryData.sort((a, b) => {
-  const toJSDate = (t) =>
-    !t ? new Date(0)
-       : typeof t.toDate === "function" ? t.toDate() // Firestore Timestamp
-       : t instanceof Date ? t
-       : new Date(t); // fallback if stored as ISO string
+    inventoryData.sort((a, b) => {
+        // Step 1: Sort by status (Available first, Sold last)
+        if (a.status === "Available" && b.status === "Sold") return -1;
+        if (a.status === "Sold" && b.status === "Available") return 1;
 
-  return toJSDate(b.timestamp) - toJSDate(a.timestamp);
-});
-
+        // Step 2: Within each status, sort by timestamp (newest first)
+        const dateA = a.timestamp ? a.timestamp.toDate() : new Date(0);
+        const dateB = b.timestamp ? b.timestamp.toDate() : new Date(0);
+        return dateB - dateA;
+    });
 
     filteredData = inventoryData; // Initially, display sorted data
     displayInventory(filteredData);
