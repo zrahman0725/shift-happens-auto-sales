@@ -947,7 +947,7 @@ span {
     }
 
     #search-bar {
-        width: 25rem;
+        width: auto;
     }
 }
 
