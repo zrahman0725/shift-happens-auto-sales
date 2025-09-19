@@ -58,11 +58,11 @@ section {
     cursor: default;
 }
 
-.logo img {
-    width: 40px;
-    height: auto;
-    vertical-align: middle;
-    margin-right: 10px;
+.logo-img {
+    width: 350px;
+    height: 40px;
+    object-fit: cover;
+    margin-left: -100px;
 }
 
 .navbar a {
@@ -562,6 +562,13 @@ span {
     .card {
         width: 100%; /* Make the cards span the full width */
         padding: 1.5rem; /* Adjust padding for smaller screens */
+    }
+
+    .logo-img {
+        width: 350px;
+        height: 40px;
+        object-fit: cover;
+        margin-left: -100px;
     }
 
 }

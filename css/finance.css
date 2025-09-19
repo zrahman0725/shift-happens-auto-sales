@@ -62,11 +62,11 @@ section {
     cursor: default;
 
     }
-    .logo img {
-        width: 40px; /* Adjust the size of the image as needed */
-        height: auto; /* Maintain aspect ratio */
-        vertical-align: middle; /* Align the image with the text */
-        margin-right: 10px; /* Add spacing between the image and the title */
+    .logo-img {
+        width: 350px;
+        height: 40px;
+        object-fit: cover;
+        margin-left: -100px;
     }
       
 
@@ -684,6 +684,12 @@ span {
         margin: auto; /* Center cards within the container */
     }
 
+    .logo-img {
+        width: 350px;
+        height: 40px;
+        object-fit: cover;
+        margin-left: -50px;
+    }
 }
 
 
