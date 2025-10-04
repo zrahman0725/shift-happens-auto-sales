@@ -82,7 +82,7 @@
                     <div class="main-image">
                         <button class="carousel-button prev">&lt;</button>
                         <div class="main-image-container">
-                            <img id="main-carousel-image" src="" alt="Vehicle Image">
+                            <img id="main-carousel-image" src="" alt="Vehicle Image" loading="lazy">
                             <div class="hover-overlay">View Fullscreen</div>
                         </div>
                         <button class="carousel-button next">&gt;</button>
@@ -421,6 +421,7 @@ async function fetchVehicleDetails() {
                     const mainThumbnail = document.createElement("img");
                     mainThumbnail.src = data.mainPictureUrl;
                     mainThumbnail.alt = `${data.make} ${data.model}`;
+                    mainThumbnail.loading = "lazy";   // 👈 Add this line
                     mainThumbnail.classList.add("active-thumbnail");
                     thumbnailStrip.appendChild(mainThumbnail);
 
@@ -428,6 +429,7 @@ async function fetchVehicleDetails() {
                         const img = document.createElement("img");
                         img.src = url;
                         img.alt = `${data.make} ${data.model}`;
+                        img.loading = "lazy";   // 👈 Add this line
                         thumbnailStrip.appendChild(img);
                     });
 
